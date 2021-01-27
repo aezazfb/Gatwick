@@ -184,10 +184,11 @@ class MapState with ChangeNotifier {
             child: Wrap(
               children: [
                 ListTile(
-                  title: Text("Distance $duration"),
+                  title:
+                      Text("Distance ${calculateDistanceTime.distance} miles"),
                 ),
                 ListTile(
-                  title: Text("Duration $distance miles"),
+                  title: Text("Duration ${calculateDistanceTime.duration}"),
                 ),
                 Center(
                   child: FlatButton(
@@ -281,19 +282,25 @@ class MapState with ChangeNotifier {
                    //   visible: true,
                    //   infoWindow: InfoWindow(
                    //     title: toolTipAddress,
-                   //   ),
-                   // ));
+                  //   ),
+                  // ));
                   // getPolyPoints();
-                   Navigator.pop(context);
-                 },
-               )
-             ],
-           );
-         });
-   }
+                  Navigator.pop(context);
+                },
+              )
+            ],
+          );
+        });
+  }
 
-  void clearfields(){
-     suggestion.clear();
-     notifyListeners();
+  void swapFields() {
+    String address = sourceController.text.toString();
+    sourceController.text = destinationController.text;
+    destinationController.text = address;
+  }
+
+  void clearfields() {
+    suggestion.clear();
+    notifyListeners();
   }
 }

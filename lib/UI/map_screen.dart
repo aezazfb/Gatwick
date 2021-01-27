@@ -1,5 +1,3 @@
-import 'dart:collection';
-
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
@@ -113,7 +111,6 @@ class MapScreenState extends State<MapScreen>{
 
 
           //Dropoff  TextField
-
           Positioned(
             top: 110.0,
             right: 15.0,
@@ -152,27 +149,43 @@ class MapScreenState extends State<MapScreen>{
                   ),
                   suffix: IconButton(icon: Icon(Icons.clear, size: 15.0, color: Colors.black,),
                       onPressed: (){
-                    appState.destinationController.clear();
-                    appState.polyLine.last.points.clear();
-                  }),
-                  hintText: "go to...",
-                  border: InputBorder.none,
-                  contentPadding: EdgeInsets.only(left: 6.0, top: 8.0, right: 6.0),
+                              appState.destinationController.clear();
+                              appState.polyLine.last.points.clear();
+                            }),
+                        hintText: "go to...",
+                        border: InputBorder.none,
+                        contentPadding:
+                            EdgeInsets.only(left: 6.0, top: 8.0, right: 6.0),
+                      ),
+                    ),
+                  ),
                 ),
-              ),
-            ),
-          ),
-          SizedBox(height: 20),
-          Positioned(
-            left: 20,
-            right: 20,
-            top: 130,
-              child:  SizedBox(
-            height: appState.suggestion.length * 60.0,
-            child: Container(
-              child: ListView.builder(
-                itemCount: appState.suggestion.length,
-                itemBuilder: (context, index) {
+                //----> swap fields icon button
+                Positioned(
+                  top: 80,
+                  right: 5.0,
+                  child: IconButton(
+                      icon: Icon(
+                        Icons.swap_vert_rounded,
+                        size: 40,
+                        color: Colors.deepPurple,
+                      ),
+                      onPressed: () {
+                        appState.swapFields();
+                      }),
+                ),
+                //----> Suggestion Box List View
+                SizedBox(height: 20),
+                Positioned(
+                    left: 20,
+                    right: 20,
+                    top: 130,
+                    child: SizedBox(
+                      height: appState.suggestion.length * 60.0,
+                      child: Container(
+                        child: ListView.builder(
+                          itemCount: appState.suggestion.length,
+                          itemBuilder: (context, index) {
                   return Card(
                     child: ListTile(
                       title: Text(
