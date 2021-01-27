@@ -60,7 +60,7 @@ class MapScreenState extends State<MapScreen>{
                   },
                 ),
 
-                //PICK UP TEXT FIELD
+                //----> PICK UP TEXT FIELD
                 Positioned(
                   top: 50.0,
                   right: 15.0,
@@ -115,7 +115,7 @@ class MapScreenState extends State<MapScreen>{
                   ),
                 ),
 
-                //DROP OFF  TextField
+                //----> DROP OFF  TEXT FIELD
                 Positioned(
                   top: 110.0,
                   right: 15.0,
@@ -187,7 +187,7 @@ class MapScreenState extends State<MapScreen>{
                       }),
                 ),
 
-                //----> SEARCH Suggestion  List View
+                //----> SEARCH SUGGESTION  LIST VIEW
                 SizedBox(height: 20),
                 Positioned(
                     left: 20,
@@ -227,8 +227,10 @@ class MapScreenState extends State<MapScreen>{
                       ),
                     )),
 
-                //FIXED ICON TO FETCH CENTER POSITION ON CAMERA MOVE
+                //----> FIXED ICON TO FETCH CENTER POSITION ON CAMERA MOVE
                 Positioned(
+                    child: Visibility(
+                  visible: appState.visibility,
                   child: Align(
                     alignment: Alignment.center,
                     child: IconButton(
@@ -239,26 +241,29 @@ class MapScreenState extends State<MapScreen>{
                               appState.centerPoints);
                         }),
                   ),
-                ),
+                )),
 
                 //CAMERA MOVE SUGGESTIONS
                 Positioned(
-                  child: Align(
-                    alignment: Alignment(0.1, -0.1),
-                    child: Card(
-                      color: Colors.deepPurple.withOpacity(.8),
-                      margin: EdgeInsets.all(8.0),
-                      child: InkWell(
-                          child: Text(appState.name,
-                              style: TextStyle(color: Colors.white)),
-                          onTap: () {
-                            appState.dialogShow(context);
-                          }),
+                  child: Visibility(
+                    visible: appState.visibility,
+                    child: Align(
+                      alignment: Alignment(0.1, -0.1),
+                      child: Card(
+                        color: Colors.deepPurple.withOpacity(.8),
+                        margin: EdgeInsets.all(8.0),
+                        child: InkWell(
+                            child: Text(appState.name,
+                                style: TextStyle(color: Colors.white)),
+                            onTap: () {
+                              appState.dialogShow(context);
+                            }),
+                      ),
                     ),
                   ),
                 ),
 
-                //GET QUOTE BUTTON
+                //----> GET QUOTE BUTTON
                 Positioned(
                     bottom: 20,
                     right: 17,
@@ -272,6 +277,42 @@ class MapScreenState extends State<MapScreen>{
                       child: Text(
                         'GET QUOTE',
                         style: TextStyle(color: Colors.white),
+                      ),
+                    )),
+
+                //---->   CURRENT POSITION BUTTTON
+                Positioned(
+                    bottom: 70,
+                    left: 17,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.grey.shade300.withOpacity(0.7),
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      child: IconButton(
+                        icon: Icon(Icons.location_searching,
+                            color: Colors.deepPurpleAccent),
+                        onPressed: () {
+                          print("My Locationbutton Pressed");
+                        },
+                      ),
+                    )),
+
+                //----> FLIGHTS BUTTON
+                Positioned(
+                    bottom: 70,
+                    right: 17,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.grey.shade300.withOpacity(0.7),
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      child: IconButton(
+                        icon: Icon(Icons.flight_takeoff,
+                            color: Colors.deepPurpleAccent),
+                        onPressed: () {
+                          print("My Locationbutton Pressed");
+                        },
                       ),
                     )),
               ],

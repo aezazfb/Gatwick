@@ -40,7 +40,6 @@ class MapState with ChangeNotifier {
   FetchPolylinePoints fetchPolylinePoints = FetchPolylinePoints();
   MapScreenState mapScreenState = MapScreenState();
   CalculateDistanceTime calculateDistanceTime = CalculateDistanceTime();
-
   List suggestion = [];
   List<LatLng> latLangList = [];
   Map mapResponse;
@@ -54,7 +53,7 @@ class MapState with ChangeNotifier {
 
   String get name => _name;
 
-
+  bool visibility = true;
   bool flage;
 
   MapState() {
@@ -62,7 +61,6 @@ class MapState with ChangeNotifier {
     _loadingInitialPosition();
     notifyListeners();
   }
-
 
   //----> Creating onMapCreated for our Map
   void onCreate(GoogleMapController controller) {
@@ -116,8 +114,7 @@ class MapState with ChangeNotifier {
     CameraPosition cameraPosition = new CameraPosition(
         target: LatLng(latLng.latitude, latLng.longitude), zoom: 14);
 
-    _mapController.animateCamera(
-        CameraUpdate.newCameraPosition(cameraPosition));
+    _mapController.animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
     if (flage == true) {
       latLangList.insert(0, latLng);
       l1 = latLangList[0];
@@ -127,12 +124,12 @@ class MapState with ChangeNotifier {
       l2 = latLangList[latLangList.length - 1];
     }
 
-    addMarker(latLng, value);
+    addMarker(latLng, value, flage);
     notifyListeners();
   }
 
 //----> ADD MARKER ON MAP
-  void addMarker(LatLng position, String _title) {
+  void addMarker(LatLng position, String _title, bool flage) {
     _markers.add(Marker(
       visible: true,
       markerId: MarkerId("$flage"),
@@ -142,7 +139,6 @@ class MapState with ChangeNotifier {
       ),
     ));
   }
-
 
 //---> ADD POLYLINE ON GOOGLE MAPS
   drawPolyLine() async {
@@ -169,7 +165,6 @@ class MapState with ChangeNotifier {
 
 
   settingModelBottomSheet(context) async{
-    //calculateDistance(l1, l2);
     showModalBottomSheet(
         backgroundColor: Colors.deepPurple.withOpacity(0.1),
         enableDrag: true,
@@ -207,11 +202,14 @@ class MapState with ChangeNotifier {
   }
 
 
-  void onCameraMove(CameraPosition position) async {
+  onCameraMove(CameraPosition position) async {
     _centerPoints = position.target;
+    visibality();
   }
-   fetchAddressFromCoordinates(LatLng latLng) async{
-    Coordinates coordinates = new Coordinates(latLng.latitude, latLng.longitude);
+
+  fetchAddressFromCoordinates(LatLng latLng) async {
+    Coordinates coordinates =
+        new Coordinates(latLng.latitude, latLng.longitude);
     var locationName =
         await Geocoder.local.findAddressesFromCoordinates(coordinates);
     var first = locationName.first;
@@ -219,18 +217,15 @@ class MapState with ChangeNotifier {
     notifyListeners();
   }
 
-   void dialogShow(context){
-     showDialog(
-         context: context,
-         builder: (BuildContext context) {
-           return AlertDialog(
-             title: ListTile(
-               title: Text("Location Selection",
-                   style: TextStyle(
-                       color: Colors.black,
-                       fontSize: 20.0)),
-               leading: Icon(Icons.location_on,
-                   size: 40, color: Colors.black),
+  dialogShow(context) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: ListTile(
+              title: Text("Location Selection",
+                  style: TextStyle(color: Colors.black, fontSize: 20.0)),
+              leading: Icon(Icons.location_on, size: 40, color: Colors.black),
              ),
              content: Text(
                  "Please Specify That you want to set this Location as you Destination or Origin?"),
@@ -245,45 +240,17 @@ class MapState with ChangeNotifier {
                  child: Text("ORIGIN"),
                  onPressed: () {
                    sourceController.text = name;
-                   // _originLatitude =
-                   //     centerCoordinates.latitude;
-                   // _originLongitude =
-                   //     centerCoordinates.longitude;
-                   // _markers.add(Marker(
-                   //   icon: BitmapDescriptor
-                   //       .defaultMarkerWithHue(70),
-                   //   markerId: MarkerId("origin"),
-                   //   position: LatLng(_originLatitude,
-                   //       _originLongitude),
-                   //   visible: true,
-                   //   infoWindow: InfoWindow(
-                   //     title: toolTipAddress,
-                   //   ),
-                   // ));
-                   // getPolyPoints();
-                   Navigator.pop(context);
-                 },
+                  flage = false;
+                  addMarker(_centerPoints, name, flage);
+                  // getPolyPoints();
+                  Navigator.pop(context);
+                },
                ),
                FlatButton(
                  child: Text("DESTINATION"),
                  onPressed: () async {
-                   destinationController.text =
-                       name;
-                   // _destLatitude =
-                   //     centerCoordinates.latitude;
-                   // _destLongitude =
-                   //     centerCoordinates.longitude;
-                   // _markers.add(Marker(
-                   //   icon: BitmapDescriptor
-                   //       .defaultMarkerWithHue(30),
-                   //   markerId: MarkerId('destination'),
-                   //   position: LatLng(
-                   //       _destLatitude, _destLongitude),
-                   //   visible: true,
-                   //   infoWindow: InfoWindow(
-                   //     title: toolTipAddress,
-                  //   ),
-                  // ));
+                   destinationController.text = name;
+                  addMarker(_centerPoints, name, flage = true);
                   // getPolyPoints();
                   Navigator.pop(context);
                 },
@@ -293,14 +260,24 @@ class MapState with ChangeNotifier {
         });
   }
 
-  void swapFields() {
+  swapFields() {
     String address = sourceController.text.toString();
     sourceController.text = destinationController.text;
     destinationController.text = address;
   }
 
-  void clearfields() {
+  clearfields() {
     suggestion.clear();
+    notifyListeners();
+  }
+
+  visibality() {
+    if (destinationController.text.toString().isNotEmpty &&
+        sourceController.text.toString().isNotEmpty) {
+      visibility = false;
+    } else {
+      visibility = true;
+    }
     notifyListeners();
   }
 }
