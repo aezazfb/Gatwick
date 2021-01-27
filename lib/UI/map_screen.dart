@@ -30,125 +30,136 @@ class MapScreenState extends State<MapScreen>{
                     color: Colors.deepPurple,
                     size: 50.0,
                   )
-                ],
-              ),
-              SizedBox(height: 10),
-              Visibility(
-                visible: appState.locationServiceActive == false,
-                child: Text("Please enable location services!",
-                  style: TextStyle(color: Colors.grey, fontSize: 18)),
-              )
-            ],
-          )
-      ):
-           Stack(
-        children: [
-          GoogleMap(
-            myLocationEnabled: true,
-            tiltGesturesEnabled: true,
-            mapType: MapType.normal,
-            zoomControlsEnabled: false,
-            initialCameraPosition: CameraPosition(
-              target: appState.initialPosition,
-              zoom: 17,
-            ),
-            onMapCreated: appState.onCreate,
-            markers: appState.marker,
-            polylines: appState.polyLine,
-            onCameraMove: appState.onCameraMove,
-            onCameraIdle: (){
-              appState.fetchAddressFromCoordinates(appState.centerPoints);
-            },
-          ),
-
-          
-          //PickUptext Field
-          Positioned(
-            top: 50.0,
-            right: 15.0,
-            left: 15.0,
-            child: Container(
-              height: 55.0,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(3.0),
-                color: Colors.white,
-                boxShadow: [
-                  BoxShadow(
-                      color: Colors.grey,
-                      offset: Offset(1.0, 1.0),
-                      blurRadius: 5.0,
-                      spreadRadius: 2.0)
-                ],
-              ),
-              child: TextField(
-                cursorColor: Colors.black,
-                controller: appState.sourceController,
-                onChanged: (bool){
-                    flage = true;
-                    appState.suggestions(bool);
-                    appState.flage = true;
-                },
-                textInputAction: TextInputAction.go,
-                decoration: InputDecoration(
-                  icon: Container(
-                    child: Icon(Icons.location_on),
-                    margin: EdgeInsets.only(left: 8.0, top: 0.5, bottom: 5),
-                    width: 5.0,
-                    height: 13,
-                  ),
-                  suffix: IconButton(icon: Icon(Icons.clear, size: 15.0, color: Colors.black,), onPressed: (){
-                    appState.sourceController.clear();
-                    appState.polyLine.last.points.clear();
-                  }),
-                  hintText: "pick up",
-                  border: InputBorder.none,
-                  contentPadding: EdgeInsets.only(left: 6.0, top: 8.0, right: 6.0),
+                  ],
                 ),
-              ),
-            ),
-          ),
+                SizedBox(height: 10),
+                Visibility(
+                  visible: appState.locationServiceActive == false,
+                  child: Text("Please enable location services!",
+                      style: TextStyle(color: Colors.grey, fontSize: 18)),
+                )
+              ],
+            ))
+          : Stack(
+              children: [
+                GoogleMap(
+                  myLocationEnabled: true,
+                  tiltGesturesEnabled: true,
+                  mapType: MapType.normal,
+                  zoomControlsEnabled: false,
+                  initialCameraPosition: CameraPosition(
+                    target: appState.initialPosition,
+                    zoom: 17,
+                  ),
+                  onMapCreated: appState.onCreate,
+                  markers: appState.marker,
+                  polylines: appState.polyLine,
+                  onCameraMove: appState.onCameraMove,
+                  onCameraIdle: () {
+                    appState.fetchAddressFromCoordinates(appState.centerPoints);
+                  },
+                ),
 
-
-          //Dropoff  TextField
-          Positioned(
-            top: 110.0,
-            right: 15.0,
-            left: 15.0,
-            child: Container(
-              height: 55.0,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(3.0),
-                color: Colors.white,
-                boxShadow: [
-                  BoxShadow(
-                      color: Colors.grey,
-                      offset: Offset(1.0, 1.0),
-                      blurRadius: 5.0,
-                      spreadRadius: 2.0)
-                ],
-              ),
-              child: TextField(
-                onChanged: (bool){
-                    flage = false;
-                    appState.suggestions(bool);
-                    appState.flage = false;
-                },
-                cursorColor: Colors.black,
-                controller: appState.destinationController,
-                textInputAction: TextInputAction.go,
-                decoration: InputDecoration(
-                  icon: Container(
-                    margin: EdgeInsets.only(left: 8.0, top: 0.5, bottom: 10),
-                    width: 5.0,
-                    height: 13,
-                    child: Icon(
-                      Icons.local_taxi_sharp,
+                //PICK UP TEXT FIELD
+                Positioned(
+                  top: 50.0,
+                  right: 15.0,
+                  left: 15.0,
+                  child: Container(
+                    height: 55.0,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(3.0),
+                      color: Colors.white,
+                      boxShadow: [
+                        BoxShadow(
+                            color: Colors.grey,
+                            offset: Offset(1.0, 1.0),
+                            blurRadius: 5.0,
+                            spreadRadius: 2.0)
+                      ],
+                    ),
+                    child: TextField(
+                      cursorColor: Colors.black,
+                      controller: appState.sourceController,
+                      onChanged: (bool) {
+                        flage = true;
+                        appState.suggestions(bool);
+                        appState.flage = true;
+                      },
+                      textInputAction: TextInputAction.go,
+                      decoration: InputDecoration(
+                        icon: Container(
+                          child: Icon(Icons.location_on),
+                          margin:
+                              EdgeInsets.only(left: 8.0, top: 0.5, bottom: 5),
+                          width: 5.0,
+                          height: 13,
+                        ),
+                        suffix: IconButton(
+                            icon: Icon(
+                              Icons.clear,
+                              size: 15.0,
+                              color: Colors.black,
+                            ),
+                            onPressed: () {
+                              appState.sourceController.clear();
+                              appState.polyLine.last.points.clear();
+                            }),
+                        hintText: "pick up",
+                        border: InputBorder.none,
+                        contentPadding:
+                            EdgeInsets.only(left: 6.0, top: 8.0, right: 6.0),
+                      ),
                     ),
                   ),
-                  suffix: IconButton(icon: Icon(Icons.clear, size: 15.0, color: Colors.black,),
-                      onPressed: (){
+                ),
+
+                //DROP OFF  TextField
+                Positioned(
+                  top: 110.0,
+                  right: 15.0,
+                  left: 15.0,
+                  child: Container(
+                    height: 55.0,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(3.0),
+                      color: Colors.white,
+                      boxShadow: [
+                        BoxShadow(
+                            color: Colors.grey,
+                            offset: Offset(1.0, 1.0),
+                            blurRadius: 5.0,
+                            spreadRadius: 2.0)
+                      ],
+                    ),
+                    child: TextField(
+                      onChanged: (bool) {
+                        flage = false;
+                        appState.suggestions(bool);
+                        appState.flage = false;
+                      },
+                      cursorColor: Colors.black,
+                      controller: appState.destinationController,
+                      textInputAction: TextInputAction.go,
+                      decoration: InputDecoration(
+                        icon: Container(
+                          margin:
+                              EdgeInsets.only(left: 8.0, top: 0.5, bottom: 10),
+                          width: 5.0,
+                          height: 13,
+                          child: Icon(
+                            Icons.local_taxi_sharp,
+                          ),
+                        ),
+                        suffix: IconButton(
+                            icon: Icon(
+                              Icons.clear,
+                              size: 15.0,
+                              color: Colors.black,
+                            ),
+                            onPressed: () {
                               appState.destinationController.clear();
                               appState.polyLine.last.points.clear();
                             }),
@@ -160,13 +171,14 @@ class MapScreenState extends State<MapScreen>{
                     ),
                   ),
                 ),
-                //----> swap fields icon button
+
+                //----> SWAP FIELDS  BUTTON
                 Positioned(
                   top: 80,
                   right: 5.0,
                   child: IconButton(
                       icon: Icon(
-                        Icons.swap_vert_rounded,
+                        Icons.swap_calls,
                         size: 40,
                         color: Colors.deepPurple,
                       ),
@@ -174,7 +186,8 @@ class MapScreenState extends State<MapScreen>{
                         appState.swapFields();
                       }),
                 ),
-                //----> Suggestion Box List View
+
+                //----> SEARCH Suggestion  List View
                 SizedBox(height: 20),
                 Positioned(
                     left: 20,
@@ -186,71 +199,83 @@ class MapScreenState extends State<MapScreen>{
                         child: ListView.builder(
                           itemCount: appState.suggestion.length,
                           itemBuilder: (context, index) {
-                  return Card(
-                    child: ListTile(
-                      title: Text(
-                        appState.suggestion[index],
-                        style: TextStyle(color: Colors.black),
+                            return Card(
+                              child: ListTile(
+                                title: Text(
+                                  appState.suggestion[index],
+                                  style: TextStyle(color: Colors.black),
+                                ),
+                                onTap: () {
+                                  if (flage == true) {
+                                    appState.sourceController.text =
+                                        appState.suggestion[index].toString();
+                                    appState.details(
+                                        appState.suggestion[index].toString());
+                                  }
+                                  if (flage == false) {
+                                    appState.destinationController.text =
+                                        appState.suggestion[index].toString();
+                                    appState.details(
+                                        appState.suggestion[index].toString());
+                                  }
+                                  appState.clearfields();
+                                },
+                              ),
+                            );
+                          },
+                        ),
                       ),
-                      onTap: (){
+                    )),
 
-                        if(flage == true){
-                          appState.sourceController.text = appState.suggestion[index].toString();
-                          appState.details(appState.suggestion[index].toString());
-                        }if(flage == false){
-                          appState.destinationController.text = appState.suggestion[index].toString();
-                          appState.details(appState.suggestion[index].toString());
-                        }
-                       // appState.calcu();
-                        appState.clearfields();
-                      },
-                    ),
-                  );
-                },
-              ),
-            ),
-          )
-          ),
-          Positioned(
+                //FIXED ICON TO FETCH CENTER POSITION ON CAMERA MOVE
+                Positioned(
                   child: Align(
                     alignment: Alignment.center,
                     child: IconButton(
-                        icon: Icon(Icons.circle, size: 17, color: Colors.deepPurple),
+                        icon: Icon(Icons.circle,
+                            size: 17, color: Colors.deepPurple),
                         onPressed: () {
-                         appState.fetchAddressFromCoordinates(
+                          appState.fetchAddressFromCoordinates(
                               appState.centerPoints);
                         }),
                   ),
                 ),
 
-          Positioned(
-            child: Align(
-              alignment: Alignment(0.1, -0.1),
-              child: Card(
-                color: Colors.deepPurple.withOpacity(.8),
-                margin: EdgeInsets.all(8.0),
-                child: InkWell(
-                  child: Text(appState.name, style: TextStyle(color: Colors.white)),
-                  onTap: (){
-                    appState.dialogShow(context);
-                  }
+                //CAMERA MOVE SUGGESTIONS
+                Positioned(
+                  child: Align(
+                    alignment: Alignment(0.1, -0.1),
+                    child: Card(
+                      color: Colors.deepPurple.withOpacity(.8),
+                      margin: EdgeInsets.all(8.0),
+                      child: InkWell(
+                          child: Text(appState.name,
+                              style: TextStyle(color: Colors.white)),
+                          onTap: () {
+                            appState.dialogShow(context);
+                          }),
+                    ),
+                  ),
                 ),
-              ),
-            ),
-          ),
 
-          Positioned(
-                    bottom: 30,
-                    right: 20,
-                    child: FloatingActionButton(
-                      backgroundColor: Colors.deepPurple,
+                //GET QUOTE BUTTON
+                Positioned(
+                    bottom: 20,
+                    right: 17,
+                    left: 17,
+                    child: FlatButton(
+                      color: Colors.deepPurple.withOpacity(0.9),
                       onPressed: () {
                         appState.drawPolyLine();
                         appState.settingModelBottomSheet(context);
                       },
+                      child: Text(
+                        'GET QUOTE',
+                        style: TextStyle(color: Colors.white),
+                      ),
                     )),
               ],
-      ),
+            ),
     );
   }
 
