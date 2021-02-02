@@ -102,6 +102,10 @@ class MapScreenState extends State<MapScreen>{
                                   //   color: Colors.black,
                                 ),
                                 onPressed: () {
+                                  Marker markers = appState.marker.firstWhere(
+                                      (p) => p.markerId == MarkerId('true'),
+                                      orElse: () => null);
+                                  appState.marker.remove(markers);
                                   appState.sourceController.clear();
                                   appState.polyLine.last.points.clear();
                                 }),
@@ -158,6 +162,11 @@ class MapScreenState extends State<MapScreen>{
                               //   color: Colors.black,
                             ),
                             onPressed: () {
+                              Marker markers = appState.marker.firstWhere(
+                                  (p) => p.markerId == MarkerId('false'),
+                                  orElse: () => null);
+                              appState.marker.remove(markers);
+
                               appState.destinationController.clear();
                               appState.polyLine.last.points.clear();
                             }),
