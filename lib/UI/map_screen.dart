@@ -198,7 +198,7 @@ class MapScreenState extends State<MapScreen>{
                 //----> FIXED ICON TO FETCH CENTER POSITION ON CAMERA MOVE
                 Positioned(
                     child: Visibility(
-                  visible: appState.visibility,
+                  visible: appState.cardVisibility,
                   child: Align(
                     alignment: Alignment.center,
                     child: IconButton(
@@ -214,7 +214,7 @@ class MapScreenState extends State<MapScreen>{
                 //CAMERA MOVE SUGGESTIONS
                 Positioned(
                   child: Visibility(
-                    visible: appState.visibility,
+                    visible: appState.cardVisibility,
                     child: Align(
                       alignment: Alignment(0.1, -0.1),
                       child: Card(

@@ -50,8 +50,8 @@ class MapState with ChangeNotifier {
   double originHue = 70.0;
 
   String get name => _name;
-
-  bool visibility = true;
+  bool cardVisibility = true;
+  bool stackElementsVisibality = true;
 
   MapState() {
     _getUserLocation();
@@ -197,7 +197,7 @@ class MapState with ChangeNotifier {
 
   onCameraMove(CameraPosition position) async {
     _centerPoints = position.target;
-    visibality();
+    visibility();
   }
 
   fetchAddressFromCoordinates(LatLng latLng) async {
@@ -269,12 +269,12 @@ class MapState with ChangeNotifier {
     notifyListeners();
   }
 
-  visibality() {
+  visibility() {
     if (destinationController.text.toString().isNotEmpty &&
         sourceController.text.toString().isNotEmpty) {
-      visibility = false;
+      cardVisibility = false;
     } else {
-      visibility = true;
+      cardVisibility = true;
     }
     notifyListeners();
   }
