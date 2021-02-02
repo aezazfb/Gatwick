@@ -28,7 +28,6 @@ class MapState with ChangeNotifier {
 
   Set<Marker> get marker => _markers;
   List<LatLng> polyCoordinates = [];
-
   LatLng get centerPoints => _centerPoints;
   PolylinePoints polylinePoints;
 
@@ -66,7 +65,8 @@ class MapState with ChangeNotifier {
   }
 
   //----> get Users Current location
-  void _getUserLocation() async {
+  _getUserLocation() async {
+    print("get Location Called");
     Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
     _initialPosition = LatLng(position.latitude, position.longitude);
@@ -130,16 +130,19 @@ class MapState with ChangeNotifier {
 
 //---> ADD POLYLINE ON GOOGLE MAPS
   drawPolyLine() async {
-    polyCoordinates = await fetchPolylinePoints.getPolyPoints(l1, l2);
-    polyLine.add(
-      Polyline(
-        polylineId: PolylineId("poly"),
-        visible: true,
-        points: polyCoordinates,
-        width: 8,
-        color: Colors.purple,
-      ),
-    );
+    if (polyLine.length == 0 || polyLine.last.points.length == 0) {
+      polyCoordinates = await fetchPolylinePoints.getPolyPoints(l1, l2);
+      polyLine.add(
+        Polyline(
+          polylineId: PolylineId("poly"),
+          visible: true,
+          points: polyCoordinates,
+          width: 8,
+          color: Colors.purple,
+        ),
+      );
+      print(polyLine.length);
+    } else {}
     notifyListeners();
   }
 
@@ -246,6 +249,11 @@ class MapState with ChangeNotifier {
     String address = sourceController.text.toString();
     sourceController.text = destinationController.text;
     destinationController.text = address;
+
+    LatLng latLng = l1;
+    l1 = l2;
+    l2 = latLng;
+    notifyListeners();
   }
 
   clearfields() {

@@ -180,6 +180,7 @@ class MapScreenState extends State<MapScreen>{
                         color: Colors.deepPurple,
                       ),
                       onPressed: () {
+                        appState.polyLine.last.points.clear();
                         appState.swapFields();
                       }),
                 ),
