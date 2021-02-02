@@ -15,6 +15,7 @@ class FetchPolylinePoints{
       avoidFerries: true,
       avoidTolls: true,
       optimizeWaypoints: true,
+      avoidHighways: true,
     );
     if (result.points.isNotEmpty) {
       result.points.forEach((PointLatLng point) {
