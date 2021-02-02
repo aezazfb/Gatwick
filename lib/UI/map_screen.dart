@@ -43,7 +43,7 @@ class MapScreenState extends State<MapScreen>{
           : Stack(
               children: [
                 GoogleMap(
-                  myLocationEnabled: true,
+                 // myLocationEnabled: true,
                   tiltGesturesEnabled: true,
                   mapType: MapType.normal,
                   zoomControlsEnabled: false,
@@ -87,7 +87,7 @@ class MapScreenState extends State<MapScreen>{
                         appState.suggestions(bool);
                         appState.flage = true;
                       },
-                      textInputAction: TextInputAction.go,
+                      textInputAction: TextInputAction.none,
                       decoration: InputDecoration(
                         icon: Container(
                           child: Icon(Icons.location_on),
