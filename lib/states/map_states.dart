@@ -52,7 +52,6 @@ class MapState with ChangeNotifier {
   String get name => _name;
 
   bool visibility = true;
- // bool flage;
 
   MapState() {
     _getUserLocation();
@@ -80,6 +79,7 @@ class MapState with ChangeNotifier {
         await Geocoder.local.findAddressesFromCoordinates(latLng);
     var first = addreslocation.first;
     sourceController.text = first.addressLine;
+    addMarker(_initialPosition, sourceController.text, true);
     notifyListeners();
   }
 
@@ -122,7 +122,7 @@ class MapState with ChangeNotifier {
   addMarker(LatLng position, String _title, bool flage) {
     _markers.add(Marker(
       visible: true,
-      markerId: MarkerId("$flage"),
+      markerId: MarkerId(" $flage "),
       position: LatLng(position.latitude, position.longitude),
       infoWindow: InfoWindow(
         title: _title,
@@ -144,14 +144,6 @@ class MapState with ChangeNotifier {
     );
     notifyListeners();
   }
-
-  calcu() async {
-    calculateDistanceTime.calculateDistanceTime(l1, l2);
-  }
-
-
-
-
 
 
   settingModelBottomSheet(context) async {
@@ -230,18 +222,16 @@ class MapState with ChangeNotifier {
                ),
                FlatButton(
                  child: Text("ORIGIN"),
-                 onPressed: () {
-                   sourceController.text = name;
-                  details(name, true);
+                 onPressed: () async {
+                  sourceController.text = name;
                   addMarker(_centerPoints, name, true);
                   Navigator.pop(context);
                 },
                ),
                FlatButton(
                  child: Text("DESTINATION"),
-                 onPressed: () async {
-                   destinationController.text = name;
-                  details(name, false);
+                 onPressed: () {
+                  destinationController.text = name;
                   addMarker(_centerPoints, name, false);
                   Navigator.pop(context);
                 },
