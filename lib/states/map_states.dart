@@ -99,7 +99,6 @@ class MapState with ChangeNotifier {
 
   //----->GET LAT LANG FROM ADDRESS
   details(String value, bool flage) async {
-    double hue;
     LatLng latLng = await locationDetails.getLocationDetails(value);
     CameraPosition cameraPosition = new CameraPosition(
         target: LatLng(latLng.latitude, latLng.longitude), zoom: 14);
@@ -188,6 +187,8 @@ class MapState with ChangeNotifier {
             );
           });
     } else {
+      Scaffold.of(context)
+          .showSnackBar(SnackBar(content: Text("Fields are Empty....")));
       polyLine.last.points.clear();
     }
     notifyListeners();
