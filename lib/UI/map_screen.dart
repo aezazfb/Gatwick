@@ -100,7 +100,7 @@ class MapScreenState extends State<MapScreen>{
                             icon: Icon(
                               Icons.clear,
                               size: 15.0,
-                              color: Colors.black,
+                           //   color: Colors.black,
                             ),
                             onPressed: () {
                               appState.sourceController.clear();
@@ -157,7 +157,7 @@ class MapScreenState extends State<MapScreen>{
                             icon: Icon(
                               Icons.clear,
                               size: 15.0,
-                              color: Colors.black,
+                              //   color: Colors.black,
                             ),
                             onPressed: () {
                               appState.destinationController.clear();
@@ -269,7 +269,7 @@ class MapScreenState extends State<MapScreen>{
                     right: 17,
                     left: 17,
                     child: FlatButton(
-                      color: Colors.deepPurple.withOpacity(0.9),
+                      color: Colors.deepPurple.withOpacity(0.8),
                       onPressed: () {
                         appState.drawPolyLine();
                         appState.settingModelBottomSheet(context);
