@@ -61,57 +61,58 @@ class MapScreenState extends State<MapScreen>{
 
                 //----> PICK UP TEXT FIELD
                 Positioned(
-                  top: 50.0,
-                  right: 15.0,
-                  left: 15.0,
-                  child: Container(
-                    height: 55.0,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(3.0),
-                      color: Colors.white,
-                      boxShadow: [
-                        BoxShadow(
-                            color: Colors.grey,
-                            offset: Offset(1.0, 1.0),
-                            blurRadius: 5.0,
-                            spreadRadius: 2.0)
-                      ],
-                    ),
-                    child: TextField(
-                      cursorColor: Colors.black,
-                      controller: appState.sourceController,
-                      onChanged: (bool) {
-                        flage = true;
-                        appState.suggestions(bool);
-                      },
-                      textInputAction: TextInputAction.go,
-                      decoration: InputDecoration(
-                        icon: Container(
-                          child: Icon(Icons.location_on),
-                          margin:
-                              EdgeInsets.only(left: 8.0, top: 0.5, bottom: 5),
-                          width: 5.0,
-                          height: 13,
+                    top: 50.0,
+                    right: 15.0,
+                    left: 15.0,
+                    child: Visibility(
+                      child: Container(
+                        height: 55.0,
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(3.0),
+                          color: Colors.white,
+                          boxShadow: [
+                            BoxShadow(
+                                color: Colors.grey,
+                                offset: Offset(1.0, 1.0),
+                                blurRadius: 5.0,
+                                spreadRadius: 2.0)
+                          ],
                         ),
-                        suffix: IconButton(
-                            icon: Icon(
-                              Icons.clear,
-                              size: 15.0,
-                           //   color: Colors.black,
+                        child: TextField(
+                          cursorColor: Colors.black,
+                          controller: appState.sourceController,
+                          onChanged: (bool) {
+                            flage = true;
+                            appState.suggestions(bool);
+                          },
+                          textInputAction: TextInputAction.go,
+                          decoration: InputDecoration(
+                            icon: Container(
+                              child: Icon(Icons.location_on),
+                              margin:
+                              EdgeInsets.only(left: 8.0, top: 0.5, bottom: 5),
+                              width: 5.0,
+                              height: 13,
                             ),
-                            onPressed: () {
-                              appState.sourceController.clear();
-                              appState.polyLine.last.points.clear();
-                            }),
-                        hintText: "pick up",
-                        border: InputBorder.none,
-                        contentPadding:
+                            suffix: IconButton(
+                                icon: Icon(
+                                  Icons.clear,
+                                  size: 15.0,
+                                  //   color: Colors.black,
+                                ),
+                                onPressed: () {
+                                  appState.sourceController.clear();
+                                  appState.polyLine.last.points.clear();
+                                }),
+                            hintText: "pick up",
+                            border: InputBorder.none,
+                            contentPadding:
                             EdgeInsets.only(left: 6.0, top: 8.0, right: 6.0),
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
-                ),
+                    )),
 
                 //----> DROP OFF  TEXT FIELD
                 Positioned(

@@ -152,18 +152,19 @@ class MapState with ChangeNotifier {
 
   settingModelBottomSheet(context) async {
     List list = await calculateDistanceTime.calculateDistanceTime(l1, l2);
-    print(list);
-    showModalBottomSheet(
-        backgroundColor: Colors.deepPurple.withOpacity(0.1),
-        enableDrag: true,
-        context: context,
-        builder: (BuildContext context) {
-          return Container(
-            margin: EdgeInsets.all(10.0),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(12.0)),
-              color: Colors.white,
-            ),
+    if (sourceController.text.toString().isNotEmpty &&
+        destinationController.text.toString().isNotEmpty) {
+      showModalBottomSheet(
+          backgroundColor: Colors.deepPurple.withOpacity(0.1),
+          enableDrag: true,
+          context: context,
+          builder: (BuildContext context) {
+            return Container(
+              margin: EdgeInsets.all(10.0),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(12.0)),
+                color: Colors.white,
+              ),
             child: Wrap(
               children: [
                 ListTile(
@@ -175,17 +176,20 @@ class MapState with ChangeNotifier {
                 Center(
                   child: FlatButton(
                     color: Colors.deepPurple,
-                    child:
-                        Text("Book Now", style: TextStyle(color: Colors.white)),
-                    onPressed: () {
-                      print("hello Your flight is Booked Sir....");
-                    },
+                    child: Text("Book Now",
+                          style: TextStyle(color: Colors.white)),
+                      onPressed: () {
+                        print("hello Your flight is Booked Sir....");
+                      },
+                    ),
                   ),
-                ),
-              ],
-            ),
-          );
-        });
+                ],
+              ),
+            );
+          });
+    } else {
+      polyLine.last.points.clear();
+    }
     notifyListeners();
   }
 
@@ -252,7 +256,6 @@ class MapState with ChangeNotifier {
     String address = sourceController.text.toString();
     sourceController.text = destinationController.text;
     destinationController.text = address;
-
     LatLng latLng = l1;
     l1 = l2;
     l2 = latLng;
