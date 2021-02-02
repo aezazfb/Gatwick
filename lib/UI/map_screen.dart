@@ -12,7 +12,6 @@ class MapScreen extends StatefulWidget{
 
 class MapScreenState extends State<MapScreen>{
   bool flage = true;
-  var address;
   @override
   Widget build(BuildContext context) {
     print("Called Again");
@@ -85,7 +84,6 @@ class MapScreenState extends State<MapScreen>{
                       onChanged: (bool) {
                         flage = true;
                         appState.suggestions(bool);
-                        appState.flage = true;
                       },
                       textInputAction: TextInputAction.none,
                       decoration: InputDecoration(
@@ -138,7 +136,6 @@ class MapScreenState extends State<MapScreen>{
                       onChanged: (bool) {
                         flage = false;
                         appState.suggestions(bool);
-                        appState.flage = false;
                       },
                       cursorColor: Colors.black,
                       controller: appState.destinationController,
@@ -210,13 +207,15 @@ class MapScreenState extends State<MapScreen>{
                                     appState.sourceController.text =
                                         appState.suggestion[index].toString();
                                     appState.details(
-                                        appState.suggestion[index].toString());
+                                        appState.suggestion[index].toString(),
+                                        flage);
                                   }
                                   if (flage == false) {
                                     appState.destinationController.text =
                                         appState.suggestion[index].toString();
                                     appState.details(
-                                        appState.suggestion[index].toString());
+                                        appState.suggestion[index].toString(),
+                                        flage);
                                   }
                                   appState.clearfields();
                                 },
@@ -265,7 +264,7 @@ class MapScreenState extends State<MapScreen>{
 
                 //----> GET QUOTE BUTTON
                 Positioned(
-                    bottom: 20,
+                    bottom: 15,
                     right: 17,
                     left: 17,
                     child: FlatButton(

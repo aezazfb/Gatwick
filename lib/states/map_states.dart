@@ -1,6 +1,4 @@
-import 'dart:convert';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
-import 'package:http/http.dart' as http;
 import 'package:flutter/cupertino.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
@@ -54,7 +52,7 @@ class MapState with ChangeNotifier {
   String get name => _name;
 
   bool visibility = true;
-  bool flage;
+ // bool flage;
 
   MapState() {
     _getUserLocation();
@@ -74,12 +72,12 @@ class MapState with ChangeNotifier {
         desiredAccuracy: LocationAccuracy.high);
     _initialPosition = LatLng(position.latitude, position.longitude);
     print(_initialPosition);
-    l1 = _initialPosition;
+    print("L1 VALUE $l1");
     print(_initialPosition);
     Coordinates latLng =
-    Coordinates(initialPosition.latitude, initialPosition.longitude);
+        Coordinates(initialPosition.latitude, initialPosition.longitude);
     var addreslocation =
-    await Geocoder.local.findAddressesFromCoordinates(latLng);
+        await Geocoder.local.findAddressesFromCoordinates(latLng);
     var first = addreslocation.first;
     sourceController.text = first.addressLine;
     notifyListeners();
@@ -101,18 +99,12 @@ class MapState with ChangeNotifier {
   }
 
   //----->GET LAT LANG FROM ADDRESS
-  void details(String value) async {
-    Map mapResponse;
-    var url = 'http://testing.thedivor.com/Home/PlaceInfo?place=$value';
-    http.Response response;
-    response = await http.get(url);
-    mapResponse = json.decode(response.body);
-    LatLng latLng = LatLng(mapResponse['Placedetails']['lattitude'],
-        mapResponse['Placedetails']['longitude']);
+  details(String value, bool flage) async {
+    LatLng latLng = await locationDetails.getLocationDetails(value);
     CameraPosition cameraPosition = new CameraPosition(
         target: LatLng(latLng.latitude, latLng.longitude), zoom: 14);
-
-    _mapController.animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
+    _mapController
+        .animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
     if (flage == true) {
       latLangList.insert(0, latLng);
       l1 = latLangList[0];
@@ -127,7 +119,7 @@ class MapState with ChangeNotifier {
   }
 
 //----> ADD MARKER ON MAP
-  void addMarker(LatLng position, String _title, bool flage) {
+  addMarker(LatLng position, String _title, bool flage) {
     _markers.add(Marker(
       visible: true,
       markerId: MarkerId("$flage"),
@@ -143,10 +135,10 @@ class MapState with ChangeNotifier {
     polyCoordinates = await fetchPolylinePoints.getPolyPoints(l1, l2);
     polyLine.add(
       Polyline(
-        polylineId: PolylineId("$flage"),
+        polylineId: PolylineId("poly"),
         visible: true,
         points: polyCoordinates,
-        width: 5,
+        width: 8,
         color: Colors.purple,
       ),
     );
@@ -240,9 +232,8 @@ class MapState with ChangeNotifier {
                  child: Text("ORIGIN"),
                  onPressed: () {
                    sourceController.text = name;
-                  flage = false;
-                  addMarker(_centerPoints, name, flage);
-                  // getPolyPoints();
+                  details(name, true);
+                  addMarker(_centerPoints, name, true);
                   Navigator.pop(context);
                 },
                ),
@@ -250,8 +241,8 @@ class MapState with ChangeNotifier {
                  child: Text("DESTINATION"),
                  onPressed: () async {
                    destinationController.text = name;
-                  addMarker(_centerPoints, name, flage = true);
-                  // getPolyPoints();
+                  details(name, false);
+                  addMarker(_centerPoints, name, false);
                   Navigator.pop(context);
                 },
               )
