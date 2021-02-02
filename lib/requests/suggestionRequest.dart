@@ -3,15 +3,12 @@ import 'dart:convert';
 
 
 
-class SuggestionRequest{
-
-  List suggestionList = [];
-  List suggestionCompare =[];
-
-
+class SuggestionRequest {
   //----> FETCH SUGGESTION FROM API
   getSuggestion(value) async {
-    List idList =[];
+    List suggestionList = [];
+    List suggestionCompare = [];
+    List idList = [];
     Map mapResponse;
     var url = 'http://testing.thedivor.com/Home/Indextwo?Prefix=$value';
     http.Response response;

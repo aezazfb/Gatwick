@@ -95,12 +95,10 @@ class MapState with ChangeNotifier {
     });
   }
 
-  void suggestions(value) async {
-    suggestionRequest.getSuggestion(value);
-    suggestion = suggestionRequest.suggestionCompare;
+  suggestions(value) async {
+    suggestion = await suggestionRequest.getSuggestion(value);
     notifyListeners();
   }
-
 
   //----->GET LAT LANG FROM ADDRESS
   void details(String value) async {
