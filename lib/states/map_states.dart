@@ -49,8 +49,6 @@ class MapState with ChangeNotifier {
   String _name = '';
   double originHue = 70.0;
 
-  double destinationHue = 30.0;
-
   String get name => _name;
 
   bool visibility = true;
@@ -110,15 +108,13 @@ class MapState with ChangeNotifier {
     if (flage == true) {
       latLangList.insert(0, latLng);
       l1 = latLangList[0];
-      hue = originHue;
     }
     if (flage == false) {
       latLangList.insert(latLangList.length, latLng);
       l2 = latLangList[latLangList.length - 1];
-      hue = destinationHue;
     }
 
-    addMarker(latLng, value, flage, hue);
+    addMarker(latLng, value, flage, originHue);
     notifyListeners();
   }
 
@@ -126,7 +122,7 @@ class MapState with ChangeNotifier {
   addMarker(LatLng position, String _title, bool flage, double hue) {
     _markers.add(Marker(
       visible: true,
-      markerId: MarkerId(" $flage "),
+      markerId: MarkerId("$flage"),
       position: LatLng(position.latitude, position.longitude),
       icon: BitmapDescriptor.defaultMarkerWithHue(hue),
       infoWindow: InfoWindow(
@@ -241,7 +237,7 @@ class MapState with ChangeNotifier {
                  child: Text("DESTINATION"),
                  onPressed: () {
                    destinationController.text = name;
-                  addMarker(_centerPoints, name, false, destinationHue);
+                  addMarker(_centerPoints, name, false, originHue);
                   l2 = LatLng(_centerPoints.latitude, _centerPoints.longitude);
                   ;
                   Navigator.pop(context);
@@ -252,7 +248,7 @@ class MapState with ChangeNotifier {
         });
   }
 
-  swapFields() {
+  swapFields() async {
     String address = sourceController.text.toString();
     sourceController.text = destinationController.text;
     destinationController.text = address;
@@ -261,9 +257,6 @@ class MapState with ChangeNotifier {
     l1 = l2;
     l2 = latLng;
 
-    double hue = originHue;
-    originHue = destinationHue;
-    destinationHue = hue;
     notifyListeners();
   }
 
