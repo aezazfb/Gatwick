@@ -70,9 +70,7 @@ class MapState with ChangeNotifier {
     Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
     _initialPosition = LatLng(position.latitude, position.longitude);
-    print(_initialPosition);
-    print("L1 VALUE $l1");
-    print(_initialPosition);
+    l1 = LatLng(position.latitude, position.longitude);
     Coordinates latLng =
         Coordinates(initialPosition.latitude, initialPosition.longitude);
     var addreslocation =
@@ -223,16 +221,19 @@ class MapState with ChangeNotifier {
                FlatButton(
                  child: Text("ORIGIN"),
                  onPressed: () async {
-                  sourceController.text = name;
+                   sourceController.text = name;
                   addMarker(_centerPoints, name, true);
+                  l1 = LatLng(_centerPoints.latitude, _centerPoints.longitude);
                   Navigator.pop(context);
                 },
                ),
                FlatButton(
                  child: Text("DESTINATION"),
                  onPressed: () {
-                  destinationController.text = name;
+                   destinationController.text = name;
                   addMarker(_centerPoints, name, false);
+                  l2 = LatLng(_centerPoints.latitude, _centerPoints.longitude);
+                  ;
                   Navigator.pop(context);
                 },
               )

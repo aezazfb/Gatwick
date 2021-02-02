@@ -85,7 +85,7 @@ class MapScreenState extends State<MapScreen>{
                         flage = true;
                         appState.suggestions(bool);
                       },
-                      textInputAction: TextInputAction.none,
+                      textInputAction: TextInputAction.go,
                       decoration: InputDecoration(
                         icon: Container(
                           child: Icon(Icons.location_on),

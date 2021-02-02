@@ -3,10 +3,9 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class LocationDetails {
-  Map mapResponse;
 
   Future getLocationDetails(String value) async {
-    print("am I was called");
+    Map mapResponse;
     var url = 'http://testing.thedivor.com/Home/PlaceInfo?place=$value';
     http.Response response;
     response = await http.get(url);
