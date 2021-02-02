@@ -185,6 +185,42 @@ class MapScreenState extends State<MapScreen>{
                       }),
                 ),
 
+                //----> FIXED ICON TO FETCH CENTER POSITION ON CAMERA MOVE
+                Positioned(
+                    child: Visibility(
+                  visible: appState.visibility,
+                  child: Align(
+                    alignment: Alignment.center,
+                    child: IconButton(
+                        icon: Icon(Icons.circle,
+                            size: 17, color: Colors.deepPurple),
+                        onPressed: () {
+                          appState.fetchAddressFromCoordinates(
+                              appState.centerPoints);
+                        }),
+                  ),
+                )),
+
+                //CAMERA MOVE SUGGESTIONS
+                Positioned(
+                  child: Visibility(
+                    visible: appState.visibility,
+                    child: Align(
+                      alignment: Alignment(0.1, -0.1),
+                      child: Card(
+                        color: Colors.deepPurple.withOpacity(.8),
+                        margin: EdgeInsets.all(8.0),
+                        child: InkWell(
+                            child: Text(appState.name,
+                                style: TextStyle(color: Colors.white)),
+                            onTap: () {
+                              appState.dialogShow(context);
+                            }),
+                      ),
+                    ),
+                  ),
+                ),
+
                 //----> SEARCH SUGGESTION  LIST VIEW
                 SizedBox(height: 20),
                 Positioned(
@@ -226,42 +262,6 @@ class MapScreenState extends State<MapScreen>{
                         ),
                       ),
                     )),
-
-                //----> FIXED ICON TO FETCH CENTER POSITION ON CAMERA MOVE
-                Positioned(
-                    child: Visibility(
-                  visible: appState.visibility,
-                  child: Align(
-                    alignment: Alignment.center,
-                    child: IconButton(
-                        icon: Icon(Icons.circle,
-                            size: 17, color: Colors.deepPurple),
-                        onPressed: () {
-                          appState.fetchAddressFromCoordinates(
-                              appState.centerPoints);
-                        }),
-                  ),
-                )),
-
-                //CAMERA MOVE SUGGESTIONS
-                Positioned(
-                  child: Visibility(
-                    visible: appState.visibility,
-                    child: Align(
-                      alignment: Alignment(0.1, -0.1),
-                      child: Card(
-                        color: Colors.deepPurple.withOpacity(.8),
-                        margin: EdgeInsets.all(8.0),
-                        child: InkWell(
-                            child: Text(appState.name,
-                                style: TextStyle(color: Colors.white)),
-                            onTap: () {
-                              appState.dialogShow(context);
-                            }),
-                      ),
-                    ),
-                  ),
-                ),
 
                 //----> GET QUOTE BUTTON
                 Positioned(
