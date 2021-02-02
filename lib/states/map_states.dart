@@ -187,7 +187,8 @@ class MapState with ChangeNotifier {
                 Center(
                   child: FlatButton(
                     color: Colors.deepPurple,
-                    child: Text("Book Now"),
+                    child:
+                        Text("Book Now", style: TextStyle(color: Colors.white)),
                     onPressed: () {
                       print("hello Your flight is Booked Sir....");
                     },
