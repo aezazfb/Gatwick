@@ -162,7 +162,9 @@ class MapState with ChangeNotifier {
 
 
 
-  settingModelBottomSheet(context) async{
+  settingModelBottomSheet(context) async {
+    List list = await calculateDistanceTime.calculateDistanceTime(l1, l2);
+    print(list);
     showModalBottomSheet(
         backgroundColor: Colors.deepPurple.withOpacity(0.1),
         enableDrag: true,
@@ -177,11 +179,10 @@ class MapState with ChangeNotifier {
             child: Wrap(
               children: [
                 ListTile(
-                  title:
-                      Text("Distance ${calculateDistanceTime.distance} miles"),
+                  title: Text("Distance ${list[0]} miles"),
                 ),
                 ListTile(
-                  title: Text("Duration ${calculateDistanceTime.duration}"),
+                  title: Text("Duration ${list[1]} "),
                 ),
                 Center(
                   child: FlatButton(
