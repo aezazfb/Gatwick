@@ -200,6 +200,7 @@ class MapScreenState extends State<MapScreen>{
                         ),
                         onPressed: () {
                           appState.polyLine.last.points.clear();
+
                           appState.swapFields();
                         }),
                   ),
