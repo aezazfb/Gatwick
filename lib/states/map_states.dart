@@ -322,6 +322,7 @@ class MapState with ChangeNotifier {
 //----> CLEAR FIELDS.
   clearfields() {
     suggestion.clear();
+    polyLine.last.points.clear();
     notifyListeners();
   }
 

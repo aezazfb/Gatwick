@@ -107,11 +107,11 @@ class MapScreenState extends State<MapScreen>{
                                 ),
                                 onPressed: () {
                                   Marker markers = appState.marker.firstWhere(
-                                          (p) => p.markerId == MarkerId('true'),
+                                      (p) => p.markerId == MarkerId('true'),
                                       orElse: () => null);
                                   appState.marker.remove(markers);
                                   appState.sourceController.clear();
-                                  appState.polyLine.last.points.clear();
+                                  appState.clearfields();
                                 }),
                             hintText: "pick up",
                             border: InputBorder.none,
@@ -169,11 +169,11 @@ class MapScreenState extends State<MapScreen>{
                                 ),
                                 onPressed: () {
                                   Marker markers = appState.marker.firstWhere(
-                                          (p) => p.markerId == MarkerId('false'),
+                                      (p) => p.markerId == MarkerId('false'),
                                       orElse: () => null);
                                   appState.marker.remove(markers);
                                   appState.destinationController.clear();
-                                  appState.polyLine.last.points.clear();
+                                  appState.clearfields();
                                 }),
                             hintText: "go to...",
                             border: InputBorder.none,
@@ -298,6 +298,7 @@ class MapScreenState extends State<MapScreen>{
                                 appState.originCircle,
                                 appState.destinationCircle);
                             appState.settingModelBottomSheet(context);
+                            appState.visibility();
                           },
                           child: Text(
                             'GET QUOTE',
