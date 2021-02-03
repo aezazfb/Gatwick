@@ -51,8 +51,8 @@ class MapScreenState extends State<MapScreen>{
                   ),
                   onMapCreated: appState.onCreate,
                   markers: appState.marker,
-                  circles: appState.circle,
                   polylines: appState.polyLine,
+                  circles: appState.circle,
                   onCameraMove: appState.onCameraMove,
                   onCameraMoveStarted: () {
                     appState.stackElementsVisibality = false;
@@ -295,6 +295,7 @@ class MapScreenState extends State<MapScreen>{
                           color: Colors.deepPurple.withOpacity(0.8),
                           onPressed: () {
                             appState.drawPolyLine();
+                            appState.addCircle();
                             appState.settingModelBottomSheet(context);
                           },
                           child: Text(

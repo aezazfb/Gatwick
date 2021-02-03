@@ -20,7 +20,7 @@ class MapState with ChangeNotifier {
 
   bool locationServiceActive = true;
   Set<Marker> _markers = Set();
-  Set<Circle> _circles = HashSet<Circle>();
+  Set<Circle> _circles = Set<Circle>();
   Set<Polyline> polyLine = Set();
   TextEditingController sourceController = TextEditingController();
   TextEditingController destinationController = TextEditingController();
@@ -140,14 +140,23 @@ class MapState with ChangeNotifier {
   addCircle() {
     _circles.add(Circle(
       circleId: CircleId('origin'),
-      center: LatLng(l1.latitude, l1.longitude),
+      center: l1,
       visible: true,
-      strokeColor: Colors.deepPurple,
-      strokeWidth: 3,
-      fillColor: Colors.teal,
-      radius: 0.0,
+      strokeColor: Colors.purple,
+      strokeWidth: 2,
+      fillColor: Colors.greenAccent,
+      radius: 10.0,
     ));
-    notifyListeners();
+    _circles.add(Circle(
+      circleId: CircleId('destination'),
+      center: l2,
+      visible: true,
+      strokeColor: Colors.purple,
+      strokeWidth: 3,
+      fillColor: Colors.redAccent,
+      radius: 10.0,
+    ));
+    _markers.clear();
   }
 
 //---> ADD POLYLINE ON GOOGLE MAPS
@@ -159,7 +168,7 @@ class MapState with ChangeNotifier {
           polylineId: PolylineId("poly"),
           visible: true,
           points: polyCoordinates,
-          width: 8,
+          width: 5,
           color: Colors.purple,
         ),
       );
@@ -255,6 +264,7 @@ class MapState with ChangeNotifier {
                   sourceController.text = name;
                   addMarker(_centerPoints, name, true, originHue);
                   l1 = LatLng(_centerPoints.latitude, _centerPoints.longitude);
+                  // addCircle(centerPoints);
                   Navigator.pop(context);
                 },
               ),
@@ -275,14 +285,12 @@ class MapState with ChangeNotifier {
 
   swapFields() async {
     String address = sourceController.text.toString();
-
     sourceController.text = destinationController.text;
     destinationController.text = address;
 
     LatLng latLng = l1;
     l1 = l2;
     l2 = latLng;
-
     notifyListeners();
   }
 
