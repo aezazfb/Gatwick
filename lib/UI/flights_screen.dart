@@ -10,6 +10,7 @@ class FlightsScreen extends StatefulWidget {
 class _FlightsScreenState extends State<FlightsScreen> {
   @override
   Widget build(BuildContext context) {
+    print("kik");
     return Scaffold(
       body: Stack(
         children: [
