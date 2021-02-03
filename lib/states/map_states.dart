@@ -255,8 +255,10 @@ class MapState with ChangeNotifier {
 
   swapFields() async {
     String address = sourceController.text.toString();
+
     sourceController.text = destinationController.text;
     destinationController.text = address;
+
     LatLng latLng = l1;
     l1 = l2;
     l2 = latLng;
