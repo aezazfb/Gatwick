@@ -54,6 +54,8 @@ class MapState with ChangeNotifier {
   String duration;
   String _name = '';
   double originHue = 70.0;
+  String originCircle = 'origin';
+  String destinationCircle = 'destination';
 
   String get name => _name;
   bool cardVisibility = true;
@@ -137,23 +139,25 @@ class MapState with ChangeNotifier {
   }
 
 //---->
-  addCircle() {
+
+  addCircle(LatLng latLng1, LatLng latLng2, String id1, String id2) async {
     _circles.add(Circle(
-      circleId: CircleId('origin'),
-      center: l1,
+      circleId: CircleId(id1),
+      center: latLng1,
       visible: true,
       strokeColor: Colors.purple,
       strokeWidth: 2,
       fillColor: Colors.greenAccent,
       radius: 10.0,
     ));
+
     _circles.add(Circle(
-      circleId: CircleId('destination'),
-      center: l2,
+      circleId: CircleId(id2),
+      center: latLng2,
       visible: true,
       strokeColor: Colors.purple,
       strokeWidth: 3,
-      fillColor: Colors.redAccent,
+      fillColor: Colors.greenAccent,
       radius: 10.0,
     ));
     _markers.clear();
@@ -291,6 +295,10 @@ class MapState with ChangeNotifier {
     LatLng latLng = l1;
     l1 = l2;
     l2 = latLng;
+
+    String value = originCircle;
+    originCircle = destinationCircle;
+    destinationCircle = value;
     notifyListeners();
   }
 

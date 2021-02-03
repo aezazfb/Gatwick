@@ -295,7 +295,11 @@ class MapScreenState extends State<MapScreen>{
                           color: Colors.deepPurple.withOpacity(0.8),
                           onPressed: () {
                             appState.drawPolyLine();
-                            appState.addCircle();
+                            appState.addCircle(
+                                appState.l1,
+                                appState.l2,
+                                appState.originCircle,
+                                appState.destinationCircle);
                             appState.settingModelBottomSheet(context);
                           },
                           child: Text(
