@@ -84,7 +84,6 @@ class MapState with ChangeNotifier {
         await Geocoder.local.findAddressesFromCoordinates(latLng);
     var first = addreslocation.first;
     sourceController.text = first.addressLine;
-    addMarker(_initialPosition, sourceController.text, true, originHue);
     notifyListeners();
   }
 
@@ -324,6 +323,10 @@ class MapState with ChangeNotifier {
       cardVisibility = false;
     } else {
       cardVisibility = true;
+    }
+    if (destinationController.text.toString().isEmpty ||
+        sourceController.text.toString().isEmpty) {
+      suggestion.clear();
     }
     notifyListeners();
   }
