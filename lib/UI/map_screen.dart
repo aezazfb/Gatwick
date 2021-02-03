@@ -42,7 +42,6 @@ class MapScreenState extends State<MapScreen>{
           : Stack(
               children: [
                 GoogleMap(
-                 // myLocationEnabled: true,
                   tiltGesturesEnabled: true,
                   mapType: MapType.normal,
                   zoomControlsEnabled: false,
@@ -52,6 +51,7 @@ class MapScreenState extends State<MapScreen>{
                   ),
                   onMapCreated: appState.onCreate,
                   markers: appState.marker,
+                  circles: appState.circle,
                   polylines: appState.polyLine,
                   onCameraMove: appState.onCameraMove,
                   onCameraMoveStarted: () {

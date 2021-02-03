@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -18,6 +20,7 @@ class MapState with ChangeNotifier {
 
   bool locationServiceActive = true;
   Set<Marker> _markers = Set();
+  Set<Circle> _circles = HashSet<Circle>();
   Set<Polyline> polyLine = Set();
   TextEditingController sourceController = TextEditingController();
   TextEditingController destinationController = TextEditingController();
@@ -27,7 +30,10 @@ class MapState with ChangeNotifier {
   LatLng get initialPosition => _initialPosition;
 
   Set<Marker> get marker => _markers;
+
+  Set<Circle> get circle => _circles;
   List<LatLng> polyCoordinates = [];
+
   LatLng get centerPoints => _centerPoints;
   PolylinePoints polylinePoints;
 
@@ -73,9 +79,9 @@ class MapState with ChangeNotifier {
     _initialPosition = LatLng(position.latitude, position.longitude);
     l1 = LatLng(position.latitude, position.longitude);
     Coordinates latLng =
-        Coordinates(initialPosition.latitude, initialPosition.longitude);
+    Coordinates(initialPosition.latitude, initialPosition.longitude);
     var addreslocation =
-        await Geocoder.local.findAddressesFromCoordinates(latLng);
+    await Geocoder.local.findAddressesFromCoordinates(latLng);
     var first = addreslocation.first;
     sourceController.text = first.addressLine;
     addMarker(_initialPosition, sourceController.text, true, originHue);
@@ -130,6 +136,20 @@ class MapState with ChangeNotifier {
     ));
   }
 
+//---->
+  addCircle() {
+    _circles.add(Circle(
+      circleId: CircleId('origin'),
+      center: LatLng(l1.latitude, l1.longitude),
+      visible: true,
+      strokeColor: Colors.deepPurple,
+      strokeWidth: 3,
+      fillColor: Colors.teal,
+      radius: 0.0,
+    ));
+    notifyListeners();
+  }
+
 //---> ADD POLYLINE ON GOOGLE MAPS
   drawPolyLine() async {
     if (polyLine.length == 0 || polyLine.last.points.length == 0) {
@@ -164,18 +184,18 @@ class MapState with ChangeNotifier {
                 borderRadius: BorderRadius.all(Radius.circular(12.0)),
                 color: Colors.white,
               ),
-            child: Wrap(
-              children: [
-                ListTile(
-                  title: Text("Distance ${list[0]} miles"),
-                ),
-                ListTile(
-                  title: Text("Duration ${list[1]} "),
-                ),
-                Center(
-                  child: FlatButton(
-                    color: Colors.deepPurple,
-                    child: Text("Book Now",
+              child: Wrap(
+                children: [
+                  ListTile(
+                    title: Text("Distance ${list[0]} miles"),
+                  ),
+                  ListTile(
+                    title: Text("Duration ${list[1]} "),
+                  ),
+                  Center(
+                    child: FlatButton(
+                      color: Colors.deepPurple,
+                      child: Text("Book Now",
                           style: TextStyle(color: Colors.white)),
                       onPressed: () {
                         print("hello Your flight is Booked Sir....");
@@ -202,9 +222,9 @@ class MapState with ChangeNotifier {
 
   fetchAddressFromCoordinates(LatLng latLng) async {
     Coordinates coordinates =
-        new Coordinates(latLng.latitude, latLng.longitude);
+    new Coordinates(latLng.latitude, latLng.longitude);
     var locationName =
-        await Geocoder.local.findAddressesFromCoordinates(coordinates);
+    await Geocoder.local.findAddressesFromCoordinates(coordinates);
     var first = locationName.first;
     _name = first.addressLine;
     notifyListeners();
@@ -219,29 +239,29 @@ class MapState with ChangeNotifier {
               title: Text("Location Selection",
                   style: TextStyle(color: Colors.black, fontSize: 20.0)),
               leading: Icon(Icons.location_on, size: 40, color: Colors.black),
-             ),
-             content: Text(
-                 "Please Specify That you want to set this Location as you Destination or Origin?"),
-             actions: [
-               FlatButton(
-                 child: Text("CANCEL"),
-                 onPressed: () {
-                   Navigator.pop(context);
-                 },
-               ),
-               FlatButton(
-                 child: Text("ORIGIN"),
-                 onPressed: () async {
-                   sourceController.text = name;
+            ),
+            content: Text(
+                "Please Specify That you want to set this Location as you Destination or Origin?"),
+            actions: [
+              FlatButton(
+                child: Text("CANCEL"),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              ),
+              FlatButton(
+                child: Text("ORIGIN"),
+                onPressed: () async {
+                  sourceController.text = name;
                   addMarker(_centerPoints, name, true, originHue);
                   l1 = LatLng(_centerPoints.latitude, _centerPoints.longitude);
                   Navigator.pop(context);
                 },
-               ),
-               FlatButton(
-                 child: Text("DESTINATION"),
-                 onPressed: () {
-                   destinationController.text = name;
+              ),
+              FlatButton(
+                child: Text("DESTINATION"),
+                onPressed: () {
+                  destinationController.text = name;
                   addMarker(_centerPoints, name, false, originHue);
                   l2 = LatLng(_centerPoints.latitude, _centerPoints.longitude);
                   ;
