@@ -13,12 +13,22 @@ import 'package:zippy_rider/requests/distance_time_calculate.dart';
 class MapState with ChangeNotifier {
   static LatLng _initialPosition;
   static LatLng _centerPoints;
+
+  LatLng l1 = LatLng(0.0000, 0.0000);
+  LatLng l2 = LatLng(0.0000, 0.0000);
+
   GoogleMapController _mapController;
 
   bool locationServiceActive = true;
   Set<Marker> _markers = Set();
   Set<Circle> _circles = Set<Circle>();
   Set<Polyline> polyLine = Set();
+  List<LatLng> polyCoordinates = [];
+  PolylinePoints polylinePoints;
+  List suggestion = [];
+  List<LatLng> latLangList = [];
+  Position position;
+
   TextEditingController sourceController = TextEditingController();
   TextEditingController destinationController = TextEditingController();
 
@@ -29,36 +39,29 @@ class MapState with ChangeNotifier {
   Set<Marker> get marker => _markers;
 
   Set<Circle> get circle => _circles;
-  List<LatLng> polyCoordinates = [];
 
   LatLng get centerPoints => _centerPoints;
-  PolylinePoints polylinePoints;
+
+  String get name => _name;
 
   LocationDetails locationDetails = LocationDetails();
   SuggestionRequest suggestionRequest = SuggestionRequest();
   FetchPolylinePoints fetchPolylinePoints = FetchPolylinePoints();
   MapScreenState mapScreenState = MapScreenState();
   CalculateDistanceTime calculateDistanceTime = CalculateDistanceTime();
-  List suggestion = [];
-  List<LatLng> latLangList = [];
-  Map mapResponse;
-  LatLng cameraPositionLatLng;
-  Position position;
-  LatLng l1 = LatLng(0.0000, 0.0000);
-  LatLng l2 = LatLng(0.0000, 0.0000);
+
   String distance;
   String duration;
   String _name = '';
-  double originHue = 70.0;
   String originCircle = 'origin';
   String destinationCircle = 'destination';
+  double originHue = 70.0;
 
-  String get name => _name;
   bool cardVisibility = true;
   bool stackElementsVisibality = true;
 
   MapState() {
-    _getUserLocation();
+    getUserLocation();
     _loadingInitialPosition();
     notifyListeners();
   }
@@ -70,16 +73,15 @@ class MapState with ChangeNotifier {
   }
 
   //----> get Users Current location
-  _getUserLocation() async {
-    print("get Location Called");
+  getUserLocation() async {
     position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
     _initialPosition = LatLng(position.latitude, position.longitude);
     l1 = LatLng(position.latitude, position.longitude);
     Coordinates latLng =
-    Coordinates(initialPosition.latitude, initialPosition.longitude);
+        Coordinates(initialPosition.latitude, initialPosition.longitude);
     var addreslocation =
-    await Geocoder.local.findAddressesFromCoordinates(latLng);
+        await Geocoder.local.findAddressesFromCoordinates(latLng);
     var first = addreslocation.first;
     sourceController.text = first.addressLine;
     addMarker(_initialPosition, sourceController.text, true, originHue);
@@ -96,6 +98,7 @@ class MapState with ChangeNotifier {
     });
   }
 
+//---->FETCH SUGGESTION ON SEARCH
   suggestions(value) async {
     suggestion = await suggestionRequest.getSuggestion(value);
     notifyListeners();
@@ -134,8 +137,7 @@ class MapState with ChangeNotifier {
     ));
   }
 
-//---->
-
+//---->ADD CIRCLES ON SOURCE AND DESTINATION
   addCircle(LatLng latLng1, LatLng latLng2, String id1, String id2) async {
     _circles.add(Circle(
       circleId: CircleId(id1),
@@ -159,7 +161,7 @@ class MapState with ChangeNotifier {
     _markers.clear();
   }
 
-//---> ADD POLYLINE ON GOOGLE MAPS
+//----> ADD POLYLINE ON GOOGLE MAPS
   drawPolyLine() async {
     if (polyLine.length == 0 || polyLine.last.points.length == 0) {
       polyCoordinates = await fetchPolylinePoints.getPolyPoints(l1, l2);
@@ -172,12 +174,11 @@ class MapState with ChangeNotifier {
           color: Colors.purple,
         ),
       );
-      print(polyLine.length);
     } else {}
     notifyListeners();
   }
 
-
+//----> BOTTOM MODEL SHEET
   settingModelBottomSheet(context) async {
     List list = await calculateDistanceTime.calculateDistanceTime(l1, l2);
     if (sourceController.text.toString().isNotEmpty &&
@@ -207,7 +208,6 @@ class MapState with ChangeNotifier {
                       child: Text("Book Now",
                           style: TextStyle(color: Colors.white)),
                       onPressed: () {
-                        print("hello Your flight is Booked Sir....");
                       },
                     ),
                   ),
@@ -223,12 +223,13 @@ class MapState with ChangeNotifier {
     notifyListeners();
   }
 
-
+//---->FETCH CORDINATES ON CAMERA MOVE
   onCameraMove(CameraPosition position) async {
     _centerPoints = position.target;
     visibility();
   }
 
+//----> FETCH ADDRESSES FROM COORDINATES
   fetchAddressFromCoordinates(LatLng latLng) async {
     Coordinates coordinates =
     new Coordinates(latLng.latitude, latLng.longitude);
@@ -239,6 +240,7 @@ class MapState with ChangeNotifier {
     notifyListeners();
   }
 
+//----> DIALOG SHOW.
   dialogShow(context) {
     showDialog(
         context: context,
@@ -282,6 +284,7 @@ class MapState with ChangeNotifier {
         });
   }
 
+//----> SWAP DESTINATION and SOURCE TEXFIELDS.
   swapFields() async {
     String address = sourceController.text.toString();
     sourceController.text = destinationController.text;
@@ -297,11 +300,13 @@ class MapState with ChangeNotifier {
     notifyListeners();
   }
 
+//----> CLEAR FIELDS.
   clearfields() {
     suggestion.clear();
     notifyListeners();
   }
 
+//----> CHANGES VISIBILITY OF STACK EELEMENTS.
   visibility() {
     if (destinationController.text.toString().isNotEmpty &&
         sourceController.text.toString().isNotEmpty) {
