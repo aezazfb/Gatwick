@@ -322,7 +322,7 @@ class MapScreenState extends State<MapScreen>{
                             icon: Icon(Icons.location_searching,
                                 color: Colors.deepPurpleAccent),
                             onPressed: () {
-                              appState.getUserLocation();
+                              appState.currentLocation();
                               print("My Locationbutton Pressed");
                             },
                           ),

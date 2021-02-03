@@ -61,7 +61,7 @@ class MapState with ChangeNotifier {
   bool stackElementsVisibality = true;
 
   MapState() {
-    getUserLocation();
+    _getUserLocation();
     _loadingInitialPosition();
     notifyListeners();
   }
@@ -72,8 +72,8 @@ class MapState with ChangeNotifier {
     notifyListeners();
   }
 
-  //----> get Users Current location
-  getUserLocation() async {
+  //----> get Users Initial location
+  _getUserLocation() async {
     position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
     _initialPosition = LatLng(position.latitude, position.longitude);
@@ -84,10 +84,17 @@ class MapState with ChangeNotifier {
         await Geocoder.local.findAddressesFromCoordinates(latLng);
     var first = addreslocation.first;
     sourceController.text = first.addressLine;
-    CameraPosition cameraPosition =
-        new CameraPosition(target: LatLng(l1.latitude, l1.longitude), zoom: 17);
-    mapController.animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
+    addMarker(_initialPosition, sourceController.text, true, originHue);
     notifyListeners();
+  }
+
+//----> GET USERS CURRENT LOCATION
+  currentLocation() async {
+    Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
+    CameraPosition cameraPosition = new CameraPosition(
+        target: LatLng(position.latitude, position.longitude), zoom: 17);
+    mapController.animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
   }
 
 //----> SET USERS INITIAL LOCATION
