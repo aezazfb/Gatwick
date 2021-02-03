@@ -14,7 +14,6 @@ class MapState with ChangeNotifier {
   static LatLng _initialPosition;
   static LatLng _centerPoints;
   GoogleMapController _mapController;
-  CameraPosition cameraPosition;
 
   bool locationServiceActive = true;
   Set<Marker> _markers = Set();
@@ -44,7 +43,7 @@ class MapState with ChangeNotifier {
   List<LatLng> latLangList = [];
   Map mapResponse;
   LatLng cameraPositionLatLng;
-
+  Position position;
   LatLng l1 = LatLng(0.0000, 0.0000);
   LatLng l2 = LatLng(0.0000, 0.0000);
   String distance;
@@ -73,7 +72,7 @@ class MapState with ChangeNotifier {
   //----> get Users Current location
   _getUserLocation() async {
     print("get Location Called");
-    Position position = await Geolocator.getCurrentPosition(
+    position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
     _initialPosition = LatLng(position.latitude, position.longitude);
     l1 = LatLng(position.latitude, position.longitude);

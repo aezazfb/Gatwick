@@ -14,7 +14,6 @@ class MapScreenState extends State<MapScreen>{
   bool flage = true;
   @override
   Widget build(BuildContext context) {
-    print("Called Again");
     final appState = Provider.of<MapState>(context);
     return Scaffold(
       body:
