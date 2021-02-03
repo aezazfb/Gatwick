@@ -95,6 +95,8 @@ class MapState with ChangeNotifier {
     CameraPosition cameraPosition = new CameraPosition(
         target: LatLng(position.latitude, position.longitude), zoom: 17);
     mapController.animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
+    LatLng latLng = LatLng(position.latitude, position.longitude);
+    fetchAddressFromCoordinates(latLng);
   }
 
 //----> SET USERS INITIAL LOCATION
