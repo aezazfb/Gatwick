@@ -172,7 +172,6 @@ class MapScreenState extends State<MapScreen>{
                                           (p) => p.markerId == MarkerId('false'),
                                       orElse: () => null);
                                   appState.marker.remove(markers);
-
                                   appState.destinationController.clear();
                                   appState.polyLine.last.points.clear();
                                 }),
@@ -198,8 +197,7 @@ class MapScreenState extends State<MapScreen>{
                           color: Colors.deepPurple,
                         ),
                         onPressed: () {
-                          appState.polyLine.last.points.clear();
-
+                          //appState.polyLine.last.points.clear();
                           appState.swapFields();
                         }),
                   ),

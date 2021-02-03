@@ -173,18 +173,25 @@ class MapState with ChangeNotifier {
 
 //----> ADD POLYLINE ON GOOGLE MAPS
   drawPolyLine() async {
-    if (polyLine.length == 0 || polyLine.last.points.length == 0) {
-      polyCoordinates = await fetchPolylinePoints.getPolyPoints(l1, l2);
-      polyLine.add(
-        Polyline(
-          polylineId: PolylineId("poly"),
-          visible: true,
-          points: polyCoordinates,
-          width: 5,
-          color: Colors.purple,
-        ),
-      );
-    } else {}
+    if (sourceController.text.toString().isNotEmpty &&
+        destinationController.text.toString().isNotEmpty) {
+      if (polyLine.length == 0 || polyLine.last.points.length == 0) {
+        polyCoordinates = await fetchPolylinePoints.getPolyPoints(l1, l2);
+        polyLine.add(
+          Polyline(
+            polylineId: PolylineId("poly"),
+            visible: true,
+            points: polyCoordinates,
+            width: 5,
+            color: Colors.purple,
+          ),
+        );
+      } else {
+        return null;
+      }
+    } else {
+      return null;
+    }
     notifyListeners();
   }
 
@@ -307,6 +314,8 @@ class MapState with ChangeNotifier {
     String value = originCircle;
     originCircle = destinationCircle;
     destinationCircle = value;
+    //remove polyline here
+    polyLine.last.points.clear();
     notifyListeners();
   }
 
