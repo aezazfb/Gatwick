@@ -85,9 +85,8 @@ class MapState with ChangeNotifier {
     var first = addreslocation.first;
     sourceController.text = first.addressLine;
     CameraPosition cameraPosition =
-        new CameraPosition(target: LatLng(l1.latitude, l1.longitude), zoom: 15);
+        new CameraPosition(target: LatLng(l1.latitude, l1.longitude), zoom: 17);
     mapController.animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
-    addMarker(_initialPosition, sourceController.text, true, originHue);
     notifyListeners();
   }
 
