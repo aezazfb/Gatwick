@@ -54,8 +54,12 @@ class MapScreenState extends State<MapScreen>{
                   markers: appState.marker,
                   polylines: appState.polyLine,
                   onCameraMove: appState.onCameraMove,
+                  onCameraMoveStarted: () {
+                    appState.stackElementsVisibality = false;
+                  },
                   onCameraIdle: () {
                     appState.fetchAddressFromCoordinates(appState.centerPoints);
+                    appState.stackElementsVisibality = true;
                   },
                 ),
 
@@ -65,6 +69,7 @@ class MapScreenState extends State<MapScreen>{
                     right: 15.0,
                     left: 15.0,
                     child: Visibility(
+                      visible: appState.stackElementsVisibality,
                       child: Container(
                         height: 55.0,
                         width: double.infinity,
@@ -103,7 +108,7 @@ class MapScreenState extends State<MapScreen>{
                                 ),
                                 onPressed: () {
                                   Marker markers = appState.marker.firstWhere(
-                                      (p) => p.markerId == MarkerId('true'),
+                                          (p) => p.markerId == MarkerId('true'),
                                       orElse: () => null);
                                   appState.marker.remove(markers);
                                   appState.sourceController.clear();
@@ -120,79 +125,84 @@ class MapScreenState extends State<MapScreen>{
 
                 //----> DROP OFF  TEXT FIELD
                 Positioned(
-                  top: 110.0,
-                  right: 15.0,
-                  left: 15.0,
-                  child: Container(
-                    height: 55.0,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(3.0),
-                      color: Colors.white,
-                      boxShadow: [
-                        BoxShadow(
-                            color: Colors.grey,
-                            offset: Offset(1.0, 1.0),
-                            blurRadius: 5.0,
-                            spreadRadius: 2.0)
-                      ],
-                    ),
-                    child: TextField(
-                      onChanged: (bool) {
-                        flage = false;
-                        appState.suggestions(bool);
-                      },
-                      cursorColor: Colors.black,
-                      controller: appState.destinationController,
-                      textInputAction: TextInputAction.go,
-                      decoration: InputDecoration(
-                        icon: Container(
-                          margin:
+                    top: 110.0,
+                    right: 15.0,
+                    left: 15.0,
+                    child: Visibility(
+                      visible: appState.stackElementsVisibality,
+                      child: Container(
+                        height: 55.0,
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(3.0),
+                          color: Colors.white,
+                          boxShadow: [
+                            BoxShadow(
+                                color: Colors.grey,
+                                offset: Offset(1.0, 1.0),
+                                blurRadius: 5.0,
+                                spreadRadius: 2.0)
+                          ],
+                        ),
+                        child: TextField(
+                          onChanged: (bool) {
+                            flage = false;
+                            appState.suggestions(bool);
+                          },
+                          cursorColor: Colors.black,
+                          controller: appState.destinationController,
+                          textInputAction: TextInputAction.go,
+                          decoration: InputDecoration(
+                            icon: Container(
+                              margin:
                               EdgeInsets.only(left: 8.0, top: 0.5, bottom: 10),
-                          width: 5.0,
-                          height: 13,
-                          child: Icon(
-                            Icons.local_taxi_sharp,
+                              width: 5.0,
+                              height: 13,
+                              child: Icon(
+                                Icons.local_taxi_sharp,
+                              ),
+                            ),
+                            suffix: IconButton(
+                                icon: Icon(
+                                  Icons.clear,
+                                  size: 15.0,
+                                  //   color: Colors.black,
+                                ),
+                                onPressed: () {
+                                  Marker markers = appState.marker.firstWhere(
+                                          (p) => p.markerId == MarkerId('false'),
+                                      orElse: () => null);
+                                  appState.marker.remove(markers);
+
+                                  appState.destinationController.clear();
+                                  appState.polyLine.last.points.clear();
+                                }),
+                            hintText: "go to...",
+                            border: InputBorder.none,
+                            contentPadding: EdgeInsets.only(
+                                left: 6.0, top: 8.0, right: 6.0),
                           ),
                         ),
-                        suffix: IconButton(
-                            icon: Icon(
-                              Icons.clear,
-                              size: 15.0,
-                              //   color: Colors.black,
-                            ),
-                            onPressed: () {
-                              Marker markers = appState.marker.firstWhere(
-                                  (p) => p.markerId == MarkerId('false'),
-                                  orElse: () => null);
-                              appState.marker.remove(markers);
-
-                              appState.destinationController.clear();
-                              appState.polyLine.last.points.clear();
-                            }),
-                        hintText: "go to...",
-                        border: InputBorder.none,
-                        contentPadding:
-                            EdgeInsets.only(left: 6.0, top: 8.0, right: 6.0),
                       ),
-                    ),
-                  ),
-                ),
+                    )),
 
                 //----> SWAP FIELDS  BUTTON
                 Positioned(
                   top: 80,
                   right: 5.0,
-                  child: IconButton(
-                      icon: Icon(
-                        Icons.swap_calls,
-                        size: 40,
-                        color: Colors.deepPurple,
-                      ),
-                      onPressed: () {
-                        appState.polyLine.last.points.clear();
-                        appState.swapFields();
-                      }),
+                  child: Visibility(
+                    visible: appState.stackElementsVisibality,
+                    child: IconButton(
+                        icon: Icon(
+                          Icons.swap_calls,
+                          size: 40,
+                          color: Colors.deepPurple,
+                        ),
+                        onPressed: () {
+                          appState.polyLine.last.points.clear();
+                          appState.swapFields();
+                        }),
+                  ),
                 ),
 
                 //----> FIXED ICON TO FETCH CENTER POSITION ON CAMERA MOVE
@@ -278,53 +288,59 @@ class MapScreenState extends State<MapScreen>{
                     bottom: 15,
                     right: 17,
                     left: 17,
-                    child: FlatButton(
-                      color: Colors.deepPurple.withOpacity(0.8),
-                      onPressed: () {
-                        appState.drawPolyLine();
-                        appState.settingModelBottomSheet(context);
-                      },
-                      child: Text(
-                        'GET QUOTE',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    )),
+                    child: Visibility(
+                        visible: appState.stackElementsVisibality,
+                        child: FlatButton(
+                          color: Colors.deepPurple.withOpacity(0.8),
+                          onPressed: () {
+                            appState.drawPolyLine();
+                            appState.settingModelBottomSheet(context);
+                          },
+                          child: Text(
+                            'GET QUOTE',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ))),
 
                 //---->   CURRENT POSITION BUTTTON
                 Positioned(
                     bottom: 70,
                     left: 17,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.grey.shade300.withOpacity(0.7),
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
-                      child: IconButton(
-                        icon: Icon(Icons.location_searching,
-                            color: Colors.deepPurpleAccent),
-                        onPressed: () {
-                          print("My Locationbutton Pressed");
-                        },
-                      ),
-                    )),
+                    child: Visibility(
+                        visible: appState.stackElementsVisibality,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.grey.shade300.withOpacity(0.7),
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          child: IconButton(
+                            icon: Icon(Icons.location_searching,
+                                color: Colors.deepPurpleAccent),
+                            onPressed: () {
+                              print("My Locationbutton Pressed");
+                            },
+                          ),
+                        ))),
 
                 //----> FLIGHTS BUTTON
                 Positioned(
                     bottom: 70,
                     right: 17,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.grey.shade300.withOpacity(0.7),
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
-                      child: IconButton(
-                        icon: Icon(Icons.flight_takeoff,
-                            color: Colors.deepPurpleAccent),
-                        onPressed: () {
-                          print("My Locationbutton Pressed");
-                        },
-                      ),
-                    )),
+                    child: Visibility(
+                        visible: appState.stackElementsVisibality,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.grey.shade300.withOpacity(0.7),
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          child: IconButton(
+                            icon: Icon(Icons.flight_takeoff,
+                                color: Colors.deepPurpleAccent),
+                            onPressed: () {
+                              print("My Locationbutton Pressed");
+                            },
+                          ),
+                        ))),
               ],
             ),
     );
