@@ -1,5 +1,3 @@
-import 'dart:collection';
-
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -37,7 +35,6 @@ class MapState with ChangeNotifier {
   LatLng get centerPoints => _centerPoints;
   PolylinePoints polylinePoints;
 
-
   LocationDetails locationDetails = LocationDetails();
   SuggestionRequest suggestionRequest = SuggestionRequest();
   FetchPolylinePoints fetchPolylinePoints = FetchPolylinePoints();
@@ -48,8 +45,8 @@ class MapState with ChangeNotifier {
   Map mapResponse;
   LatLng cameraPositionLatLng;
 
-  LatLng l1;
-  LatLng l2;
+  LatLng l1 = LatLng(0.0000, 0.0000);
+  LatLng l2 = LatLng(0.0000, 0.0000);
   String distance;
   String duration;
   String _name = '';
@@ -278,7 +275,6 @@ class MapState with ChangeNotifier {
                   destinationController.text = name;
                   addMarker(_centerPoints, name, false, originHue);
                   l2 = LatLng(_centerPoints.latitude, _centerPoints.longitude);
-                  ;
                   Navigator.pop(context);
                 },
               )
