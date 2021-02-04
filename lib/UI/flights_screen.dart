@@ -13,6 +13,7 @@ class FlightsScreen extends StatefulWidget {
 class _FlightsScreenState extends State<FlightsScreen> {
   List<String> url = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
   Set<Marker> marker = Set();
+  var zoom = 17.0;
   String value = '';
   List<LatLng> latlngList = [
     LatLng(51.1537, 0.1821),
@@ -65,7 +66,7 @@ class _FlightsScreenState extends State<FlightsScreen> {
                         cameraPosition = CameraPosition(
                             target: LatLng(latlngList[i].latitude,
                                 latlngList[i].longitude),
-                            zoom: 17);
+                            zoom: zoom);
                         i++;
 
                         if (i >= 3) {
@@ -141,6 +142,8 @@ class _FlightsScreenState extends State<FlightsScreen> {
                               onPressed: () {
                                 mapState.sourceController.text =
                                     'Set Heat throw Airport $value';
+                                mapState.l1 = LatLng(latlngList[0].latitude,
+                                    latlngList[0].longitude);
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
@@ -152,6 +155,8 @@ class _FlightsScreenState extends State<FlightsScreen> {
                               onPressed: () {
                                 mapState.destinationController.text =
                                     'Set Heat throw Airport $value';
+                                mapState.l1 = LatLng(latlngList[1].latitude,
+                                    latlngList[1].longitude);
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
@@ -167,6 +172,25 @@ class _FlightsScreenState extends State<FlightsScreen> {
               ),
             ),
           ),
+          Positioned(
+              top: 40,
+              right: 17,
+              child: Visibility(
+                  visible: mapState.stackElementsVisibality,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.grey.shade300.withOpacity(0.7),
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    child: IconButton(
+                      icon: Icon(Icons.location_searching,
+                          color: Colors.deepPurpleAccent),
+                      onPressed: () {
+                        return _controller.animateCamera(
+                            CameraUpdate.newCameraPosition(cameraPosition));
+                      },
+                    ),
+                  ))),
         ],
       ),
     );
