@@ -15,25 +15,25 @@ class MapScreenState extends State<MapScreen>{
   bool flage = true;
   @override
   Widget build(BuildContext context) {
-    final appState = Provider.of<MapState>(context);
+    final mapState = Provider.of<MapState>(context);
     return Scaffold(
-      body:
-      appState.initialPosition == null ? Container(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  SpinKitRotatingCircle(
-                    color: Colors.deepPurple,
-                    size: 50.0,
-                  )
+      body: mapState.initialPosition == null
+          ? Container(
+              child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    SpinKitRotatingCircle(
+                      color: Colors.deepPurple,
+                      size: 50.0,
+                    )
                   ],
                 ),
                 SizedBox(height: 10),
                 Visibility(
-                  visible: appState.locationServiceActive == false,
+                  visible: mapState.locationServiceActive == false,
                   child: Text("Please enable location services!",
                       style: TextStyle(color: Colors.grey, fontSize: 18)),
                 )
@@ -46,20 +46,20 @@ class MapScreenState extends State<MapScreen>{
                   mapType: MapType.normal,
                   zoomControlsEnabled: false,
                   initialCameraPosition: CameraPosition(
-                    target: appState.initialPosition,
+                    target: mapState.initialPosition,
                     zoom: 17,
                   ),
-                  onMapCreated: appState.onCreate,
-                  markers: appState.marker,
-                  polylines: appState.polyLine,
-                  circles: appState.circle,
-                  onCameraMove: appState.onCameraMove,
+                  onMapCreated: mapState.onCreate,
+                  markers: mapState.marker,
+                  polylines: mapState.polyLine,
+                  circles: mapState.circle,
+                  onCameraMove: mapState.onCameraMove,
                   onCameraMoveStarted: () {
-                    appState.stackElementsVisibality = false;
+                    mapState.stackElementsVisibality = false;
                   },
                   onCameraIdle: () {
-                    appState.fetchAddressFromCoordinates(appState.centerPoints);
-                    appState.stackElementsVisibality = true;
+                    mapState.fetchAddressFromCoordinates(mapState.centerPoints);
+                    mapState.stackElementsVisibality = true;
                   },
                 ),
 
@@ -69,7 +69,7 @@ class MapScreenState extends State<MapScreen>{
                     right: 15.0,
                     left: 15.0,
                     child: Visibility(
-                      visible: appState.stackElementsVisibality,
+                      visible: mapState.stackElementsVisibality,
                       child: Container(
                         height: 55.0,
                         width: double.infinity,
@@ -86,17 +86,17 @@ class MapScreenState extends State<MapScreen>{
                         ),
                         child: TextField(
                           cursorColor: Colors.black,
-                          controller: appState.sourceController,
+                          controller: mapState.sourceController,
                           onChanged: (bool) {
                             flage = true;
-                            appState.suggestions(bool);
+                            mapState.suggestions(bool);
                           },
                           textInputAction: TextInputAction.go,
                           decoration: InputDecoration(
                             icon: Container(
                               child: Icon(Icons.location_on),
-                              margin:
-                              EdgeInsets.only(left: 8.0, top: 0.5, bottom: 5),
+                              margin: EdgeInsets.only(
+                                  left: 8.0, top: 0.5, bottom: 5),
                               width: 5.0,
                               height: 13,
                             ),
@@ -107,12 +107,12 @@ class MapScreenState extends State<MapScreen>{
                                   //   color: Colors.black,
                                 ),
                                 onPressed: () {
-                                  Marker markers = appState.marker.firstWhere(
+                                  Marker markers = mapState.marker.firstWhere(
                                       (p) => p.markerId == MarkerId('true'),
                                       orElse: () => null);
-                                  appState.marker.remove(markers);
-                                  appState.sourceController.clear();
-                                  appState.clearfields();
+                                  mapState.marker.remove(markers);
+                                  mapState.sourceController.clear();
+                                  mapState.clearfields();
                                 }),
                             hintText: "pick up",
                             border: InputBorder.none,
@@ -129,7 +129,7 @@ class MapScreenState extends State<MapScreen>{
                     right: 15.0,
                     left: 15.0,
                     child: Visibility(
-                      visible: appState.stackElementsVisibality,
+                      visible: mapState.stackElementsVisibality,
                       child: Container(
                         height: 55.0,
                         width: double.infinity,
@@ -147,15 +147,15 @@ class MapScreenState extends State<MapScreen>{
                         child: TextField(
                           onChanged: (bool) {
                             flage = false;
-                            appState.suggestions(bool);
+                            mapState.suggestions(bool);
                           },
                           cursorColor: Colors.black,
-                          controller: appState.destinationController,
+                          controller: mapState.destinationController,
                           textInputAction: TextInputAction.go,
                           decoration: InputDecoration(
                             icon: Container(
-                              margin:
-                              EdgeInsets.only(left: 8.0, top: 0.5, bottom: 10),
+                              margin: EdgeInsets.only(
+                                  left: 8.0, top: 0.5, bottom: 10),
                               width: 5.0,
                               height: 13,
                               child: Icon(
@@ -169,12 +169,12 @@ class MapScreenState extends State<MapScreen>{
                                   //   color: Colors.black,
                                 ),
                                 onPressed: () {
-                                  Marker markers = appState.marker.firstWhere(
+                                  Marker markers = mapState.marker.firstWhere(
                                       (p) => p.markerId == MarkerId('false'),
                                       orElse: () => null);
-                                  appState.marker.remove(markers);
-                                  appState.destinationController.clear();
-                                  appState.clearfields();
+                                  mapState.marker.remove(markers);
+                                  mapState.destinationController.clear();
+                                  mapState.clearfields();
                                 }),
                             hintText: "go to...",
                             border: InputBorder.none,
@@ -190,7 +190,7 @@ class MapScreenState extends State<MapScreen>{
                   top: 80,
                   right: 5.0,
                   child: Visibility(
-                    visible: appState.stackElementsVisibality,
+                    visible: mapState.stackElementsVisibality,
                     child: IconButton(
                         icon: Icon(
                           Icons.swap_calls,
@@ -199,7 +199,7 @@ class MapScreenState extends State<MapScreen>{
                         ),
                         onPressed: () {
                           //appState.polyLine.last.points.clear();
-                          appState.swapFields();
+                          mapState.swapFields();
                         }),
                   ),
                 ),
@@ -207,15 +207,15 @@ class MapScreenState extends State<MapScreen>{
                 //----> FIXED ICON TO FETCH CENTER POSITION ON CAMERA MOVE
                 Positioned(
                     child: Visibility(
-                  visible: appState.cardVisibility,
+                      visible: mapState.cardVisibility,
                   child: Align(
                     alignment: Alignment.center,
                     child: IconButton(
                         icon: Icon(Icons.circle,
                             size: 17, color: Colors.deepPurple),
                         onPressed: () {
-                          appState.fetchAddressFromCoordinates(
-                              appState.centerPoints);
+                          mapState.fetchAddressFromCoordinates(
+                              mapState.centerPoints);
                         }),
                   ),
                 )),
@@ -223,17 +223,17 @@ class MapScreenState extends State<MapScreen>{
                 //CAMERA MOVE SUGGESTIONS
                 Positioned(
                   child: Visibility(
-                    visible: appState.cardVisibility,
+                    visible: mapState.cardVisibility,
                     child: Align(
                       alignment: Alignment(0.1, -0.1),
                       child: Card(
                         color: Colors.deepPurple.withOpacity(.8),
                         margin: EdgeInsets.all(8.0),
                         child: InkWell(
-                            child: Text(appState.name,
+                            child: Text(mapState.name,
                                 style: TextStyle(color: Colors.white)),
                             onTap: () {
-                              appState.dialogShow(context);
+                              mapState.dialogShow(context);
                             }),
                       ),
                     ),
@@ -247,33 +247,33 @@ class MapScreenState extends State<MapScreen>{
                     right: 20,
                     top: 130,
                     child: SizedBox(
-                      height: appState.suggestion.length * 60.0,
+                      height: mapState.suggestion.length * 60.0,
                       child: Container(
                         child: ListView.builder(
-                          itemCount: appState.suggestion.length,
+                          itemCount: mapState.suggestion.length,
                           itemBuilder: (context, index) {
                             return Card(
                               child: ListTile(
                                 title: Text(
-                                  appState.suggestion[index],
+                                  mapState.suggestion[index],
                                   style: TextStyle(color: Colors.black),
                                 ),
                                 onTap: () {
                                   if (flage == true) {
-                                    appState.sourceController.text =
-                                        appState.suggestion[index].toString();
-                                    appState.details(
-                                        appState.suggestion[index].toString(),
+                                    mapState.sourceController.text =
+                                        mapState.suggestion[index].toString();
+                                    mapState.details(
+                                        mapState.suggestion[index].toString(),
                                         flage);
                                   }
                                   if (flage == false) {
-                                    appState.destinationController.text =
-                                        appState.suggestion[index].toString();
-                                    appState.details(
-                                        appState.suggestion[index].toString(),
+                                    mapState.destinationController.text =
+                                        mapState.suggestion[index].toString();
+                                    mapState.details(
+                                        mapState.suggestion[index].toString(),
                                         flage);
                                   }
-                                  appState.clearfields();
+                                  mapState.clearfields();
                                 },
                               ),
                             );
@@ -288,18 +288,18 @@ class MapScreenState extends State<MapScreen>{
                     right: 17,
                     left: 17,
                     child: Visibility(
-                        visible: appState.stackElementsVisibality,
+                        visible: mapState.stackElementsVisibality,
                         child: FlatButton(
                           color: Colors.deepPurple.withOpacity(0.8),
                           onPressed: () {
-                            appState.drawPolyLine();
-                            appState.addCircle(
-                                appState.l1,
-                                appState.l2,
-                                appState.originCircle,
-                                appState.destinationCircle);
-                            appState.settingModelBottomSheet(context);
-                            appState.visibility();
+                            mapState.drawPolyLine();
+                            mapState.addCircle(
+                                mapState.l1,
+                                mapState.l2,
+                                mapState.originCircle,
+                                mapState.destinationCircle);
+                            mapState.settingModelBottomSheet(context);
+                            mapState.visibility();
                           },
                           child: Text(
                             'GET QUOTE',
@@ -312,7 +312,7 @@ class MapScreenState extends State<MapScreen>{
                     bottom: 70,
                     left: 17,
                     child: Visibility(
-                        visible: appState.stackElementsVisibality,
+                        visible: mapState.stackElementsVisibality,
                         child: Container(
                           decoration: BoxDecoration(
                             color: Colors.grey.shade300.withOpacity(0.7),
@@ -322,7 +322,7 @@ class MapScreenState extends State<MapScreen>{
                             icon: Icon(Icons.location_searching,
                                 color: Colors.deepPurpleAccent),
                             onPressed: () {
-                              appState.currentLocation();
+                              mapState.currentLocation();
                               print("My Locationbutton Pressed");
                             },
                           ),
@@ -333,7 +333,7 @@ class MapScreenState extends State<MapScreen>{
                     bottom: 70,
                     right: 17,
                     child: Visibility(
-                        visible: appState.stackElementsVisibality,
+                        visible: mapState.stackElementsVisibality,
                         child: Container(
                           decoration: BoxDecoration(
                             color: Colors.grey.shade300.withOpacity(0.7),
