@@ -13,6 +13,8 @@ class MapScreen extends StatefulWidget{
 
 class MapScreenState extends State<MapScreen>{
   bool flage = true;
+  var heightFactor = 0.0;
+
   @override
   Widget build(BuildContext context) {
     final mapState = Provider.of<MapState>(context);
@@ -89,6 +91,7 @@ class MapScreenState extends State<MapScreen>{
                           controller: mapState.sourceController,
                           onChanged: (bool) {
                             flage = true;
+                            heightFactor = 90;
                             mapState.suggestions(bool);
                           },
                           textInputAction: TextInputAction.go,
@@ -148,6 +151,7 @@ class MapScreenState extends State<MapScreen>{
                           onChanged: (bool) {
                             flage = false;
                             mapState.suggestions(bool);
+                            heightFactor = 170;
                           },
                           cursorColor: Colors.black,
                           controller: mapState.destinationController,
@@ -241,11 +245,11 @@ class MapScreenState extends State<MapScreen>{
                 ),
 
                 //----> SEARCH SUGGESTION  LIST VIEW
-                SizedBox(height: 20),
+                SizedBox(height: heightFactor),
                 Positioned(
                     left: 20,
                     right: 20,
-                    top: 130,
+                    top: heightFactor,
                     child: SizedBox(
                       height: mapState.suggestion.length * 60.0,
                       child: Container(
