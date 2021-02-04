@@ -1,7 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:carousel_slider/carousel_slider.dart';
 
 class FlightsScreen extends StatefulWidget {
   @override
@@ -80,48 +79,25 @@ class _FlightsScreenState extends State<FlightsScreen> {
                           },
                         ))
                     .toList(),
-                // [
-                //   Builder(
-                //       builder: (BuildContext context){
-                //         return Card(
-                //           shadowColor: Colors.deepPurple,
-                //           child: Stack(
-                //             children:[
-                //               Image(image: AssetImage('assets/images/image.jpeg',), height: 130, width: 500,),
-                //               SizedBox(height: 20),
-                //               Positioned(
-                //                 left: 20,
-                //                 bottom: 50,
-                //                   child: Text("Airport Name ", style: TextStyle(color: Colors.black, fontWeight: FontWeight.w700),)),
-                //               Positioned(
-                //                 left: 20,
-                //                   bottom: 10,
-                //                   child: Text("Airport Code",style: TextStyle(color: Colors.purple, fontWeight: FontWeight.w700),)),
-                //             ],
-                //           ),
-                //         );
-                //       })
-                // ],
               ))),
           Positioned(
-              bottom: 250,
-              child: Card(
-                  color: Colors.white,
-                  child: AlertDialog(
-                    content: Text("London City Airport"),
-                    actions: [
-                      FlatButton(
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                          child: Text("Origin")),
-                      FlatButton(
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                          child: Text("Destination")),
-                    ],
-                  ))),
+            bottom: 200,
+            child: Visibility(
+              // visible: mapState.cardVisibility,
+              child: Align(
+                child: Card(
+                  color: Colors.deepPurple.withOpacity(.8),
+                  margin: EdgeInsets.all(8.0),
+                  child: InkWell(
+                      child:
+                          Text("HELLO", style: TextStyle(color: Colors.white)),
+                      onTap: () {
+                        //mapState.dialogShow(context);
+                      }),
+                ),
+              ),
+            ),
+          ),
         ],
       ),
     );
