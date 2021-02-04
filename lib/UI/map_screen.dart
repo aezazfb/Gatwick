@@ -66,8 +66,8 @@ class MapScreenState extends State<MapScreen>{
                 //----> PICK UP TEXT FIELD
                 Positioned(
                     top: 50.0,
-                    right: 15.0,
-                    left: 15.0,
+                    right: 17.0,
+                    left: 12.0,
                     child: Visibility(
                       visible: mapState.stackElementsVisibality,
                       child: Container(
@@ -126,8 +126,8 @@ class MapScreenState extends State<MapScreen>{
                 //----> DROP OFF  TEXT FIELD
                 Positioned(
                     top: 110.0,
-                    right: 15.0,
-                    left: 15.0,
+                    right: 17.0,
+                    left: 12.0,
                     child: Visibility(
                       visible: mapState.stackElementsVisibality,
                       child: Container(
@@ -188,7 +188,7 @@ class MapScreenState extends State<MapScreen>{
                 //----> SWAP FIELDS  BUTTON
                 Positioned(
                   top: 80,
-                  right: 5.0,
+                  right: 3.0,
                   child: Visibility(
                     visible: mapState.stackElementsVisibality,
                     child: IconButton(
