@@ -122,7 +122,6 @@ class _FlightsScreenState extends State<FlightsScreen> {
                         mainAxisSize: MainAxisSize.min,
                         buttonMinWidth: 10,
                         buttonPadding: EdgeInsets.zero,
-                        buttonHeight: 20.0,
                         children: [
                           FlatButton(
                               onPressed: () {

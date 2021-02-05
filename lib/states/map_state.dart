@@ -350,10 +350,6 @@ class MapState with ChangeNotifier {
       cardVisibility = true;
     }
 
-    if (destinationController.text.toString().length == 0 ||
-        sourceController.text.toString().length == 0) {
-      suggestion.clear();
-    }
     notifyListeners();
   }
 }

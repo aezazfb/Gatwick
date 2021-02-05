@@ -93,10 +93,12 @@ class MapScreenState extends State<MapScreen>{
                           onChanged: (bool) {
                             flage = true;
                             heightFactor = 90;
-                            mapState.visibility();
                             mapState.suggestions(bool);
                           },
                           textInputAction: TextInputAction.go,
+                          onEditingComplete: () {
+                            mapState.suggestion.clear();
+                          },
                           decoration: InputDecoration(
                             icon: Container(
                               child: Icon(Icons.location_on),
@@ -158,6 +160,9 @@ class MapScreenState extends State<MapScreen>{
                           cursorColor: Colors.black,
                           controller: mapState.destinationController,
                           textInputAction: TextInputAction.go,
+                          onEditingComplete: () {
+                            mapState.suggestion.clear();
+                          },
                           decoration: InputDecoration(
                             icon: Container(
                               margin: EdgeInsets.only(
@@ -253,12 +258,13 @@ class MapScreenState extends State<MapScreen>{
                     right: 20,
                     top: heightFactor,
                     child: SizedBox(
-                      height: mapState.suggestion.length * 60.0,
+                      height: mapState.suggestion.length * 50.0,
                       child: Container(
                         child: ListView.builder(
                           itemCount: mapState.suggestion.length,
                           itemBuilder: (context, index) {
                             return Card(
+                              margin: EdgeInsets.only(bottom: 1.0),
                               child: ListTile(
                                 title: Text(
                                   mapState.suggestion[index],
