@@ -12,9 +12,7 @@ class FlightsScreen extends StatefulWidget {
 }
 
 class _FlightsScreenState extends State<FlightsScreen> {
-  var zoom = 17.0;
   String value = '';
-
   int i = 0;
 
 
@@ -52,7 +50,7 @@ class _FlightsScreenState extends State<FlightsScreen> {
                         flightState.cameraPosition = CameraPosition(
                             target: LatLng(flightState.latlngList[i].latitude,
                                 flightState.latlngList[i].longitude),
-                            zoom: zoom);
+                            zoom: 17);
                         i++;
                         if (i >= 3) {
                           i = 0;
@@ -119,7 +117,11 @@ class _FlightsScreenState extends State<FlightsScreen> {
                         style: TextStyle(color: Colors.black)),
                     Align(
                       alignment: Alignment.bottomLeft,
-                      child: Row(
+                      child: ButtonBar(
+                        mainAxisSize: MainAxisSize.min,
+                        buttonMinWidth: 10,
+                        buttonPadding: EdgeInsets.zero,
+                        buttonHeight: 20.0,
                         children: [
                           FlatButton(
                               onPressed: () {
@@ -151,7 +153,7 @@ class _FlightsScreenState extends State<FlightsScreen> {
                                   style: TextStyle(color: Colors.purple))),
                         ],
                       ),
-                    ),
+                    )
                   ]),
                 ),
               ),

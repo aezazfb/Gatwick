@@ -15,7 +15,9 @@ class FlightState with ChangeNotifier {
   ];
 
   Set<Marker> get marker => _markers;
-
+FlightState() {
+    _addMarker();
+  }
 //----> ON MAP CREATED
   onMapCreated(GoogleMapController controller) {
     _controller = controller;
@@ -28,7 +30,7 @@ class FlightState with ChangeNotifier {
   }
 
 //----> ADD MARKER
-  void addMarker() {
+  _addMarker() {
     for (int i = 0; i < latlngList.length; i++) {
       _markers.add(Marker(
         markerId: MarkerId("id $i"),
