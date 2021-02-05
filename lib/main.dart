@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:zippy_rider/states/map_states.dart';
+import 'package:zippy_rider/states/flight_state.dart';
+import 'package:zippy_rider/states/map_state.dart';
 import 'UI/map_screen.dart';
 import 'package:provider/provider.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(MultiProvider(
-    providers: [ChangeNotifierProvider.value(value: MapState())],
     child: MyApp(),
+    providers: [
+      ChangeNotifierProvider.value(value: MapState()),
+      ChangeNotifierProvider.value(value: FlightState())
+    ],
   ));
 }
 

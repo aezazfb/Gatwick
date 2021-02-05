@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:zippy_rider/UI/flights_screen.dart';
-import 'package:zippy_rider/states/map_states.dart';
+import 'package:zippy_rider/states/map_state.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+
 class MapScreen extends StatefulWidget{
   @override
   State<StatefulWidget> createState() {
@@ -245,7 +246,7 @@ class MapScreenState extends State<MapScreen>{
                 ),
 
                 //----> SEARCH SUGGESTION  LIST VIEW
-                SizedBox(height: heightFactor),
+                // SizedBox(height: heightFactor),
                 Positioned(
                     left: 20,
                     right: 20,

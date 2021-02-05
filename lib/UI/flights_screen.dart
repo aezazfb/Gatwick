@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:zippy_rider/UI/map_screen.dart';
-import 'package:zippy_rider/states/map_states.dart';
+import 'package:zippy_rider/states/flight_state.dart';
+import 'package:zippy_rider/states/map_state.dart';
 
 class FlightsScreen extends StatefulWidget {
   @override
@@ -11,37 +12,22 @@ class FlightsScreen extends StatefulWidget {
 }
 
 class _FlightsScreenState extends State<FlightsScreen> {
-  List<String> url = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
-  Set<Marker> marker = Set();
   var zoom = 17.0;
   String value = '';
-  List<LatLng> latlngList = [
-    LatLng(51.1537, 0.1821),
-    LatLng(53.3588, 2.2727),
-    LatLng(51.8860, 0.2389)
-  ];
-  GoogleMapController _controller;
-  CameraPosition cameraPosition;
+
   int i = 0;
 
-  @override
-  void initState() {
-    // TODO: implement initState
-    addMarker();
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
     final mapState = Provider.of<MapState>(context);
+    final flightState = Provider.of<FlightState>(context);
     return Scaffold(
       body: Stack(
         children: [
           GoogleMap(
-              onMapCreated: (controller) {
-                _controller = controller;
-              },
-              markers: marker,
+              onMapCreated: flightState.onMapCreated,
+              markers: flightState.marker,
               initialCameraPosition: CameraPosition(
                 target: LatLng(51.1537, 0.1821),
                 zoom: 10,
@@ -63,21 +49,20 @@ class _FlightsScreenState extends State<FlightsScreen> {
                     onScrolled: (index) {
                       setState(() {
                         value = "$index";
-                        cameraPosition = CameraPosition(
-                            target: LatLng(latlngList[i].latitude,
-                                latlngList[i].longitude),
+                        flightState.cameraPosition = CameraPosition(
+                            target: LatLng(flightState.latlngList[i].latitude,
+                                flightState.latlngList[i].longitude),
                             zoom: zoom);
                         i++;
-
                         if (i >= 3) {
                           i = 0;
                         } else {
                           return null;
                         }
                       });
-                      animateCamera();
+                      flightState.animateCamera();
                     }),
-                items: url
+                    items: flightState.url
                     .map((e) => Builder(
                           builder: (BuildContext context) {
                             return Container(
@@ -135,15 +120,14 @@ class _FlightsScreenState extends State<FlightsScreen> {
                     Align(
                       alignment: Alignment.bottomLeft,
                       child: Row(
-                        //  mainAxisAlignment: MainAxisAlignment.end,
-                        //crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
                           FlatButton(
                               onPressed: () {
                                 mapState.sourceController.text =
                                     'Set Heat throw Airport $value';
-                                mapState.l1 = LatLng(latlngList[0].latitude,
-                                    latlngList[0].longitude);
+                                mapState.l1 = LatLng(
+                                    flightState.latlngList[0].latitude,
+                                    flightState.latlngList[0].longitude);
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
@@ -155,8 +139,9 @@ class _FlightsScreenState extends State<FlightsScreen> {
                               onPressed: () {
                                 mapState.destinationController.text =
                                     'Set Heat throw Airport $value';
-                                mapState.l1 = LatLng(latlngList[1].latitude,
-                                    latlngList[1].longitude);
+                                mapState.l2 = LatLng(
+                                    flightState.latlngList[1].latitude,
+                                    flightState.latlngList[1].longitude);
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
@@ -186,8 +171,9 @@ class _FlightsScreenState extends State<FlightsScreen> {
                       icon: Icon(Icons.location_searching,
                           color: Colors.deepPurpleAccent),
                       onPressed: () {
-                        return _controller.animateCamera(
-                            CameraUpdate.newCameraPosition(cameraPosition));
+                        return flightState.mapcontroller.animateCamera(
+                            CameraUpdate.newCameraPosition(
+                                flightState.cameraPosition));
                       },
                     ),
                   ))),
@@ -196,17 +182,4 @@ class _FlightsScreenState extends State<FlightsScreen> {
     );
   }
 
-  void addMarker() {
-    for (int i = 0; i < latlngList.length; i++) {
-      marker.add(Marker(
-        markerId: MarkerId("id $i"),
-        visible: true,
-        position: LatLng(latlngList[i].latitude, latlngList[i].longitude),
-      ));
-    }
-  }
-
-  void animateCamera() {
-    _controller.animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
-  }
 }
