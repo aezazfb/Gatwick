@@ -77,13 +77,19 @@ class MapState with ChangeNotifier {
     position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
     _initialPosition = LatLng(position.latitude, position.longitude);
+
     l1 = LatLng(position.latitude, position.longitude);
+
     Coordinates latLng =
         Coordinates(initialPosition.latitude, initialPosition.longitude);
     var addreslocation =
         await Geocoder.local.findAddressesFromCoordinates(latLng);
     var first = addreslocation.first;
-    sourceController.text = first.addressLine;
+    if (first.addressLine.isNotEmpty) {
+      sourceController.text = first.addressLine;
+    } else {
+      return null;
+    }
     notifyListeners();
   }
 
@@ -198,6 +204,7 @@ class MapState with ChangeNotifier {
 //----> BOTTOM MODEL SHEET
   settingModelBottomSheet(context) async {
     List list = await calculateDistanceTime.calculateDistanceTime(l1, l2);
+
     if (sourceController.text.toString().isNotEmpty &&
         destinationController.text.toString().isNotEmpty) {
       showModalBottomSheet(
@@ -303,26 +310,34 @@ class MapState with ChangeNotifier {
 
 //----> SWAP DESTINATION and SOURCE TEXFIELDS.
   swapFields() async {
-    String address = sourceController.text.toString();
-    sourceController.text = destinationController.text;
-    destinationController.text = address;
+    if (sourceController.text.toString().isNotEmpty &&
+        destinationController.text.toString().isNotEmpty) {
+      String address = sourceController.text.toString();
+      sourceController.text = destinationController.text;
+      destinationController.text = address;
 
-    LatLng latLng = l1;
-    l1 = l2;
-    l2 = latLng;
+      LatLng latLng = l1;
+      l1 = l2;
+      l2 = latLng;
 
-    String value = originCircle;
-    originCircle = destinationCircle;
-    destinationCircle = value;
-    //remove polyline here
-    polyLine.last.points.clear();
+      String value = originCircle;
+      originCircle = destinationCircle;
+      destinationCircle = value;
+      polyLine.last.points.clear();
+    } else {
+      return null;
+    }
     notifyListeners();
   }
 
 //----> CLEAR FIELDS.
   clearfields() {
     suggestion.clear();
-    polyLine.last.points.clear();
+    if (polyLine.isNotEmpty) {
+      polyLine.last.points.clear();
+    } else {
+      return null;
+    }
     notifyListeners();
   }
 
@@ -334,8 +349,9 @@ class MapState with ChangeNotifier {
     } else {
       cardVisibility = true;
     }
-    if (destinationController.text.toString().isEmpty ||
-        sourceController.text.toString().isEmpty) {
+
+    if (destinationController.text.toString().length == 0 ||
+        sourceController.text.toString().length == 0) {
       suggestion.clear();
     }
     notifyListeners();

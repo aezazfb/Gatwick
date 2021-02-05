@@ -17,10 +17,13 @@ class CalculateDistanceTime{
     response = await http.get(url);
     mapResponse = json.decode(response.body);
     List data = mapResponse['routes'];
-    var named = data[0]['legs'][0]['distance']['value'];
-    duration = data[0]['legs'][0]['duration']['text'];
-    named = named / 1609.34;
-    distance = named.toStringAsFixed(2);
+    if (data.isNotEmpty) {
+      var named = data[0]['legs'][0]['distance']['value'];
+      duration = data[0]['legs'][0]['duration']['text'];
+      named = named / 1609.34;
+      distance = named.toStringAsFixed(2);
+    }
+
     list.add(distance);
     list.add(duration);
     return list;

@@ -93,6 +93,7 @@ class MapScreenState extends State<MapScreen>{
                           onChanged: (bool) {
                             flage = true;
                             heightFactor = 90;
+                            mapState.visibility();
                             mapState.suggestions(bool);
                           },
                           textInputAction: TextInputAction.go,

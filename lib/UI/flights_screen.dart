@@ -64,10 +64,10 @@ class _FlightsScreenState extends State<FlightsScreen> {
                     .map((e) => Builder(
                           builder: (BuildContext context) {
                             return Container(
-                                //
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(15.0),
+                                    color: Colors.white),
                                 height: 230,
-                                // width: 800.0,
-                                color: Colors.white,
                                 child: Stack(
                                   children: [
                                     Image(
@@ -111,7 +111,8 @@ class _FlightsScreenState extends State<FlightsScreen> {
               child: Align(
                 child: Card(
                   color: Colors.white,
-                  margin: EdgeInsets.all(8.0),
+                  margin: EdgeInsets.all(4.0),
+                  clipBehavior: Clip.hardEdge,
                   child: Column(children: [
                     Text("Set London HEATTHROW Airport $value  as?",
                         style: TextStyle(color: Colors.black)),
