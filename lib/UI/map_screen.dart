@@ -15,7 +15,6 @@ class MapScreen extends StatefulWidget{
 class MapScreenState extends State<MapScreen>{
   bool flage = true;
   var heightFactor = 0.0;
-
   @override
   Widget build(BuildContext context) {
     final mapState = Provider.of<MapState>(context);
@@ -132,7 +131,7 @@ class MapScreenState extends State<MapScreen>{
 
                 //----> DROP OFF  TEXT FIELD
                 Positioned(
-                    top: 110.0,
+                    top: 115.0,
                     right: 17.0,
                     left: 12.0,
                     child: Visibility(
@@ -199,7 +198,8 @@ class MapScreenState extends State<MapScreen>{
                 //----> SWAP FIELDS  BUTTON
                 Positioned(
                   top: 80,
-                  right: 3.0,
+                  left: 5.0,
+                  // right: 2.0,
                   child: Visibility(
                     visible: mapState.stackElementsVisibality,
                     child: IconButton(
@@ -209,7 +209,6 @@ class MapScreenState extends State<MapScreen>{
                           color: Colors.deepPurple,
                         ),
                         onPressed: () {
-                          //appState.polyLine.last.points.clear();
                           mapState.swapFields();
                         }),
                   ),
