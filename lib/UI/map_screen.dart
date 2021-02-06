@@ -91,12 +91,11 @@ class MapScreenState extends State<MapScreen>{
                           controller: mapState.sourceController,
                           onChanged: (bool) {
                             flage = true;
-                            heightFactor = 90;
+                            heightFactor = 100;
                             mapState.suggestions(bool);
                           },
-                          textInputAction: TextInputAction.go,
                           onEditingComplete: () {
-                            mapState.suggestion.clear();
+                            mapState.clearSuggestion();
                           },
                           decoration: InputDecoration(
                             icon: Container(
@@ -119,6 +118,7 @@ class MapScreenState extends State<MapScreen>{
                                   mapState.marker.remove(markers);
                                   mapState.sourceController.clear();
                                   mapState.clearfields();
+                                  mapState.clearSuggestion();
                                 }),
                             hintText: "pick up",
                             border: InputBorder.none,
@@ -158,9 +158,8 @@ class MapScreenState extends State<MapScreen>{
                           },
                           cursorColor: Colors.black,
                           controller: mapState.destinationController,
-                          textInputAction: TextInputAction.go,
                           onEditingComplete: () {
-                            mapState.suggestion.clear();
+                            mapState.clearSuggestion();
                           },
                           decoration: InputDecoration(
                             icon: Container(
@@ -185,6 +184,7 @@ class MapScreenState extends State<MapScreen>{
                                   mapState.marker.remove(markers);
                                   mapState.destinationController.clear();
                                   mapState.clearfields();
+                                  mapState.clearSuggestion();
                                 }),
                             hintText: "go to...",
                             border: InputBorder.none,
@@ -256,11 +256,12 @@ class MapScreenState extends State<MapScreen>{
                     left: 20,
                     right: 20,
                     top: heightFactor,
-                    child: SizedBox(
-                      height: mapState.suggestion.length * 50.0,
+                    child: LimitedBox(
+                      maxHeight: mapState.suggestion.length * 50.0,
                       child: Container(
                         child: ListView.builder(
                           itemCount: mapState.suggestion.length,
+                          padding: EdgeInsets.all(0.0),
                           itemBuilder: (context, index) {
                             return Card(
                               margin: EdgeInsets.only(bottom: 1.0),
@@ -285,6 +286,7 @@ class MapScreenState extends State<MapScreen>{
                                         flage);
                                   }
                                   mapState.clearfields();
+                                  mapState.clearSuggestion();
                                 },
                               ),
                             );
@@ -354,10 +356,7 @@ class MapScreenState extends State<MapScreen>{
                             icon: Icon(Icons.flight_takeoff,
                                 color: Colors.deepPurpleAccent),
                             onPressed: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => FlightsScreen()));
+                              Navigator.pushNamed(context, '/flightscreen');
                             },
                           ),
                         ))),

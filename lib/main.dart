@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:zippy_rider/UI/flights_screen.dart';
 import 'package:zippy_rider/states/flight_state.dart';
 import 'package:zippy_rider/states/map_state.dart';
 import 'UI/map_screen.dart';
@@ -24,7 +25,11 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.deepPurple,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: MapScreen(),
+      initialRoute: '/',
+      routes: {
+        '/': (context) => MapScreen(),
+        '/flightscreen': (context) => FlightsScreen(),
+      },
     );
   }
 }

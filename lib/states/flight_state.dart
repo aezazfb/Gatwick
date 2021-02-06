@@ -4,6 +4,15 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 class FlightState with ChangeNotifier {
   Set<Marker> _markers = Set();
   List<String> url = ['1', '2', '3', '4', '5'];
+  List<String> images = [
+    'assets/airportsImages/ap1.jpeg',
+    'assets/airportsImages/ap2.jpg',
+    'assets/airportsImages/ap3.jpg',
+    'assets/images/logo2.png',
+    'assets/images/markerLogo.png',
+    'assets/images/marker_logo.png',
+    'assets/images/logo2.webp' 'assets/images/image.jpeg'
+  ];
   GoogleMapController _controller;
 
   GoogleMapController get mapcontroller => _controller;
@@ -15,7 +24,7 @@ class FlightState with ChangeNotifier {
   ];
 
   Set<Marker> get marker => _markers;
-FlightState() {
+  FlightState() {
     _addMarker();
   }
 //----> ON MAP CREATED
@@ -37,6 +46,21 @@ FlightState() {
         visible: true,
         position: LatLng(latlngList[i].latitude, latlngList[i].longitude),
       ));
+    }
+    notifyListeners();
+  }
+
+  int i = 0;
+
+  changeCameraPosition() {
+    cameraPosition = CameraPosition(
+        target: LatLng(latlngList[i].latitude, latlngList[i].longitude),
+        zoom: 18);
+    i++;
+    if (i > 2) {
+      i = 0;
+    } else {
+      return null;
     }
     notifyListeners();
   }

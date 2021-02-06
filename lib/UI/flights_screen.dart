@@ -1,5 +1,5 @@
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:zippy_rider/UI/map_screen.dart';
@@ -12,9 +12,6 @@ class FlightsScreen extends StatefulWidget {
 }
 
 class _FlightsScreenState extends State<FlightsScreen> {
-  String value = '';
-  int i = 0;
-
 
   @override
   Widget build(BuildContext context) {
@@ -31,79 +28,67 @@ class _FlightsScreenState extends State<FlightsScreen> {
                 zoom: 10,
               )),
           Positioned(
-              bottom: 20,
-              left: 10,
-              right: 10,
-              child: SizedBox(
-                  child: CarouselSlider(
-                options: CarouselOptions(
-                    initialPage: 0,
-                    height: 170,
-                    viewportFraction: 0.6,
-                    autoPlay: false,
-                    scrollDirection: Axis.horizontal,
-                    reverse: false,
-                    enlargeCenterPage: true,
-                    onScrolled: (index) {
-                      setState(() {
-                        value = "$index";
-                        flightState.cameraPosition = CameraPosition(
-                            target: LatLng(flightState.latlngList[i].latitude,
-                                flightState.latlngList[i].longitude),
-                            zoom: 17);
-                        i++;
-                        if (i >= 3) {
-                          i = 0;
-                        } else {
-                          return null;
-                        }
-                      });
-                      flightState.animateCamera();
-                    }),
-                    items: flightState.url
-                    .map((e) => Builder(
-                          builder: (BuildContext context) {
-                            return Container(
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(15.0),
-                                    color: Colors.white),
-                                height: 230,
-                                child: Stack(
-                                  children: [
-                                    Image(
-                                        image: AssetImage(
-                                          "assets/images/image.jpeg",
-                                        ),
-                                        fit: BoxFit.fitWidth,
-                                        height: 100,
-                                        width: 250),
-                                    Positioned(
-                                      bottom: 40,
-                                      left: 15,
-                                      child: Wrap(
-                                        children: [
-                                          Text(
-                                            "London HEATTHROW Airport $e ",
-                                            style: TextStyle(
-                                                color: Colors.black,
-                                                fontWeight: FontWeight.w700),
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                    Positioned(
-                                        bottom: 10.0,
-                                        left: 10,
-                                        child: Text("CM4 1 RW",
-                                            style: TextStyle(
-                                                color: Colors.purple,
-                                                fontWeight: FontWeight.w500)))
-                                  ],
-                                ));
-                          },
-                        ))
-                    .toList(),
-              ))),
+            bottom: 10,
+            left: 3,
+            right: 3,
+            child: Swiper(
+              physics: BouncingScrollPhysics(),
+              itemWidth: 290,
+              itemHeight: 200,
+              layout: SwiperLayout.CUSTOM,
+              customLayoutOption:
+                  new CustomLayoutOption(startIndex: -1, stateCount: 3)
+                      .addTranslate([
+                new Offset(-330.0, -50.0),
+                new Offset(0.0, 0.0),
+                new Offset(330.0, -50.0)
+              ]).addOpacity([0.5, 1.0, 0.5]),
+              scrollDirection: Axis.horizontal,
+              itemCount: flightState.images.length,
+              onIndexChanged: (index) {
+                flightState.changeCameraPosition();
+                flightState.animateCamera();
+              },
+              itemBuilder: (BuildContext context, index) {
+                return Container(
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(15.0),
+                        color: Colors.white),
+                    child: Stack(
+                      children: [
+                        Image(
+                            image: AssetImage(
+                              flightState.images[index],
+                            ),
+                            fit: BoxFit.fitWidth,
+                            height: 100,
+                            width: 350),
+                        Positioned(
+                          top: 100,
+                          left: 15,
+                          child: Wrap(
+                            children: [
+                              Text(
+                                "London HEATTHROW Airport $index",
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w700),
+                              )
+                            ],
+                          ),
+                        ),
+                        Positioned(
+                            bottom: 10.0,
+                            left: 10,
+                            child: Text("CM4 1 RW $index",
+                                style: TextStyle(
+                                    color: Colors.purple,
+                                    fontWeight: FontWeight.w500))),
+                      ],
+                    ));
+              },
+            ),
+          ),
           Positioned(
             bottom: 200,
             child: Visibility(
@@ -114,7 +99,7 @@ class _FlightsScreenState extends State<FlightsScreen> {
                   margin: EdgeInsets.all(4.0),
                   clipBehavior: Clip.hardEdge,
                   child: Column(children: [
-                    Text("Set London HEATTHROW Airport $value  as?",
+                    Text("Set London HEATTHROW Airport  as?",
                         style: TextStyle(color: Colors.black)),
                     Align(
                       alignment: Alignment.bottomLeft,
@@ -126,7 +111,7 @@ class _FlightsScreenState extends State<FlightsScreen> {
                           FlatButton(
                               onPressed: () {
                                 mapState.sourceController.text =
-                                    'Set Heat throw Airport $value';
+                                    'Set Heat throw Airport ';
                                 mapState.l1 = LatLng(
                                     flightState.latlngList[0].latitude,
                                     flightState.latlngList[0].longitude);
@@ -140,7 +125,7 @@ class _FlightsScreenState extends State<FlightsScreen> {
                           FlatButton(
                               onPressed: () {
                                 mapState.destinationController.text =
-                                    'Set Heat throw Airport $value';
+                                    'Set Heat throw Airport';
                                 mapState.l2 = LatLng(
                                     flightState.latlngList[1].latitude,
                                     flightState.latlngList[1].longitude);
@@ -183,5 +168,4 @@ class _FlightsScreenState extends State<FlightsScreen> {
       ),
     );
   }
-
 }

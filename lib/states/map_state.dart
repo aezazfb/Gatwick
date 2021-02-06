@@ -332,7 +332,6 @@ class MapState with ChangeNotifier {
 
 //----> CLEAR FIELDS.
   clearfields() {
-    suggestion.clear();
     if (polyLine.isNotEmpty) {
       polyLine.last.points.clear();
     } else {
@@ -349,7 +348,11 @@ class MapState with ChangeNotifier {
     } else {
       cardVisibility = true;
     }
+    notifyListeners();
+  }
 
+  clearSuggestion() {
+    suggestion.clear();
     notifyListeners();
   }
 }
