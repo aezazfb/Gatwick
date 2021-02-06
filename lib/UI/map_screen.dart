@@ -253,8 +253,8 @@ class MapScreenState extends State<MapScreen>{
                 //----> SEARCH SUGGESTION  LIST VIEW
                 // SizedBox(height: heightFactor),
                 Positioned(
-                    left: 20,
-                    right: 20,
+                    left: 12,
+                    right: 17,
                     top: heightFactor,
                     child: LimitedBox(
                       maxHeight: mapState.suggestion.length * 50.0,
