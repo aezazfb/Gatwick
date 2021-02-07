@@ -73,4 +73,16 @@ class FlightState with ChangeNotifier {
     print('++++++++++++++++++++++++++++++++++++++++$airportName');
     notifyListeners();
   }
+
+  var j = 0;
+
+  changeAirportName() {
+    airportName = data[j]['Name'];
+    print(airportName);
+    if (j > data.toString().length) {
+      j = 0;
+    } else {
+      return null;
+    }
+  }
 }
