@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:zippy_rider/requests/detailsRequest.dart';
 import 'package:zippy_rider/requests/distance_time_calculate.dart';
 import 'package:connectivity/connectivity.dart';
+import 'package:connection_status_bar/connection_status_bar.dart';
 
 class MapState with ChangeNotifier {
   static LatLng _initialPosition;
@@ -262,6 +263,7 @@ class MapState with ChangeNotifier {
     var locationName =
     await Geocoder.local.findAddressesFromCoordinates(coordinates);
     var first = locationName.first;
+
     _name = first.addressLine;
 
     notifyListeners();
@@ -378,4 +380,7 @@ class MapState with ChangeNotifier {
     });
     notifyListeners();
   }
+
+// ignore: non_constant_identifier_names
+
 }

@@ -43,13 +43,20 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.15.0-nullsafety.3"
-  connectivity:
+  connection_status_bar:
     dependency: "direct main"
+    description:
+      name: connection_status_bar
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.1.4"
+  connectivity:
+    dependency: transitive
     description:
       name: connectivity
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.2"
+    version: "0.4.9+5"
   connectivity_for_web:
     dependency: transitive
     description:

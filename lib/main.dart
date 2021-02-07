@@ -10,7 +10,8 @@ void main() {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
     statusBarColor: Colors.deepPurpleAccent,
-    systemNavigationBarIconBrightness: Brightness.dark,
+    systemNavigationBarColor: Colors.deepPurpleAccent,
+    //systemNavigationBarIconBrightness: Brightness.dark,
   ));
   runApp(MultiProvider(
     child: MyApp(),
@@ -28,7 +29,7 @@ class MyApp extends StatelessWidget {
       title: 'ZippyRides',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: Colors.deepPurple,
+        primarySwatch: Colors.purple,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       initialRoute: '/',
