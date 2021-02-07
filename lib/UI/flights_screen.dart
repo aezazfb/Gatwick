@@ -3,10 +3,8 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:zippy_rider/UI/map_screen.dart';
 import 'package:zippy_rider/states/flight_state.dart';
 import 'package:zippy_rider/states/map_state.dart';
-import 'package:connection_status_bar/connection_status_bar.dart';
 
 class FlightsScreen extends StatefulWidget {
   @override

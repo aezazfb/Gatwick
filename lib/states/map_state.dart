@@ -10,7 +10,6 @@ import 'package:flutter/material.dart';
 import 'package:zippy_rider/requests/detailsRequest.dart';
 import 'package:zippy_rider/requests/distance_time_calculate.dart';
 import 'package:connectivity/connectivity.dart';
-import 'package:connection_status_bar/connection_status_bar.dart';
 
 class MapState with ChangeNotifier {
   static LatLng _initialPosition;

@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:zippy_rider/UI/flights_screen.dart';
 import 'package:zippy_rider/states/map_state.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:connection_status_bar/connection_status_bar.dart';
 
 class MapScreen extends StatefulWidget{
   @override
