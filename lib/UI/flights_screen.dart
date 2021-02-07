@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
@@ -67,14 +68,14 @@ class _FlightsScreenState extends State<FlightsScreen> {
                         Positioned(
                           top: 100,
                           left: 15,
-                          child: Wrap(
+                          child: Row(
                             children: [
                               Text(
-                                "London HEATTHROW Airport $index London HEATTHROW Airport",
+                                "London HEATTHROW Airport $index London HEATTHROW Airport $index",
                                 style: TextStyle(
                                     color: Colors.black,
                                     fontWeight: FontWeight.w700),
-                              )
+                              ),
                             ],
                           ),
                         ),
