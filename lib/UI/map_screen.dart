@@ -43,7 +43,7 @@ class MapScreenState extends State<MapScreen>{
               ],
             ))
           : Stack(
-              children: [
+        children: [
                 GoogleMap(
                   tiltGesturesEnabled: true,
                   mapType: MapType.normal,

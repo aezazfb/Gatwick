@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:zippy_rider/UI/map_screen.dart';
 import 'package:zippy_rider/states/flight_state.dart';
 import 'package:zippy_rider/states/map_state.dart';
+import 'package:connection_status_bar/connection_status_bar.dart';
 
 class FlightsScreen extends StatefulWidget {
   @override
@@ -33,7 +34,7 @@ class _FlightsScreenState extends State<FlightsScreen> {
             right: 3,
             child: Swiper(
               physics: BouncingScrollPhysics(),
-              itemWidth: 290,
+              itemWidth: 300,
               itemHeight: 200,
               layout: SwiperLayout.CUSTOM,
               customLayoutOption:
@@ -90,7 +91,7 @@ class _FlightsScreenState extends State<FlightsScreen> {
             ),
           ),
           Positioned(
-            bottom: 200,
+            bottom: 220,
             child: Visibility(
               visible: true,
               child: Align(
@@ -115,10 +116,7 @@ class _FlightsScreenState extends State<FlightsScreen> {
                                 mapState.l1 = LatLng(
                                     flightState.latlngList[0].latitude,
                                     flightState.latlngList[0].longitude);
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => MapScreen()));
+                                Navigator.pushNamed(context, '/');
                               },
                               child: Text('Origin',
                                   style: TextStyle(color: Colors.purple))),
@@ -129,10 +127,7 @@ class _FlightsScreenState extends State<FlightsScreen> {
                                 mapState.l2 = LatLng(
                                     flightState.latlngList[1].latitude,
                                     flightState.latlngList[1].longitude);
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => MapScreen()));
+                                Navigator.pushNamed(context, '/');
                               },
                               child: Text("Destination",
                                   style: TextStyle(color: Colors.purple))),
