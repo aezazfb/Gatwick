@@ -69,7 +69,7 @@ class _FlightsScreenState extends State<FlightsScreen> {
                           child: Wrap(
                             children: [
                               Text(
-                                "London HEATTHROW Airport $index",
+                                "London HEATTHROW Airport $index London HEATTHROW Airport",
                                 style: TextStyle(
                                     color: Colors.black,
                                     fontWeight: FontWeight.w700),

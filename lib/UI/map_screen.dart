@@ -57,11 +57,12 @@ class MapScreenState extends State<MapScreen>{
                   circles: mapState.circle,
                   onCameraMove: mapState.onCameraMove,
                   onCameraMoveStarted: () {
+                    mapState.checkConnectivity();
                     mapState.stackElementsVisibality = false;
                   },
                   onCameraIdle: () {
                     mapState.fetchAddressFromCoordinates(mapState.centerPoints);
-                    mapState.stackElementsVisibality = true;
+                    mapState.cameraIdle();
                   },
                 ),
 

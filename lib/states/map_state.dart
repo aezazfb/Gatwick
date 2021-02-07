@@ -9,6 +9,7 @@ import 'package:zippy_rider/requests/suggestionRequest.dart';
 import 'package:flutter/material.dart';
 import 'package:zippy_rider/requests/detailsRequest.dart';
 import 'package:zippy_rider/requests/distance_time_calculate.dart';
+import 'package:connectivity/connectivity.dart';
 
 class MapState with ChangeNotifier {
   static LatLng _initialPosition;
@@ -61,6 +62,7 @@ class MapState with ChangeNotifier {
   bool stackElementsVisibality = true;
 
   MapState() {
+    checkConnectivity();
     _getUserLocation();
     _loadingInitialPosition();
     notifyListeners();
@@ -261,6 +263,7 @@ class MapState with ChangeNotifier {
     await Geocoder.local.findAddressesFromCoordinates(coordinates);
     var first = locationName.first;
     _name = first.addressLine;
+
     notifyListeners();
   }
 
@@ -353,6 +356,26 @@ class MapState with ChangeNotifier {
 
   clearSuggestion() {
     suggestion.clear();
+    notifyListeners();
+  }
+
+  cameraIdle() {
+    stackElementsVisibality = true;
+    notifyListeners();
+  }
+
+  checkConnectivity() async {
+    Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
+      if (result == ConnectivityResult.mobile ||
+          result == ConnectivityResult.wifi) {
+        print('Connected');
+      }
+      if (result != ConnectivityResult.mobile &&
+          result != ConnectivityResult.wifi) {
+        _name = "  No Internet ! \n Please Check your Internet Connection.... ";
+        print('Not Connected !');
+      }
+    });
     notifyListeners();
   }
 }
