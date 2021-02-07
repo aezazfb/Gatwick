@@ -39,10 +39,10 @@ class _FlightsScreenState extends State<FlightsScreen> {
               customLayoutOption:
                   new CustomLayoutOption(startIndex: -1, stateCount: 3)
                       .addTranslate([
-                new Offset(-330.0, -50.0),
+                new Offset(-310.0, -60.0),
                 new Offset(0.0, 0.0),
-                new Offset(330.0, -50.0)
-              ]).addOpacity([0.5, 1.0, 0.5]),
+                new Offset(310.0, -60.0)
+              ]).addOpacity([0.7, 1.0, 0.7]),
               scrollDirection: Axis.horizontal,
               itemCount: flightState.images.length,
               onIndexChanged: (index) {
@@ -69,7 +69,7 @@ class _FlightsScreenState extends State<FlightsScreen> {
                           child: Row(
                             children: [
                               Text(
-                                "London HEATTHROW Airport $index London HEATTHROW Airport $index",
+                                "${flightState.airportName}",
                                 style: TextStyle(
                                     color: Colors.black,
                                     fontWeight: FontWeight.w700),
