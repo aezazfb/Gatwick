@@ -6,7 +6,6 @@ class FlightState with ChangeNotifier {
   AirportsData airportsData = AirportsData();
 
   Set<Marker> _markers = Set();
-  List<String> url = [];
   List<String> images = [
     'assets/airportsImages/ap1.jpeg',
     'assets/airportsImages/ap2.jpg',
@@ -26,7 +25,7 @@ class FlightState with ChangeNotifier {
     LatLng(51.8860, 0.2389)
   ];
   var data;
-  String airportName;
+  String airportName = '';
 
   Set<Marker> get marker => _markers;
 
@@ -49,7 +48,9 @@ class FlightState with ChangeNotifier {
 //----> ADD MARKER
   _addMarker() async {
     data = await airportsData.getAirportsData();
-    for (int i = 0; i < data.toString().length; i++) {
+    print(
+        "________----------------_____________---------------______________--------------_______________$data");
+    for (int i = 0; i < 10; i++) {
       _markers.add(Marker(
         markerId: MarkerId("id $i"),
         visible: true,
@@ -65,24 +66,25 @@ class FlightState with ChangeNotifier {
     cameraPosition = CameraPosition(
         target: LatLng(data[i]['Latitude'], data[i]['Latitude']), zoom: 13);
     i++;
-    if (i > data.toString().length) {
+    if (i > 10) {
       i = 0;
     } else {
       return null;
     }
-    print('++++++++++++++++++++++++++++++++++++++++$airportName');
     notifyListeners();
   }
-
   var j = 0;
 
   changeAirportName() {
-    airportName = data[j]['Name'];
+    airportName = data[j]['Place'];
     print(airportName);
-    if (j > data.toString().length) {
+    if (j > 10) {
       j = 0;
     } else {
+      j++;
       return null;
     }
+
+    notifyListeners();
   }
 }
