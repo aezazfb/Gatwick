@@ -35,7 +35,7 @@ class _FlightsScreenState extends State<FlightsScreen> {
             right: 3,
             child: Swiper(
               itemWidth: 300,
-              itemHeight: 200,
+              itemHeight: 190,
               itemCount: 10,
               outer: true,
               layout: SwiperLayout.CUSTOM,
@@ -53,42 +53,41 @@ class _FlightsScreenState extends State<FlightsScreen> {
                 indu = index;
               },
               itemBuilder: (BuildContext context, index) {
-                return Container(
-                    height: 300,
-                    width: 300,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(15.0),
-                        color: Colors.white),
-                    child: Stack(
-                      children: [
-                        Image(
-                            image: AssetImage('assets/airportsImages/ap1.jpeg'),
-                            fit: BoxFit.fitWidth,
-                            height: 100,
-                            width: 350),
-                        Positioned(
-                          top: 100,
-                          left: 15,
-                          child: Row(
-                            children: [
-                              Text(
-                                "${flightState.airPortNamelist[index]}",
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.w700),
-                              ),
-                            ],
+                return Card(
+                    // height: 300,
+                    // width: 300,
+                    child: InkWell(
+                        child: Stack(
+                  children: [
+                    Image(
+                        image: AssetImage('assets/airportsImages/ap1.jpeg'),
+                        fit: BoxFit.fitWidth,
+                        height: 100,
+                        width: 360),
+                    Positioned(
+                      top: 110,
+                      left: 8.0,
+                      child: Row(
+                        children: [
+                          Text(
+                            "${flightState.airPortNamelist[index]}",
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.w700,
+                                fontSize: 13),
                           ),
-                        ),
-                        Positioned(
-                            bottom: 10.0,
-                            left: 10,
-                            child: Text("CM4 1 RW $index",
-                                style: TextStyle(
-                                    color: Colors.purple,
-                                    fontWeight: FontWeight.w500))),
-                      ],
-                    ));
+                        ],
+                      ),
+                    ),
+                    Positioned(
+                        top: 145.0,
+                        left: 10,
+                        child: Text("${flightState.postCode[index]}",
+                            style: TextStyle(
+                                color: Colors.purple,
+                                fontWeight: FontWeight.w500))),
+                  ],
+                )));
               },
             ),
           ),
@@ -102,7 +101,7 @@ class _FlightsScreenState extends State<FlightsScreen> {
                   margin: EdgeInsets.all(4.0),
                   clipBehavior: Clip.hardEdge,
                   child: Column(children: [
-                    Text("Set ${flightState.airPortNamelist[indu]}  as?",
+                    Text("Set ${flightState.airPortNamelist[indu]} as?",
                         style: TextStyle(color: Colors.black)),
                     Align(
                       alignment: Alignment.bottomLeft,
