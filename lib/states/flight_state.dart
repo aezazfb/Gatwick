@@ -26,7 +26,7 @@ class FlightState with ChangeNotifier {
   String airportName = '';
 
   Set<Marker> get marker => _markers;
-  int num;
+  //int num;
 
   FlightState() {
     _saveData();
@@ -54,7 +54,7 @@ class FlightState with ChangeNotifier {
 
 //----> ADD MARKER
   _addMarker() async {
-    data = await airportsData.getAirportsData();
+    _saveData();
     for (int i = 0; i < 10; i++) {
       _markers.add(Marker(
         markerId: MarkerId("id $i"),
@@ -66,9 +66,10 @@ class FlightState with ChangeNotifier {
   }
 
 
-  changeCameraPosition() {
+  changeCameraPosition(int index) {
     cameraPosition = CameraPosition(
-        target: LatLng(latLangList[num].latitude, latLangList[num].longitude),
+        target:
+            LatLng(latLangList[index].latitude, latLangList[index].longitude),
         zoom: 15);
     notifyListeners();
   }
