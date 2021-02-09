@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:zippy_rider/requests/detailsRequest.dart';
 import 'package:zippy_rider/requests/distance_time_calculate.dart';
 import 'package:connectivity/connectivity.dart';
+import 'package:flutter_dropdown/flutter_dropdown.dart';
 
 class MapState with ChangeNotifier {
   static LatLng initialPositions;
@@ -220,23 +221,33 @@ class MapState with ChangeNotifier {
                 borderRadius: BorderRadius.all(Radius.circular(12.0)),
                 color: Colors.white,
               ),
-              child: Wrap(
+              child: Column(
                 children: [
-                  ListTile(
-                    title: Text("Distance ${list[0]} miles"),
-                  ),
-                  ListTile(
-                    title: Text("Duration ${list[1]} "),
-                  ),
-                  Center(
-                    child: FlatButton(
-                      color: Colors.deepPurple,
-                      child: Text("Book Now",
-                          style: TextStyle(color: Colors.white)),
-                      onPressed: () {
-                      },
-                    ),
-                  ),
+                  Wrap(
+                    children: [
+                      Row(
+                        children: [
+                          Text('Driver will be avail able in ------ minutes')
+                        ],
+                      ),
+                      Card(
+                          margin: EdgeInsets.symmetric(horizontal: 10.0),
+                          child: Row(
+                            // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Icon(Icons.location_city_rounded),
+                              Text('${list[0]} miles'),
+                              Icon(Icons.timelapse),
+                              Text('${list[1]}'),
+                              Icon(Icons.clean_hands_outlined),
+                              DropDown(
+                                items: ["Cash", "Card"],
+                                hint: Text('Cash'),
+                              ),
+                            ],
+                          )),
+                    ],
+                  )
                 ],
               ),
             );
@@ -277,7 +288,8 @@ class MapState with ChangeNotifier {
             title: ListTile(
               title: Text("Location Selection",
                   style: TextStyle(color: Colors.black, fontSize: 20.0)),
-              leading: Icon(Icons.location_on, size: 40, color: Colors.black),
+              leading: Icon(Icons.not_listed_location,
+                  size: 40, color: Colors.black),
             ),
             content: Text(
                 "Please Specify That you want to set this Location as you Destination or Origin?"),

@@ -32,6 +32,7 @@ dependencies:
   flutter_polyline_points: ^0.2.4
   flutter_swiper: ^1.1.6
   connection_status_bar: ^1.1.4
+  flutter_dropdown: ^0.0.8
 
 
 
