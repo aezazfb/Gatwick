@@ -231,6 +231,7 @@ class MapState with ChangeNotifier {
                         ],
                       ),
                       Card(
+                          elevation: 0.0,
                           margin: EdgeInsets.symmetric(horizontal: 10.0),
                           child: Row(
                             // mainAxisAlignment: MainAxisAlignment.spaceBetween,
