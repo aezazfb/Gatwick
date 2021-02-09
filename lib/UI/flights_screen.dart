@@ -12,7 +12,7 @@ class FlightsScreen extends StatefulWidget {
 }
 
 class _FlightsScreenState extends State<FlightsScreen> {
-var name;
+  int indu = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -27,16 +27,17 @@ var name;
               markers: flightState.marker,
               initialCameraPosition: CameraPosition(
                 target: LatLng(51.1537, 0.1821),
-                zoom: 10,
+                zoom: 7,
               )),
           Positioned(
             bottom: 10,
             left: 3,
             right: 3,
             child: Swiper(
-              physics: BouncingScrollPhysics(),
               itemWidth: 300,
               itemHeight: 200,
+              itemCount: 10,
+              outer: true,
               layout: SwiperLayout.CUSTOM,
               customLayoutOption:
                   new CustomLayoutOption(startIndex: -1, stateCount: 3)
@@ -46,23 +47,22 @@ var name;
                 new Offset(310.0, -60.0)
               ]).addOpacity([0.7, 1.0, 0.7]),
               scrollDirection: Axis.horizontal,
-              itemCount: flightState.images.length,
               onIndexChanged: (index) {
                 flightState.changeCameraPosition(index);
                 flightState.animateCamera();
-                name = flightState.airPortNamelist[index];
+                indu = index;
               },
               itemBuilder: (BuildContext context, index) {
                 return Container(
+                    height: 300,
+                    width: 300,
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(15.0),
                         color: Colors.white),
                     child: Stack(
                       children: [
                         Image(
-                            image: AssetImage(
-                              flightState.images[index],
-                            ),
+                            image: AssetImage('assets/airportsImages/ap1.jpeg'),
                             fit: BoxFit.fitWidth,
                             height: 100,
                             width: 350),
@@ -102,7 +102,7 @@ var name;
                   margin: EdgeInsets.all(4.0),
                   clipBehavior: Clip.hardEdge,
                   child: Column(children: [
-                    Text("Set $name  as?",
+                    Text("Set ${flightState.airPortNamelist[indu]}  as?",
                         style: TextStyle(color: Colors.black)),
                     Align(
                       alignment: Alignment.bottomLeft,
@@ -114,8 +114,10 @@ var name;
                           FlatButton(
                               onPressed: () {
                                 mapState.sourceController.text =
-                                    'Set Heat throw Airport ';
-                                // mapState.l1 = LatLng(flightState.latlngList[0].latitude, flightState.latlngList[0].longitude);
+                                    '${flightState.airPortNamelist[indu]} ';
+                                mapState.l1 = LatLng(
+                                    flightState.latLangList[indu].latitude,
+                                    flightState.latLangList[indu].longitude);
                                 Navigator.pushNamed(context, '/');
                               },
                               child: Text('Origin',
@@ -123,8 +125,10 @@ var name;
                           FlatButton(
                               onPressed: () {
                                 mapState.destinationController.text =
-                                    'Set Heat throw Airport';
-                                // mapState.l2 = LatLng(flightState.latlngList[1].latitude, flightState.latlngList[1].longitude);
+                                    '${flightState.airPortNamelist[indu]} ';
+                                mapState.l1 = LatLng(
+                                    flightState.latLangList[indu].latitude,
+                                    flightState.latLangList[indu].longitude);
                                 Navigator.pushNamed(context, '/');
                               },
                               child: Text("Destination",

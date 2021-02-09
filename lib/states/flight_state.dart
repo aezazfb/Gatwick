@@ -22,10 +22,11 @@ class FlightState with ChangeNotifier {
   GoogleMapController get mapcontroller => _controller;
   CameraPosition cameraPosition;
 
-  var data;
+  List data;
   String airportName = '';
 
   Set<Marker> get marker => _markers;
+
   //int num;
 
   FlightState() {
@@ -33,12 +34,12 @@ class FlightState with ChangeNotifier {
   }
 
   _saveData() async {
-    data = await airportsData.getAirportsData();
-    for (int i = 0; i < 10; i++) {
+    data = await airportsData.getAirportsData(15);
+    for (int i = 0; i < 12; i++) {
       latLangList.add(LatLng(data[i]['Latitude'], data[i]['Longitude']));
-      airPortNamelist.add(data[i]['Name']);
+      airPortNamelist.add(data[i]['Place']);
+      _addMarker(LatLng(data[i]['Latitude'], data[i]['Longitude']));
     }
-    _addMarker();
   }
 
 //----> ON MAP CREATED
@@ -53,20 +54,18 @@ class FlightState with ChangeNotifier {
   }
 
 //----> ADD MARKER
-  _addMarker() async {
-    // data = await airportsData.getAirportsData();
-    for (int i = 0; i < 10; i++) {
-      _markers.add(Marker(
-        markerId: MarkerId("id $i"),
+  _addMarker(LatLng latLng) async {
+    _markers.add(Marker(
+        markerId: MarkerId("id $airportName"),
+        infoWindow: InfoWindow(title: '$airportName'),
         visible: true,
-        position: LatLng(latLangList[i].latitude, latLangList[i].longitude),
-      ));
-    }
+        position: latLng));
+
     notifyListeners();
   }
 
 
-  changeCameraPosition(int index) {
+  changeCameraPosition(index) {
     cameraPosition = CameraPosition(
         target:
             LatLng(latLangList[index].latitude, latLangList[index].longitude),
