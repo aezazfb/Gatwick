@@ -12,7 +12,7 @@ import 'package:zippy_rider/requests/distance_time_calculate.dart';
 import 'package:connectivity/connectivity.dart';
 
 class MapState with ChangeNotifier {
-  static LatLng _initialPosition;
+  static LatLng initialPositions;
   static LatLng _centerPoints;
 
   LatLng l1 = LatLng(0.0000, 0.0000);
@@ -35,7 +35,7 @@ class MapState with ChangeNotifier {
 
   GoogleMapController get mapController => _mapController;
 
-  LatLng get initialPosition => _initialPosition;
+  LatLng get initialPosition => initialPositions;
 
   Set<Marker> get marker => _markers;
 
@@ -78,7 +78,7 @@ class MapState with ChangeNotifier {
   _getUserLocation() async {
     position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
-    _initialPosition = LatLng(position.latitude, position.longitude);
+    initialPositions = LatLng(position.latitude, position.longitude);
 
     l1 = LatLng(position.latitude, position.longitude);
 
@@ -109,7 +109,7 @@ class MapState with ChangeNotifier {
 //----> SET USERS INITIAL LOCATION
   void _loadingInitialPosition() async {
     await Future.delayed(Duration(milliseconds: 100)).then((v) {
-      if (_initialPosition == null) {
+      if (initialPositions == null) {
         locationServiceActive = false;
         notifyListeners();
       }

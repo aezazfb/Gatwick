@@ -117,6 +117,10 @@ class _FlightsScreenState extends State<FlightsScreen> {
                                 mapState.l1 = LatLng(
                                     flightState.latLangList[indu].latitude,
                                     flightState.latLangList[indu].longitude);
+
+                                MapState.initialPositions = LatLng(
+                                    flightState.latLangList[indu].latitude,
+                                    flightState.latLangList[indu].longitude);
                                 Navigator.pushNamed(context, '/');
                               },
                               child: Text('Origin',
@@ -125,7 +129,10 @@ class _FlightsScreenState extends State<FlightsScreen> {
                               onPressed: () {
                                 mapState.destinationController.text =
                                     '${flightState.airPortNamelist[indu]} ';
-                                mapState.l1 = LatLng(
+                                mapState.l2 = LatLng(
+                                    flightState.latLangList[indu].latitude,
+                                    flightState.latLangList[indu].longitude);
+                                MapState.initialPositions = LatLng(
                                     flightState.latLangList[indu].latitude,
                                     flightState.latLangList[indu].longitude);
                                 Navigator.pushNamed(context, '/');
