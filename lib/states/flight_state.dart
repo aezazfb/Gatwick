@@ -30,7 +30,6 @@ class FlightState with ChangeNotifier {
 
   FlightState() {
     _saveData();
-    _addMarker();
   }
 
   _saveData() async {
@@ -39,6 +38,7 @@ class FlightState with ChangeNotifier {
       latLangList.add(LatLng(data[i]['Latitude'], data[i]['Longitude']));
       airPortNamelist.add(data[i]['Name']);
     }
+    _addMarker();
   }
 
 //----> ON MAP CREATED
@@ -54,7 +54,7 @@ class FlightState with ChangeNotifier {
 
 //----> ADD MARKER
   _addMarker() async {
-    _saveData();
+    // data = await airportsData.getAirportsData();
     for (int i = 0; i < 10; i++) {
       _markers.add(Marker(
         markerId: MarkerId("id $i"),

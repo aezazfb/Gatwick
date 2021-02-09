@@ -12,6 +12,7 @@ class FlightsScreen extends StatefulWidget {
 }
 
 class _FlightsScreenState extends State<FlightsScreen> {
+var name;
 
   @override
   Widget build(BuildContext context) {
@@ -49,6 +50,7 @@ class _FlightsScreenState extends State<FlightsScreen> {
               onIndexChanged: (index) {
                 flightState.changeCameraPosition(index);
                 flightState.animateCamera();
+                name = flightState.airPortNamelist[index];
               },
               itemBuilder: (BuildContext context, index) {
                 return Container(
@@ -100,7 +102,7 @@ class _FlightsScreenState extends State<FlightsScreen> {
                   margin: EdgeInsets.all(4.0),
                   clipBehavior: Clip.hardEdge,
                   child: Column(children: [
-                    Text("Set London HEATTHROW Airport  as?",
+                    Text("Set $name  as?",
                         style: TextStyle(color: Colors.black)),
                     Align(
                       alignment: Alignment.bottomLeft,
