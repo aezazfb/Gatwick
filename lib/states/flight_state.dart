@@ -16,22 +16,28 @@ class FlightState with ChangeNotifier {
     'assets/images/logo2.webp' 'assets/images/image.jpeg'
   ];
   GoogleMapController _controller;
+  List<LatLng> latLangList = [];
+  List<String> airPortNamelist = [];
 
   GoogleMapController get mapcontroller => _controller;
   CameraPosition cameraPosition;
-  List<LatLng> latlngList = [
-    LatLng(51.1537, 0.1821),
-    LatLng(53.3588, 2.2727),
-    LatLng(51.8860, 0.2389)
-  ];
+
   var data;
   String airportName = '';
 
   Set<Marker> get marker => _markers;
 
   FlightState() {
-    airportsData.getAirportsData();
+    _saveData();
     _addMarker();
+  }
+
+  _saveData() async {
+    data = await airportsData.getAirportsData();
+    for (int i = 0; i < 10; i++) {
+      latLangList.add(LatLng(data[i]['Latitude'], data[i]['Longitude']));
+      airPortNamelist.add(data[i]['Name']);
+    }
   }
 
 //----> ON MAP CREATED
@@ -48,43 +54,28 @@ class FlightState with ChangeNotifier {
 //----> ADD MARKER
   _addMarker() async {
     data = await airportsData.getAirportsData();
-    print(
-        "________----------------_____________---------------______________--------------_______________$data");
     for (int i = 0; i < 10; i++) {
       _markers.add(Marker(
         markerId: MarkerId("id $i"),
         visible: true,
-        position: LatLng(data[i]['Latitude'], data[i]['Longitude']),
+        position: LatLng(latLangList[i].latitude, latLangList[i].longitude),
       ));
     }
     notifyListeners();
   }
 
-  int i = 0;
+  int i = 1;
 
   changeCameraPosition() {
     cameraPosition = CameraPosition(
-        target: LatLng(data[i]['Latitude'], data[i]['Latitude']), zoom: 13);
+        target: LatLng(latLangList[i].latitude, latLangList[i].longitude),
+        zoom: 15);
     i++;
     if (i > 10) {
       i = 0;
     } else {
       return null;
     }
-    notifyListeners();
-  }
-  var j = 0;
-
-  changeAirportName() {
-    airportName = data[j]['Place'];
-    print(airportName);
-    if (j > 10) {
-      j = 0;
-    } else {
-      j++;
-      return null;
-    }
-
     notifyListeners();
   }
 }

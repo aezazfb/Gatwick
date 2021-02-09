@@ -17,6 +17,7 @@ class _FlightsScreenState extends State<FlightsScreen> {
   Widget build(BuildContext context) {
     final mapState = Provider.of<MapState>(context);
     final flightState = Provider.of<FlightState>(context);
+
     return Scaffold(
       body: Stack(
         children: [
@@ -47,7 +48,6 @@ class _FlightsScreenState extends State<FlightsScreen> {
               itemCount: flightState.images.length,
               onIndexChanged: (index) {
                 flightState.changeCameraPosition();
-                flightState.changeAirportName();
                 flightState.animateCamera();
               },
               itemBuilder: (BuildContext context, index) {
@@ -70,7 +70,7 @@ class _FlightsScreenState extends State<FlightsScreen> {
                           child: Row(
                             children: [
                               Text(
-                                "${flightState.airportName}",
+                                "${flightState.airPortNamelist[index]}",
                                 style: TextStyle(
                                     color: Colors.black,
                                     fontWeight: FontWeight.w700),
@@ -113,9 +113,7 @@ class _FlightsScreenState extends State<FlightsScreen> {
                               onPressed: () {
                                 mapState.sourceController.text =
                                     'Set Heat throw Airport ';
-                                mapState.l1 = LatLng(
-                                    flightState.latlngList[0].latitude,
-                                    flightState.latlngList[0].longitude);
+                                // mapState.l1 = LatLng(flightState.latlngList[0].latitude, flightState.latlngList[0].longitude);
                                 Navigator.pushNamed(context, '/');
                               },
                               child: Text('Origin',
@@ -124,9 +122,7 @@ class _FlightsScreenState extends State<FlightsScreen> {
                               onPressed: () {
                                 mapState.destinationController.text =
                                     'Set Heat throw Airport';
-                                mapState.l2 = LatLng(
-                                    flightState.latlngList[1].latitude,
-                                    flightState.latlngList[1].longitude);
+                                // mapState.l2 = LatLng(flightState.latlngList[1].latitude, flightState.latlngList[1].longitude);
                                 Navigator.pushNamed(context, '/');
                               },
                               child: Text("Destination",
