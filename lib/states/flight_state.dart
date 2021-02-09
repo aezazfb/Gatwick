@@ -26,6 +26,7 @@ class FlightState with ChangeNotifier {
   String airportName = '';
 
   Set<Marker> get marker => _markers;
+  int num;
 
   FlightState() {
     _saveData();
@@ -64,18 +65,11 @@ class FlightState with ChangeNotifier {
     notifyListeners();
   }
 
-  int i = 1;
 
   changeCameraPosition() {
     cameraPosition = CameraPosition(
-        target: LatLng(latLangList[i].latitude, latLangList[i].longitude),
+        target: LatLng(latLangList[num].latitude, latLangList[num].longitude),
         zoom: 15);
-    i++;
-    if (i > 10) {
-      i = 0;
-    } else {
-      return null;
-    }
     notifyListeners();
   }
 }

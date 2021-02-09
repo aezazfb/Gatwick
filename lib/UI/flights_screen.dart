@@ -49,6 +49,7 @@ class _FlightsScreenState extends State<FlightsScreen> {
               onIndexChanged: (index) {
                 flightState.changeCameraPosition();
                 flightState.animateCamera();
+                flightState.num = index;
               },
               itemBuilder: (BuildContext context, index) {
                 return Container(
