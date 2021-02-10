@@ -14,6 +14,7 @@ import 'package:zippy_rider/requests/distance_time_calculate.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:flutter_dropdown/flutter_dropdown.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
+import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 
 class MapState with ChangeNotifier {
   static LatLng initialPositions;
@@ -375,10 +376,13 @@ class MapState with ChangeNotifier {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          IconButton(
-                              icon: Icon(Icons.date_range),
-                              iconSize: 40,
-                              onPressed: () => print('select Date')),
+                          Positioned(
+                            left: 10,
+                            child: IconButton(
+                                icon: Icon(Icons.date_range),
+                                iconSize: 40,
+                                onPressed: () => print('heloo')),
+                          ),
                           Positioned(
                             width: 100,
                             child: FlatButton(
@@ -387,12 +391,15 @@ class MapState with ChangeNotifier {
                               onPressed: () => print('Booked'),
                             ),
                           ),
-                          IconButton(
-                              icon: Icon(Icons.add),
-                              iconSize: 40,
-                              onPressed: () => print('add Comment')),
+                          Positioned(
+                            right: 10,
+                            child: IconButton(
+                                icon: Icon(Icons.add),
+                                iconSize: 40,
+                                onPressed: () => print('add Comment')),
+                          ),
                         ],
-                      )
+                      ),
                     ],
                   )
                 ],
