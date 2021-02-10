@@ -66,15 +66,16 @@ class _FlightsScreenState extends State<FlightsScreen> {
                         width: 360),
                     Positioned(
                       top: 110,
-                      left: 8.0,
+                      left: 5.0,
                       child: Row(
                         children: [
                           Text(
                             "${flightState.airPortNamelist[index]}",
                             style: TextStyle(
                                 color: Colors.black,
-                                fontWeight: FontWeight.w700,
-                                fontSize: 13),
+                                fontWeight: FontWeight.w600,
+                                fontSize: 12),
+                            overflow: TextOverflow.visible,
                           ),
                         ],
                       ),
@@ -85,7 +86,7 @@ class _FlightsScreenState extends State<FlightsScreen> {
                         child: Text("${flightState.postCode[index]}",
                             style: TextStyle(
                                 color: Colors.purple,
-                                fontWeight: FontWeight.w500))),
+                                fontWeight: FontWeight.w400))),
                   ],
                 )));
               },

@@ -33,6 +33,8 @@ dependencies:
   flutter_swiper: ^1.1.6
   connection_status_bar: ^1.1.4
   flutter_dropdown: ^0.0.8
+  expansion_tile_card: ^1.1.0
+  expandable_group: ^0.0.7
 
 
 
