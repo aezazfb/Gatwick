@@ -184,9 +184,9 @@ class BottomModelSheet extends StatelessWidget {
                                 iconSize: 40,
                                 color: Colors.white,
                                 onPressed: () => print('heloo')),
-                            // Spacer(),
                             FlatButton(
                               minWidth: MediaQuery.of(context).size.width - 120,
+                              height: 40,
                               color: Colors.purple,
                               child: Text('Confirm',
                                   style: TextStyle(
@@ -195,7 +195,6 @@ class BottomModelSheet extends StatelessWidget {
                                   )),
                               onPressed: () => print('Booked'),
                             ),
-                            // Spacer(),
                             IconButton(
                                 icon: Icon(Icons.add),
                                 iconSize: 40,
