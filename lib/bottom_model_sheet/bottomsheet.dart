@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dropdown/flutter_dropdown.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
+import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 
 class BottomModelSheet extends StatelessWidget {
+  DateTime pickedDate;
+  TimeOfDay pickedTime;
+
   @override
   Widget build(BuildContext context) {
     print('BS build called');
@@ -37,7 +41,7 @@ class BottomModelSheet extends StatelessWidget {
                       ],
                     ),
                     Card(
-                        // margin: EdgeInsets.symmetric(horizontal: 10.0),
+                      // margin: EdgeInsets.symmetric(horizontal: 10.0),
                         color: Colors.blueGrey,
                         // margin: EdgeInsets.all(0.0),
                         child: Row(
@@ -115,8 +119,8 @@ class BottomModelSheet extends StatelessWidget {
                       // outer: true,
                       layout: SwiperLayout.CUSTOM,
                       customLayoutOption:
-                          new CustomLayoutOption(startIndex: -1, stateCount: 3)
-                              .addTranslate([
+                      new CustomLayoutOption(startIndex: -1, stateCount: 3)
+                          .addTranslate([
                         new Offset(-140.0, 35.0),
                         new Offset(0.0, 20.0),
                         new Offset(140.0, 35.0)
@@ -134,44 +138,44 @@ class BottomModelSheet extends StatelessWidget {
                             color: Colors.blueGrey,
                             child: InkWell(
                                 child: Stack(
-                              children: [
-                                Icon(
-                                  Icons.local_taxi_rounded,
-                                  size: 45,
-                                  color: Colors.purple,
-                                ),
-                                Positioned(
-                                  top: 50,
-                                  left: 10.0,
-                                  child: Row(
-                                    children: [
-                                      Text(
-                                        " Vechile $index",
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.w600,
-                                            fontSize: 12),
-                                        overflow: TextOverflow.visible,
+                                  children: [
+                                    Icon(
+                                      Icons.local_taxi_rounded,
+                                      size: 45,
+                                      color: Colors.purple,
+                                    ),
+                                    Positioned(
+                                      top: 50,
+                                      left: 10.0,
+                                      child: Row(
+                                        children: [
+                                          Text(
+                                            " Vechile $index",
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.w600,
+                                                fontSize: 12),
+                                            overflow: TextOverflow.visible,
+                                          ),
+                                        ],
                                       ),
-                                    ],
-                                  ),
-                                ),
-                                Positioned(
-                                    top: 65.0,
-                                    left: 10,
-                                    child: Text(" Passangers: $index",
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.w400))),
-                                Positioned(
-                                    top: 80.0,
-                                    left: 10,
-                                    child: Text(" Suitcase: $index",
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.w400))),
-                              ],
-                            )));
+                                    ),
+                                    Positioned(
+                                        top: 65.0,
+                                        left: 10,
+                                        child: Text(" Passangers: $index",
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.w400))),
+                                    Positioned(
+                                        top: 80.0,
+                                        left: 10,
+                                        child: Text(" Suitcase: $index",
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.w400))),
+                                  ],
+                                )));
                       },
                     ),
                     Card(
@@ -183,23 +187,33 @@ class BottomModelSheet extends StatelessWidget {
                                 icon: Icon(Icons.date_range),
                                 iconSize: 40,
                                 color: Colors.white,
-                                onPressed: () => print('heloo')),
+                                onPressed: () {
+                                  pickDate(context);
+                                }),
                             FlatButton(
-                              minWidth: MediaQuery.of(context).size.width - 120,
-                              height: 40,
-                              color: Colors.purple,
-                              child: Text('Confirm',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w700,
-                                  )),
-                              onPressed: () => print('Booked'),
-                            ),
+                                minWidth:
+                                    MediaQuery.of(context).size.width - 120,
+                                height: 40,
+                                color: Colors.purple,
+                                child: Text('Confirm',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w700,
+                                    )),
+                                onPressed: () {
+                                  print(
+                                      'date $pickedDate ${pickedDate.month} ${pickedDate.day}');
+                                  print(
+                                      ' time $pickedTime hour: ${pickedTime.hour} min: ${pickedTime.minute}'
+                                      ' period: ${pickedTime.period} ');
+                                }),
                             IconButton(
                                 icon: Icon(Icons.add),
                                 iconSize: 40,
                                 color: Colors.white,
-                                onPressed: () => print('add Comment')),
+                                onPressed: () {
+                                  pickTime(context);
+                                }),
                           ],
                         )),
                   ],
@@ -208,5 +222,31 @@ class BottomModelSheet extends StatelessWidget {
             ),
           );
         });
+  }
+
+  pickDate(context) async {
+    pickedDate = DateTime.now();
+    DateTime date = await showDatePicker(
+        confirmText: 'SAVE',
+        cancelText: 'CANCEL',
+        context: context,
+        initialDate: DateTime.now(),
+        firstDate: DateTime.now(),
+        lastDate: DateTime(DateTime.now().year + 1));
+    if (date != null) {
+      pickedDate = date;
+    }
+  }
+
+  pickTime(context) async {
+    pickedTime = TimeOfDay.now();
+    TimeOfDay time = await showTimePicker(
+        context: context,
+        initialTime: TimeOfDay.now(),
+        confirmText: 'SAVE',
+        cancelText: 'CANCEL');
+    if (time != null) {
+      pickedTime = time;
+    }
   }
 }
