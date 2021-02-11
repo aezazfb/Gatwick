@@ -44,14 +44,14 @@ class BottomModelSheet extends StatelessWidget {
                           // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Icon(Icons.alt_route,
-                                size: 40, color: Colors.white),
+                                size: 40, color: Colors.purple),
                             Text('$distance miles',
                                 style: TextStyle(color: Colors.white)),
                             Spacer(),
                             Icon(
                               Icons.timelapse,
                               size: 40,
-                              color: Colors.white,
+                              color: Colors.purple,
                             ),
                             Text('$time',
                                 style: TextStyle(color: Colors.white)),
@@ -71,7 +71,15 @@ class BottomModelSheet extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         SizedBox(width: 10),
-                        RotatedBox(quarterTurns: 3, child: Text('$vechile ')),
+                        RotatedBox(
+                            quarterTurns: 3,
+                            child: Text(
+                              '$vechile',
+                              style: TextStyle(
+                                color: Colors.blueGrey,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            )),
                         Icon(Icons.local_taxi_outlined,
                             size: 40, color: Colors.blueGrey),
                         Spacer(),
@@ -130,7 +138,7 @@ class BottomModelSheet extends StatelessWidget {
                                 Icon(
                                   Icons.local_taxi_rounded,
                                   size: 45,
-                                  color: Colors.white,
+                                  color: Colors.purple,
                                 ),
                                 Positioned(
                                   top: 50,
@@ -140,7 +148,7 @@ class BottomModelSheet extends StatelessWidget {
                                       Text(
                                         " Vechile $index",
                                         style: TextStyle(
-                                            color: Colors.black,
+                                            color: Colors.white,
                                             fontWeight: FontWeight.w600,
                                             fontSize: 12),
                                         overflow: TextOverflow.visible,
@@ -153,14 +161,14 @@ class BottomModelSheet extends StatelessWidget {
                                     left: 10,
                                     child: Text(" Passangers: $index",
                                         style: TextStyle(
-                                            color: Colors.purple,
+                                            color: Colors.white,
                                             fontWeight: FontWeight.w400))),
                                 Positioned(
                                     top: 80.0,
                                     left: 10,
                                     child: Text(" Suitcase: $index",
                                         style: TextStyle(
-                                            color: Colors.purple,
+                                            color: Colors.white,
                                             fontWeight: FontWeight.w400))),
                               ],
                             )));
@@ -174,18 +182,24 @@ class BottomModelSheet extends StatelessWidget {
                             IconButton(
                                 icon: Icon(Icons.date_range),
                                 iconSize: 40,
+                                color: Colors.white,
                                 onPressed: () => print('heloo')),
                             // Spacer(),
                             FlatButton(
                               minWidth: MediaQuery.of(context).size.width - 120,
                               color: Colors.purple,
-                              child: Text('Confirm'),
+                              child: Text('Confirm',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w700,
+                                  )),
                               onPressed: () => print('Booked'),
                             ),
                             // Spacer(),
                             IconButton(
                                 icon: Icon(Icons.add),
                                 iconSize: 40,
+                                color: Colors.white,
                                 onPressed: () => print('add Comment')),
                           ],
                         )),

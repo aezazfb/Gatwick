@@ -1,4 +1,3 @@
-import 'package:expansion_tile_card/expansion_tile_card.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:flutter/cupertino.dart';
@@ -12,10 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:zippy_rider/requests/detailsRequest.dart';
 import 'package:zippy_rider/requests/distance_time_calculate.dart';
 import 'package:connectivity/connectivity.dart';
-import 'package:flutter_dropdown/flutter_dropdown.dart';
-import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:zippy_rider/bottom_model_sheet/bottomsheet.dart';
-import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 
 class MapState with ChangeNotifier {
   static LatLng initialPositions;
