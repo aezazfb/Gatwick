@@ -98,21 +98,20 @@ class BottomModelSheet extends StatelessWidget {
                                       style: TextStyle(color: Colors.blueGrey))
                                 ]),
                             textAlign: TextAlign.center),
-                        SizedBox(width: 10),
                       ],
                     ),
                     Swiper(
-                      itemWidth: 130,
+                      itemWidth: 140,
                       itemHeight: 130,
                       itemCount: 10,
-                      outer: true,
+                      // outer: true,
                       layout: SwiperLayout.CUSTOM,
                       customLayoutOption:
                           new CustomLayoutOption(startIndex: -1, stateCount: 3)
                               .addTranslate([
-                        new Offset(-140.0, 25.0),
+                        new Offset(-140.0, 35.0),
                         new Offset(0.0, 20.0),
-                        new Offset(140.0, 25.0)
+                        new Offset(140.0, 35.0)
                       ]).addOpacity([1.0, 1.0, 1.0]),
                       scrollDirection: Axis.horizontal,
                       onIndexChanged: (index) {
