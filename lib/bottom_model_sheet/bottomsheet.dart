@@ -262,7 +262,7 @@ class BottomModelSheet extends StatelessWidget {
           insetPadding: EdgeInsets.all(10.0),
           titlePadding: EdgeInsets.all(0.0),
           titleTextStyle: TextStyle(
-              color: Colors.white, fontSize: 20, fontWeight: FontWeight.w700),
+              color: Colors.white, fontSize: 20, fontWeight: FontWeight.w600),
           title: Container(
             width: MediaQuery.of(context).size.width - 40,
             padding: EdgeInsets.only(left: 10, top: 10, bottom: 20),
@@ -331,12 +331,13 @@ class BottomModelSheet extends StatelessWidget {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
+          scrollable: true,
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
           insetPadding: EdgeInsets.all(10.0),
           titlePadding: EdgeInsets.all(0.0),
           titleTextStyle: TextStyle(
-              color: Colors.white, fontSize: 20, fontWeight: FontWeight.w700),
+              color: Colors.white, fontSize: 20, fontWeight: FontWeight.w600),
           title: Container(
             width: MediaQuery.of(context).size.width - 40,
             padding: EdgeInsets.only(left: 10, bottom: 20, top: 10),
@@ -367,8 +368,42 @@ class BottomModelSheet extends StatelessWidget {
                     )
                   ],
                 ),
-                TextField(),
-                TextField(),
+                SizedBox(height: 10),
+                ListTile(
+                  leading: Icon(
+                    Icons.flight,
+                    color: Colors.purple,
+                  ),
+                  title: TextFormField(
+                    maxLines: 1,
+                    keyboardType: TextInputType.number,
+                    minLines: null,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      hintText: 'Flight Number',
+                    ),
+                  ),
+                ),
+                SizedBox(height: 10),
+                ListTile(
+                  leading: Icon(
+                    Icons.comment,
+                    color: Colors.purple,
+                  ),
+                  title: TextFormField(
+                    maxLines: 4,
+                    keyboardType: TextInputType.multiline,
+                    minLines: null,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      hintText: 'Add Comment',
+                    ),
+                  ),
+                ),
               ],
             ),
           ),
