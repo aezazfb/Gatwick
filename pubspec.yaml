@@ -36,6 +36,7 @@ dependencies:
   expansion_tile_card: ^1.1.0
   expandable_group: ^0.0.7
   datetime_picker_formfield: ^1.0.0
+  flutter_switch: ^0.2.0
 
 
 

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dropdown/flutter_dropdown.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
+import 'package:flutter_switch/flutter_switch.dart';
 
 class BottomModelSheet extends StatelessWidget {
   DateTime pickedDate = DateTime.now();
@@ -325,6 +326,22 @@ class BottomModelSheet extends StatelessWidget {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text('Child Seat'),
+                    Container(
+                      child: FlutterSwitch(
+                        toggleSize: 20,
+                        value: true,
+                        onToggle: (val) {
+                          print('On/Off');
+                        },
+                        activeColor: Colors.purple,
+                      ),
+                    )
+                  ],
+                ),
                 TextField(),
                 TextField(),
               ],
