@@ -9,7 +9,7 @@ class BottomModelSheet extends StatelessWidget {
     return null;
   }
 
-  settingModelBottomSheet(context, time, distance) async {
+  settingModelBottomSheet(context, distance, time) async {
     String vechile = 'Saloon ';
     int suitCase = 0;
     int passengers = 0;
@@ -45,7 +45,7 @@ class BottomModelSheet extends StatelessWidget {
                           children: [
                             Icon(Icons.alt_route,
                                 size: 40, color: Colors.white),
-                            Text('$distance',
+                            Text('$distance miles',
                                 style: TextStyle(color: Colors.white)),
                             Spacer(),
                             Icon(
