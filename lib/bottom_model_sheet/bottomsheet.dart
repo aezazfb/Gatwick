@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dropdown/flutter_dropdown.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
-import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 
 class BottomModelSheet extends StatelessWidget {
-  DateTime pickedDate;
-  TimeOfDay pickedTime;
+  DateTime pickedDate = DateTime.now();
+  TimeOfDay pickedTime = TimeOfDay.now();
 
   @override
   Widget build(BuildContext context) {
@@ -188,7 +187,7 @@ class BottomModelSheet extends StatelessWidget {
                                 iconSize: 40,
                                 color: Colors.white,
                                 onPressed: () {
-                                  pickDate(context);
+                                  dialogShow(context);
                                 }),
                             FlatButton(
                                 minWidth:
@@ -212,7 +211,7 @@ class BottomModelSheet extends StatelessWidget {
                                 iconSize: 40,
                                 color: Colors.white,
                                 onPressed: () {
-                                  pickTime(context);
+                                  dialogShowCommment(context);
                                 }),
                           ],
                         )),
@@ -241,12 +240,91 @@ class BottomModelSheet extends StatelessWidget {
   pickTime(context) async {
     pickedTime = TimeOfDay.now();
     TimeOfDay time = await showTimePicker(
-        context: context,
-        initialTime: TimeOfDay.now(),
-        confirmText: 'SAVE',
-        cancelText: 'CANCEL');
+      context: context,
+      initialTime: TimeOfDay.now(),
+      confirmText: 'SAVE',
+      cancelText: 'CANCEL',
+    );
     if (time != null) {
       pickedTime = time;
     }
+    return pickedTime;
+  }
+
+  dialogShow(context) async {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Select Date and Time'),
+          content: Container(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                ListTile(
+                  title: Text(
+                      '${pickedDate.year}/${pickedDate.month}/${pickedDate.day}'),
+                  onTap: () {
+                    pickDate(context);
+                  },
+                  trailing: Icon(Icons.edit),
+                ),
+                ListTile(
+                  title: Text('${pickedTime.hour} : ${pickedTime.minute}'),
+                  onTap: () {
+                    pickTime(context);
+                  },
+                  trailing: Icon(Icons.edit),
+                ),
+              ],
+            ),
+          ),
+          actions: [
+            FlatButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text('Save')),
+            FlatButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text('CANCEL'))
+          ],
+        );
+      },
+    );
+  }
+
+  dialogShowCommment(context) async {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Add Suggestion'),
+          content: Container(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                TextField(),
+                TextField(),
+              ],
+            ),
+          ),
+          actions: [
+            FlatButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text('SEND')),
+            FlatButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text('SUBMIT'))
+          ],
+        );
+      },
+    );
   }
 }
