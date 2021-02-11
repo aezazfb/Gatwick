@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dropdown/flutter_dropdown.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:flutter_switch/flutter_switch.dart';
+import 'package:toggle_switch/toggle_switch.dart';
 
 class BottomModelSheet extends StatelessWidget {
   DateTime pickedDate = DateTime.now();
@@ -257,15 +258,20 @@ class BottomModelSheet extends StatelessWidget {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
+          insetPadding: EdgeInsets.all(10.0),
           titlePadding: EdgeInsets.all(0.0),
           titleTextStyle: TextStyle(
               color: Colors.white, fontSize: 20, fontWeight: FontWeight.w700),
           title: Container(
+            width: MediaQuery.of(context).size.width - 40,
             padding: EdgeInsets.only(left: 10, top: 10, bottom: 20),
             color: Colors.purple,
             child: Text(' Select Date and Time '),
           ),
           content: Container(
+            width: MediaQuery.of(context).size.width - 40,
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -310,20 +316,24 @@ class BottomModelSheet extends StatelessWidget {
   }
 
   dialogShowCommment(context) async {
-    bool value = true;
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
+          insetPadding: EdgeInsets.all(10.0),
           titlePadding: EdgeInsets.all(0.0),
           titleTextStyle: TextStyle(
               color: Colors.white, fontSize: 20, fontWeight: FontWeight.w700),
           title: Container(
+            width: MediaQuery.of(context).size.width - 40,
             padding: EdgeInsets.only(left: 10, bottom: 20, top: 10),
             color: Colors.purple,
             child: Text(' Add Additional Information '),
           ),
           content: Container(
+            width: MediaQuery.of(context).size.width - 40,
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -331,19 +341,18 @@ class BottomModelSheet extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text('Child Seat'),
-                    Container(
-                      child: FlutterSwitch(
-                        showOnOff: true,
-                        inactiveColor: Colors.blueGrey,
-                        activeTextColor: Colors.white,
-                        inactiveText: 'off',
-                        toggleSize: 20,
-                        value: value,
-                        onToggle: (val) {
-                          value = false;
-                        },
-                        activeColor: Colors.purple,
-                      ),
+                    ToggleSwitch(
+                      minWidth: 50.0,
+                      cornerRadius: 10.0,
+                      activeBgColor: Colors.purple,
+                      activeFgColor: Colors.white,
+                      inactiveBgColor: Colors.grey,
+                      inactiveFgColor: Colors.white,
+                      labels: ['YES', 'NO'],
+                      // icons: [Icons.check, Icons.clear_rounded],
+                      onToggle: (index) {
+                        print('switched to: $index');
+                      },
                     )
                   ],
                 ),
@@ -354,11 +363,13 @@ class BottomModelSheet extends StatelessWidget {
           ),
           actions: [
             FlatButton(
+                color: Colors.purple,
                 onPressed: () {
                   Navigator.pop(context);
                 },
                 child: Text('DONE')),
             FlatButton(
+                color: Colors.purple,
                 onPressed: () {
                   Navigator.pop(context);
                 },
