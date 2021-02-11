@@ -335,7 +335,7 @@ class BottomModelSheet extends StatelessWidget {
                       child: FlutterSwitch(
                         showOnOff: true,
                         inactiveColor: Colors.blueGrey,
-                        activeTextColor: Colors.blueGrey,
+                        activeTextColor: Colors.white,
                         inactiveText: 'off',
                         toggleSize: 20,
                         value: value,
