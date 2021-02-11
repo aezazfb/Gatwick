@@ -256,7 +256,14 @@ class BottomModelSheet extends StatelessWidget {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Select Date and Time'),
+          titlePadding: EdgeInsets.all(0.0),
+          titleTextStyle: TextStyle(
+              color: Colors.white, fontSize: 20, fontWeight: FontWeight.w700),
+          title: Container(
+            padding: EdgeInsets.only(left: 10, top: 10, bottom: 20),
+            color: Colors.purple,
+            child: Text(' Select Date and Time '),
+          ),
           content: Container(
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -264,32 +271,37 @@ class BottomModelSheet extends StatelessWidget {
                 ListTile(
                   title: Text(
                       '${pickedDate.year}/${pickedDate.month}/${pickedDate.day}'),
-                  onTap: () {
-                    pickDate(context);
-                  },
-                  trailing: Icon(Icons.edit),
+                  leading: Icon(Icons.calendar_today_outlined),
+                  trailing: IconButton(
+                    icon: Icon(Icons.edit),
+                    onPressed: () {
+                      pickDate(context);
+                    },
+                  ),
                 ),
                 ListTile(
                   title: Text('${pickedTime.hour} : ${pickedTime.minute}'),
-                  onTap: () {
-                    pickTime(context);
-                  },
-                  trailing: Icon(Icons.edit),
+                  leading: Icon(
+                    Icons.lock_clock,
+                  ),
+                  trailing: IconButton(
+                    icon: Icon(Icons.edit),
+                    onPressed: () {
+                      pickTime(context);
+                    },
+                  ),
                 ),
               ],
             ),
           ),
           actions: [
             FlatButton(
+                color: Colors.purple,
+                clipBehavior: Clip.hardEdge,
                 onPressed: () {
                   Navigator.pop(context);
                 },
-                child: Text('Save')),
-            FlatButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: Text('CANCEL'))
+                child: Text('DONE')),
           ],
         );
       },
@@ -301,7 +313,14 @@ class BottomModelSheet extends StatelessWidget {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Add Suggestion'),
+          titlePadding: EdgeInsets.all(0.0),
+          titleTextStyle: TextStyle(
+              color: Colors.white, fontSize: 20, fontWeight: FontWeight.w700),
+          title: Container(
+            padding: EdgeInsets.only(left: 10, bottom: 20, top: 10),
+            color: Colors.purple,
+            child: Text(' Add Additional Information '),
+          ),
           content: Container(
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -316,12 +335,12 @@ class BottomModelSheet extends StatelessWidget {
                 onPressed: () {
                   Navigator.pop(context);
                 },
-                child: Text('SEND')),
+                child: Text('DONE')),
             FlatButton(
                 onPressed: () {
                   Navigator.pop(context);
                 },
-                child: Text('SUBMIT'))
+                child: Text('CANCEL'))
           ],
         );
       },
