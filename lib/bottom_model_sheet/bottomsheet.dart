@@ -310,6 +310,7 @@ class BottomModelSheet extends StatelessWidget {
   }
 
   dialogShowCommment(context) async {
+    bool value = true;
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -332,10 +333,14 @@ class BottomModelSheet extends StatelessWidget {
                     Text('Child Seat'),
                     Container(
                       child: FlutterSwitch(
+                        showOnOff: true,
+                        inactiveColor: Colors.blueGrey,
+                        activeTextColor: Colors.blueGrey,
+                        inactiveText: 'off',
                         toggleSize: 20,
-                        value: true,
+                        value: value,
                         onToggle: (val) {
-                          print('On/Off');
+                          value = false;
                         },
                         activeColor: Colors.purple,
                       ),
