@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dropdown/flutter_dropdown.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
-import 'package:flutter_switch/flutter_switch.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 
 class BottomModelSheet extends StatelessWidget {
@@ -54,7 +53,7 @@ class BottomModelSheet extends StatelessWidget {
                                 style: TextStyle(color: Colors.white)),
                             Spacer(),
                             Icon(
-                              Icons.timelapse,
+                              Icons.access_time_rounded,
                               size: 40,
                               color: Colors.purple,
                             ),
@@ -281,11 +280,12 @@ class BottomModelSheet extends StatelessWidget {
                   leading: Icon(
                     Icons.calendar_today_outlined,
                     color: Colors.purple,
+                    size: 30,
                   ),
                   trailing: IconButton(
                     icon: Icon(
                       Icons.edit,
-                      color: Colors.purple,
+                      color: Colors.black,
                     ),
                     onPressed: () {
                       pickDate(context);
@@ -295,13 +295,14 @@ class BottomModelSheet extends StatelessWidget {
                 ListTile(
                   title: Text('${pickedTime.hour} : ${pickedTime.minute}'),
                   leading: Icon(
-                    Icons.lock_clock,
+                    Icons.access_time,
                     color: Colors.purple,
+                    size: 30,
                   ),
                   trailing: IconButton(
                     icon: Icon(
                       Icons.edit,
-                      color: Colors.purple,
+                      color: Colors.black,
                     ),
                     onPressed: () {
                       pickTime(context);
