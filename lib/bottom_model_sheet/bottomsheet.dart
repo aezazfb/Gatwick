@@ -278,9 +278,15 @@ class BottomModelSheet extends StatelessWidget {
                 ListTile(
                   title: Text(
                       '${pickedDate.year}/${pickedDate.month}/${pickedDate.day}'),
-                  leading: Icon(Icons.calendar_today_outlined),
+                  leading: Icon(
+                    Icons.calendar_today_outlined,
+                    color: Colors.purple,
+                  ),
                   trailing: IconButton(
-                    icon: Icon(Icons.edit),
+                    icon: Icon(
+                      Icons.edit,
+                      color: Colors.purple,
+                    ),
                     onPressed: () {
                       pickDate(context);
                     },
@@ -290,9 +296,13 @@ class BottomModelSheet extends StatelessWidget {
                   title: Text('${pickedTime.hour} : ${pickedTime.minute}'),
                   leading: Icon(
                     Icons.lock_clock,
+                    color: Colors.purple,
                   ),
                   trailing: IconButton(
-                    icon: Icon(Icons.edit),
+                    icon: Icon(
+                      Icons.edit,
+                      color: Colors.purple,
+                    ),
                     onPressed: () {
                       pickTime(context);
                     },
