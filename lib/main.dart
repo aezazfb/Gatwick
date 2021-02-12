@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:zippy_rider/UI/flights_screen.dart';
+import 'package:zippy_rider/UI/login_screen.dart';
 import 'package:zippy_rider/states/flight_state.dart';
 import 'package:zippy_rider/states/map_state.dart';
 import 'UI/map_screen.dart';
@@ -34,7 +35,8 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: '/',
       routes: {
-        '/': (context) => MapScreen(),
+        '/': (context) => Login(),
+        '/mapscreen': (context) => MapScreen(),
         '/flightscreen': (context) => FlightsScreen(),
       },
     );

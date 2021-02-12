@@ -170,10 +170,8 @@ class LoginState extends State<Login> {
                                               .toString();
                                         });
                                         if (code == inputValue) {
-                                          Navigator.of(context).push(
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      Profile(model: model)));
+                                          Navigator.of(context)
+                                              .pushNamed('/mapscreen');
                                         } else {
                                           return Toast.show(
                                               'Code Does not  Match', context,
@@ -219,7 +217,7 @@ class LoginState extends State<Login> {
   //Mailer for sending mail to user
   Future sendMail() async {
     String userName = 'abdulrahman369888@gmail.com';
-    String password = 'your mail password';
+    String password = 'arsain778866';
     final smtpServer = gmail(userName, password);
     String _mail = _mailController.text.toString();
     final message = Message()
