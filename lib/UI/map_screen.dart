@@ -18,7 +18,6 @@ class MapScreenState extends State<MapScreen>{
   Widget build(BuildContext context) {
     final mapState = Provider.of<MapState>(context);
     return Scaffold(
-      appBar: mapState.appBar(),
       body: mapState.initialPosition == null
           ? Container(
               child: Column(
@@ -28,9 +27,9 @@ class MapScreenState extends State<MapScreen>{
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     SpinKitRotatingCircle(
-                      color: Colors.deepPurple,
+                      color: Colors.purple,
                       size: 50.0,
-                  )
+                    )
                 ],
               ),
               SizedBox(height: 10),
@@ -206,9 +205,9 @@ class MapScreenState extends State<MapScreen>{
               child: IconButton(
                   icon: Icon(
                     Icons.swap_calls,
-                    size: 40,
-                    color: Colors.deepPurple,
-                  ),
+                          size: 40,
+                          color: Colors.purple,
+                        ),
                   onPressed: () {
                     mapState.swapFields();
                   }),
@@ -222,12 +221,12 @@ class MapScreenState extends State<MapScreen>{
                 child: Align(
                   alignment: Alignment.center,
                   child: IconButton(
-                      icon: Icon(Icons.circle,
-                          size: 17, color: Colors.deepPurple),
-                      onPressed: () {
-                        mapState.fetchAddressFromCoordinates(
-                            mapState.centerPoints);
-                      }),
+                      icon:
+                            Icon(Icons.circle, size: 17, color: Colors.purple),
+                        onPressed: () {
+                          mapState.fetchAddressFromCoordinates(
+                              mapState.centerPoints);
+                        }),
                 ),
               )),
 
@@ -238,17 +237,17 @@ class MapScreenState extends State<MapScreen>{
               child: Align(
                 alignment: Alignment(0.1, -0.1),
                 child: Card(
-                  color: Colors.deepPurple.withOpacity(.8),
-                  margin: EdgeInsets.all(20.0),
-                  child: InkWell(
-                      child: Text(mapState.name,
-                          style: TextStyle(
-                            color: Colors.white,
-                          )),
-                      onTap: () {
-                        mapState.dialogShow(context);
-                      }),
-                ),
+                  color: Colors.purple.withOpacity(.8),
+                        margin: EdgeInsets.all(20.0),
+                        child: InkWell(
+                            child: Text(mapState.name,
+                                style: TextStyle(
+                                  color: Colors.white,
+                                )),
+                            onTap: () {
+                              mapState.dialogShow(context);
+                            }),
+                      ),
               ),
             ),
           ),
@@ -306,9 +305,9 @@ class MapScreenState extends State<MapScreen>{
               child: Visibility(
                   visible: mapState.stackElementsVisibality,
                   child: FlatButton(
-                    color: Colors.deepPurple.withOpacity(0.8),
-                    onPressed: () {
-                      mapState.drawPolyLine();
+                    color: Colors.purple.withOpacity(0.8),
+                          onPressed: () {
+                            mapState.drawPolyLine();
                             mapState.addCircle(
                                 mapState.l1,
                                 mapState.l2,
@@ -337,12 +336,12 @@ class MapScreenState extends State<MapScreen>{
                     ),
                     child: IconButton(
                       icon: Icon(Icons.location_searching,
-                          color: Colors.deepPurpleAccent),
-                      onPressed: () {
-                        mapState.currentLocation();
-                        print("My Locationbutton Pressed");
-                      },
-                    ),
+                                color: Colors.purple),
+                            onPressed: () {
+                              mapState.currentLocation();
+                              print("My Locationbutton Pressed");
+                            },
+                          ),
                   ))),
 
           //----> FLIGHTS BUTTON
@@ -358,11 +357,11 @@ class MapScreenState extends State<MapScreen>{
                     ),
                     child: IconButton(
                       icon: Icon(Icons.flight_takeoff,
-                          color: Colors.deepPurpleAccent),
-                      onPressed: () {
-                        Navigator.pushNamed(context, '/flightscreen');
-                      },
-                    ),
+                                color: Colors.purple),
+                            onPressed: () {
+                              Navigator.pushNamed(context, '/flightscreen');
+                            },
+                          ),
                   ))),
         ],
       ),

@@ -323,17 +323,6 @@ class MapState with ChangeNotifier {
     notifyListeners();
   }
 
-  appBar() {
-    if (showAppBar) {
-      return AppBar(
-        title: const Text('Hide Status Bar'),
-      );
-    } else {
-      print('nhhh');
-    }
-    notifyListeners();
-  }
-
   clearSuggestion() {
     suggestion.clear();
     notifyListeners();
