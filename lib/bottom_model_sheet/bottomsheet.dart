@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
 import 'package:flutter_dropdown/flutter_dropdown.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:toggle_switch/toggle_switch.dart';
@@ -7,6 +8,9 @@ import 'package:toast/toast.dart';
 class BottomModelSheet extends StatelessWidget {
   DateTime pickedDate = DateTime.now();
   TimeOfDay pickedTime = TimeOfDay.now();
+
+  TextEditingController _flightController = TextEditingController();
+  TextEditingController _commenttController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -35,19 +39,22 @@ class BottomModelSheet extends StatelessWidget {
               children: [
                 Wrap(
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text('Driver Time'),
-                      ],
-                    ),
                     Card(
-                      // margin: EdgeInsets.symmetric(horizontal: 10.0),
+                        elevation: 0.0,
+                        child: Center(
+                          child: Text('Driver will be Available in 10 minutes'),
+                        )),
+                    Card(
+                        // margin: EdgeInsets.symmetric(horizontal: 10.0),
                         color: Colors.grey[300],
                         // margin: EdgeInsets.all(0.0),
                         child: Row(
                           // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
+                            Icon(Icons.monetization_on_outlined,
+                                size: 40, color: Colors.purple),
+                            Text('${distance * 2.toInt()} ',
+                                style: TextStyle(color: Colors.black)),
                             Icon(Icons.alt_route,
                                 size: 40, color: Colors.purple),
                             Text('$distance miles',
@@ -75,7 +82,7 @@ class BottomModelSheet extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        SizedBox(width: 10),
+                        SizedBox(width: 15),
                         RotatedBox(
                             quarterTurns: 3,
                             child: Text(
@@ -111,6 +118,7 @@ class BottomModelSheet extends StatelessWidget {
                                       style: TextStyle(color: Colors.black))
                                 ]),
                             textAlign: TextAlign.center),
+                        SizedBox(width: 15),
                       ],
                     ),
                     Swiper(
@@ -122,9 +130,9 @@ class BottomModelSheet extends StatelessWidget {
                       customLayoutOption:
                       new CustomLayoutOption(startIndex: -1, stateCount: 3)
                           .addTranslate([
-                        new Offset(-140.0, 35.0),
+                        new Offset(-140.0, 30.0),
                         new Offset(0.0, 20.0),
-                        new Offset(140.0, 35.0)
+                        new Offset(140.0, 30.0)
                       ]).addOpacity([1.0, 1.0, 1.0]),
                       scrollDirection: Axis.horizontal,
                       onIndexChanged: (index) {
@@ -135,7 +143,7 @@ class BottomModelSheet extends StatelessWidget {
                       },
                       itemBuilder: (BuildContext context, index) {
                         return Card(
-                            elevation: 5.0,
+                            elevation: 15.0,
                             color: Colors.grey[300],
                             child: InkWell(
                                 child: Stack(
@@ -180,7 +188,7 @@ class BottomModelSheet extends StatelessWidget {
                     ),
                     Card(
                         elevation: 0.0,
-                        color: Colors.grey,
+                        color: Colors.grey[450],
                         child: Wrap(
                           children: [
                             IconButton(
@@ -368,7 +376,6 @@ class BottomModelSheet extends StatelessWidget {
                       activeBgColor: Colors.purple,
                       activeFgColor: Colors.white,
                       inactiveBgColor: Colors.grey,
-                      inactiveFgColor: Colors.white,
                       labels: ['YES', 'NO'],
                       // icons: [Icons.check, Icons.clear_rounded],
                       onToggle: (index) {
@@ -392,8 +399,10 @@ class BottomModelSheet extends StatelessWidget {
                     color: Colors.purple,
                   ),
                   title: TextFormField(
+                    controller: _flightController,
                     maxLines: 1,
                     keyboardType: TextInputType.number,
+                    textInputAction: TextInputAction.go,
                     minLines: null,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(
@@ -410,6 +419,7 @@ class BottomModelSheet extends StatelessWidget {
                     color: Colors.purple,
                   ),
                   title: TextFormField(
+                    controller: _commenttController,
                     maxLines: 4,
                     keyboardType: TextInputType.multiline,
                     minLines: null,
@@ -428,6 +438,10 @@ class BottomModelSheet extends StatelessWidget {
             FlatButton(
                 color: Colors.purple,
                 onPressed: () {
+                  _flightController = new TextEditingController(
+                      text: _flightController.text.toString());
+                  _commenttController = TextEditingController(
+                      text: _commenttController.text.toString());
                   Navigator.pop(context);
                 },
                 child: Text('DONE')),

@@ -212,7 +212,12 @@ class MapState with ChangeNotifier {
     List list = await calculateDistanceTime.calculateDistanceTime(l1, l2);
     distance = list[0];
     time = list[1];
-    bottomModelSheet.settingModelBottomSheet(context, distance, time);
+    if (sourceController.text.toString().isNotEmpty &&
+        destinationController.text.toString().isNotEmpty) {
+      bottomModelSheet.settingModelBottomSheet(context, distance, time);
+    } else {
+      return null;
+    }
     notifyListeners();
   }
 
