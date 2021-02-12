@@ -265,10 +265,14 @@ class BottomModelSheet extends StatelessWidget {
               color: Colors.white, fontSize: 20, fontWeight: FontWeight.w600),
           title: Container(
             width: MediaQuery.of(context).size.width - 40,
-            padding: EdgeInsets.only(left: 10, top: 10, bottom: 20),
-            color: Colors.purple,
-            child: Text(' Select Date and Time '),
-          ),
+              padding: EdgeInsets.only(left: 10, top: 10, bottom: 20),
+              child: Text(' Select Date and Time '),
+              decoration: BoxDecoration(
+                color: Colors.purple,
+                borderRadius: BorderRadius.only(
+                    topRight: Radius.circular(15),
+                    topLeft: Radius.circular(15.0)),
+              )),
           content: Container(
             width: MediaQuery.of(context).size.width - 40,
             child: Column(
@@ -341,8 +345,13 @@ class BottomModelSheet extends StatelessWidget {
           title: Container(
             width: MediaQuery.of(context).size.width - 40,
             padding: EdgeInsets.only(left: 10, bottom: 20, top: 10),
-            color: Colors.purple,
             child: Text(' Additional Information '),
+            decoration: BoxDecoration(
+              color: Colors.purple,
+              borderRadius: BorderRadius.only(
+                  topRight: Radius.circular(15),
+                  topLeft: Radius.circular(15.0)),
+            ),
           ),
           content: Container(
             width: MediaQuery.of(context).size.width - 40,
