@@ -170,8 +170,9 @@ class LoginState extends State<Login> {
                                               .toString();
                                         });
                                         if (code == inputValue) {
-                                          Navigator.of(context)
-                                              .pushNamed('/mapscreen');
+                                          Navigator.of(context).pushNamed(
+                                              '/profile',
+                                              arguments: model);
                                         } else {
                                           return Toast.show(
                                               'Code Does not  Match', context,

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:zippy_rider/UI/flights_screen.dart';
 import 'package:zippy_rider/UI/login_screen.dart';
+import 'package:zippy_rider/UI/profile_screen.dart';
+import 'package:zippy_rider/models/login_model.dart';
 import 'package:zippy_rider/states/flight_state.dart';
 import 'package:zippy_rider/states/map_state.dart';
 import 'UI/map_screen.dart';
@@ -12,7 +14,6 @@ void main() {
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
     statusBarColor: Colors.deepPurpleAccent,
     systemNavigationBarColor: Colors.deepPurpleAccent,
-    //systemNavigationBarIconBrightness: Brightness.dark,
   ));
   runApp(MultiProvider(
     child: MyApp(),
@@ -24,6 +25,7 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
+//  Model model = Model();
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -35,7 +37,8 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: '/',
       routes: {
-        '/': (context) => Login(),
+        '/': (context) => MapScreen(),
+        '/profile': (context) => Profile(),
         '/mapscreen': (context) => MapScreen(),
         '/flightscreen': (context) => FlightsScreen(),
       },

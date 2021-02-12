@@ -42,9 +42,9 @@ class _FlightsScreenState extends State<FlightsScreen> {
               customLayoutOption:
                   new CustomLayoutOption(startIndex: -1, stateCount: 3)
                       .addTranslate([
-                new Offset(-310.0, -60.0),
+                new Offset(-310.0, 60.0),
                 new Offset(0.0, 0.0),
-                new Offset(310.0, -60.0)
+                new Offset(310.0, 60.0)
               ]).addOpacity([0.7, 1.0, 0.7]),
               scrollDirection: Axis.horizontal,
               onIndexChanged: (index) {
@@ -71,8 +71,8 @@ class _FlightsScreenState extends State<FlightsScreen> {
                             "${flightState.airPortNamelist[index]}",
                             style: TextStyle(
                                 color: Colors.black,
-                                fontWeight: FontWeight.w600,
-                                fontSize: 12),
+                                fontWeight: FontWeight.w500,
+                                fontSize: 11),
                             overflow: TextOverflow.visible,
                           ),
                         ],
@@ -92,60 +92,57 @@ class _FlightsScreenState extends State<FlightsScreen> {
           ),
           Positioned(
             bottom: 220,
-            child: Visibility(
-              visible: true,
-              child: Align(
-                child: Card(
-                  color: Colors.white,
-                  margin: EdgeInsets.all(4.0),
-                  clipBehavior: Clip.hardEdge,
-                  child: Column(children: [
-                    Text("Set ${flightState.airPortNamelist[indu]} as?",
-                        style: TextStyle(color: Colors.black)),
-                    Align(
-                      alignment: Alignment.bottomLeft,
-                      child: ButtonBar(
-                        mainAxisSize: MainAxisSize.min,
-                        buttonMinWidth: 10,
-                        buttonPadding: EdgeInsets.zero,
-                        children: [
-                          FlatButton(
-                              onPressed: () {
-                                mapState.sourceController.text =
-                                    '${flightState.airPortNamelist[indu]} ';
-                                mapState.l1 = LatLng(
-                                    flightState.latLangList[indu].latitude,
-                                    flightState.latLangList[indu].longitude);
-
-                                MapState.initialPositions = LatLng(
-                                    flightState.latLangList[indu].latitude,
-                                    flightState.latLangList[indu].longitude);
-                                Navigator.pushNamed(context, '/');
-                              },
-                              child: Text('Origin',
-                                  style: TextStyle(color: Colors.purple))),
-                          FlatButton(
-                              onPressed: () {
-                                mapState.destinationController.text =
-                                    '${flightState.airPortNamelist[indu]} ';
-                                mapState.l2 = LatLng(
-                                    flightState.latLangList[indu].latitude,
-                                    flightState.latLangList[indu].longitude);
-                                MapState.initialPositions = LatLng(
-                                    flightState.latLangList[indu].latitude,
-                                    flightState.latLangList[indu].longitude);
-                                Navigator.pushNamed(context, '/');
-                              },
-                              child: Text("Destination",
-                                  style: TextStyle(color: Colors.purple))),
-                        ],
-                      ),
-                    )
-                  ]),
+            child: Container(
+              height: 60,
+              width: 360,
+              color: Colors.white,
+              child: Stack(children: [
+                Positioned(
+                  top: 10,
+                  left: 10,
+                  child: Text("Set ${flightState.airPortNamelist[indu]} as?",
+                      style: TextStyle(color: Colors.black, fontSize: 12)),
                 ),
-              ),
+                Positioned(
+                    top: 37,
+                    right: 10,
+                    child: FlatButton(
+                        onPressed: () {
+                          mapState.sourceController.text =
+                              '${flightState.airPortNamelist[indu]} ';
+                          mapState.l1 = LatLng(
+                              flightState.latLangList[indu].latitude,
+                              flightState.latLangList[indu].longitude);
+
+                          MapState.initialPositions = LatLng(
+                              flightState.latLangList[indu].latitude,
+                              flightState.latLangList[indu].longitude);
+                          Navigator.pushNamed(context, '/');
+                        },
+                        child: Text('Origin',
+                            style: TextStyle(color: Colors.purple)))),
+                Positioned(
+                  top: 37,
+                  right: 60,
+                  child: FlatButton(
+                      onPressed: () {
+                        mapState.destinationController.text =
+                            '${flightState.airPortNamelist[indu]} ';
+                        mapState.l2 = LatLng(
+                            flightState.latLangList[indu].latitude,
+                            flightState.latLangList[indu].longitude);
+                        MapState.initialPositions = LatLng(
+                            flightState.latLangList[indu].latitude,
+                            flightState.latLangList[indu].longitude);
+                        Navigator.pushNamed(context, '/');
+                      },
+                      child: Text("Destination",
+                          style: TextStyle(color: Colors.purple))),
+                ),
+                // alignment: Alignment.bottomLeft,
+              ]),
             ),
-          ),
+            ),
           Positioned(
               top: 40,
               right: 17,

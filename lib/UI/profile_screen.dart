@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:zippy_rider/models/login_model.dart';
 
 class Profile extends StatelessWidget {
-  final Model model;
+  final Model model = Model();
 
-  Profile({this.model});
+  //Profile();
 
   @override
   Widget build(BuildContext context) {

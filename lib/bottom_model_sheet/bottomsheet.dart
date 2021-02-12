@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dropdown/flutter_dropdown.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:toggle_switch/toggle_switch.dart';
+import 'package:toast/toast.dart';
 
 class BottomModelSheet extends StatelessWidget {
   DateTime pickedDate = DateTime.now();
@@ -42,7 +43,7 @@ class BottomModelSheet extends StatelessWidget {
                     ),
                     Card(
                       // margin: EdgeInsets.symmetric(horizontal: 10.0),
-                        color: Colors.blueGrey,
+                        color: Colors.grey[300],
                         // margin: EdgeInsets.all(0.0),
                         child: Row(
                           // mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -50,7 +51,7 @@ class BottomModelSheet extends StatelessWidget {
                             Icon(Icons.alt_route,
                                 size: 40, color: Colors.purple),
                             Text('$distance miles',
-                                style: TextStyle(color: Colors.white)),
+                                style: TextStyle(color: Colors.black)),
                             Spacer(),
                             Icon(
                               Icons.access_time_rounded,
@@ -58,7 +59,7 @@ class BottomModelSheet extends StatelessWidget {
                               color: Colors.purple,
                             ),
                             Text('$time',
-                                style: TextStyle(color: Colors.white)),
+                                style: TextStyle(color: Colors.black)),
                             Spacer(),
                             //Icon(Icons.clean_hands_outlined,size: 40),
                             DropDown(
@@ -67,7 +68,7 @@ class BottomModelSheet extends StatelessWidget {
                                 'Card',
                               ],
                               hint: Text('Cash',
-                                  style: TextStyle(color: Colors.white)),
+                                  style: TextStyle(color: Colors.black)),
                             ),
                           ],
                         )),
@@ -80,12 +81,12 @@ class BottomModelSheet extends StatelessWidget {
                             child: Text(
                               '$vechile',
                               style: TextStyle(
-                                color: Colors.blueGrey,
+                                color: Colors.black,
                                 fontWeight: FontWeight.w600,
                               ),
                             )),
                         Icon(Icons.local_taxi_outlined,
-                            size: 40, color: Colors.blueGrey),
+                            size: 40, color: Colors.black),
                         Spacer(),
                         RichText(
                             text: TextSpan(
@@ -96,7 +97,7 @@ class BottomModelSheet extends StatelessWidget {
                                 children: <TextSpan>[
                                   TextSpan(
                                       text: ('Passangers'),
-                                      style: TextStyle(color: Colors.blueGrey))
+                                      style: TextStyle(color: Colors.black))
                                 ]),
                             textAlign: TextAlign.center),
                         Spacer(),
@@ -107,7 +108,7 @@ class BottomModelSheet extends StatelessWidget {
                                 children: <TextSpan>[
                                   TextSpan(
                                       text: ('Suitcases'),
-                                      style: TextStyle(color: Colors.blueGrey))
+                                      style: TextStyle(color: Colors.black))
                                 ]),
                             textAlign: TextAlign.center),
                       ],
@@ -135,27 +136,26 @@ class BottomModelSheet extends StatelessWidget {
                       itemBuilder: (BuildContext context, index) {
                         return Card(
                             elevation: 5.0,
-                            color: Colors.blueGrey,
+                            color: Colors.grey[300],
                             child: InkWell(
                                 child: Stack(
-                                  children: [
-                                    Icon(
-                                      Icons.local_taxi_rounded,
-                                      size: 45,
-                                      color: Colors.purple,
-                                    ),
-                                    Positioned(
-                                      top: 50,
-                                      left: 10.0,
+                              children: [
+                                Icon(
+                                  Icons.local_taxi_rounded,
+                                  size: 45,
+                                  color: Colors.purple,
+                                ),
+                                Positioned(
+                                  top: 50,
+                                  left: 10.0,
                                       child: Row(
                                         children: [
                                           Text(
                                             " Vechile $index",
                                             style: TextStyle(
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.w600,
-                                                fontSize: 12),
-                                            overflow: TextOverflow.visible,
+                                                color: Colors.black,
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 12),
                                           ),
                                         ],
                                       ),
@@ -165,22 +165,22 @@ class BottomModelSheet extends StatelessWidget {
                                         left: 10,
                                         child: Text(" Passangers: $index",
                                             style: TextStyle(
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.w400))),
+                                                color: Colors.black,
+                                            fontWeight: FontWeight.w400))),
                                     Positioned(
                                         top: 80.0,
                                         left: 10,
                                         child: Text(" Suitcase: $index",
                                             style: TextStyle(
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.w400))),
+                                                color: Colors.black,
+                                            fontWeight: FontWeight.w400))),
                                   ],
                                 )));
                       },
                     ),
                     Card(
                         elevation: 0.0,
-                        color: Colors.blueGrey,
+                        color: Colors.grey,
                         child: Wrap(
                           children: [
                             IconButton(
@@ -373,6 +373,14 @@ class BottomModelSheet extends StatelessWidget {
                       // icons: [Icons.check, Icons.clear_rounded],
                       onToggle: (index) {
                         print('switched to: $index');
+                        if (index == 1) {
+                          Toast.show('Child seat off', context,
+                              duration: Toast.LENGTH_LONG);
+                        }
+                        if (index == 0) {
+                          Toast.show('Child seat Selected', context,
+                              duration: Toast.LENGTH_LONG);
+                        }
                       },
                     )
                   ],
