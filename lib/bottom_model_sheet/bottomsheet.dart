@@ -342,7 +342,7 @@ class BottomModelSheet extends StatelessWidget {
             width: MediaQuery.of(context).size.width - 40,
             padding: EdgeInsets.only(left: 10, bottom: 20, top: 10),
             color: Colors.purple,
-            child: Text(' Add Additional Information '),
+            child: Text(' Additional Information '),
           ),
           content: Container(
             width: MediaQuery.of(context).size.width - 40,
