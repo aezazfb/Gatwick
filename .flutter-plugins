@@ -7,3 +7,7 @@ geocoder=/Users/slashglobal/.pub-cache/hosted/pub.dartlang.org/geocoder-0.2.1/
 geolocator=/Users/slashglobal/.pub-cache/hosted/pub.dartlang.org/geolocator-6.2.0/
 geolocator_web=/Users/slashglobal/.pub-cache/hosted/pub.dartlang.org/geolocator_web-1.0.0/
 google_maps_flutter=/Users/slashglobal/.pub-cache/hosted/pub.dartlang.org/google_maps_flutter-1.2.0/
+path_provider=/Users/slashglobal/.pub-cache/hosted/pub.dartlang.org/path_provider-1.6.27/
+path_provider_linux=/Users/slashglobal/.pub-cache/hosted/pub.dartlang.org/path_provider_linux-0.0.1+2/
+path_provider_macos=/Users/slashglobal/.pub-cache/hosted/pub.dartlang.org/path_provider_macos-0.0.4+8/
+path_provider_windows=/Users/slashglobal/.pub-cache/hosted/pub.dartlang.org/path_provider_windows-0.0.4+3/

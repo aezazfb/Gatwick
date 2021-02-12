@@ -54,16 +54,14 @@ class _FlightsScreenState extends State<FlightsScreen> {
               },
               itemBuilder: (BuildContext context, index) {
                 return Card(
-                    // height: 300,
-                    // width: 300,
-                    child: InkWell(
                         child: Stack(
                   children: [
                     Image(
-                        image: AssetImage('assets/airportsImages/ap1.jpeg'),
-                        fit: BoxFit.fitWidth,
-                        height: 100,
-                        width: 360),
+                      image: AssetImage('assets/airportsImages/ap1.jpeg'),
+                      fit: BoxFit.fitWidth,
+                      height: 100,
+                      width: 360,
+                    ),
                     Positioned(
                       top: 110,
                       left: 5.0,
@@ -88,7 +86,7 @@ class _FlightsScreenState extends State<FlightsScreen> {
                                 color: Colors.purple,
                                 fontWeight: FontWeight.w400))),
                   ],
-                )));
+                ));
               },
             ),
           ),

@@ -238,10 +238,12 @@ class MapScreenState extends State<MapScreen>{
                       alignment: Alignment(0.1, -0.1),
                       child: Card(
                         color: Colors.deepPurple.withOpacity(.8),
-                        margin: EdgeInsets.all(8.0),
+                        margin: EdgeInsets.all(20.0),
                         child: InkWell(
                             child: Text(mapState.name,
-                                style: TextStyle(color: Colors.white)),
+                                style: TextStyle(
+                                  color: Colors.white,
+                                )),
                             onTap: () {
                               mapState.dialogShow(context);
                             }),
