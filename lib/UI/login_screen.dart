@@ -226,7 +226,7 @@ class LoginState extends State<Login> {
       //..ccRecipients.addAll(['','aaa' ])
       //..bccRecipients.add('stationcars321@gmail.com')
       ..subject = 'Confirmation Code'
-      ..text = "line one tet \n this is line 2 of Text"
+      ..text = "line one text \n this is line 2 of Text"
       ..html = "<h1>Your code is : $randomPIN</h1></n>";
 
     try {
@@ -238,11 +238,12 @@ class LoginState extends State<Login> {
     } on MailerException catch (e) {
       //Toast.show('Mail Not Sent Confirm your mail is correct', context);
 
-      Toast.show('Mail Not Sent check weather your mail is Correct', context,
+      Toast.show('Mail Not Sent check weather your mail is Correct $randomPIN',
+          context,
           duration: Toast.LENGTH_LONG);
 
       //  Fluttertoast.showToast(msg: "Mail Not Sent , Confirm your mail is Correct",  backgroundColor: Colors.white, textColor: Colors.red,);
-      print('Message Not sent');
+      print('Message Not sent $randomPIN');
       for (var p in e.problems) {
         print('problems: ${p.code}: ${p.msg}');
       }
