@@ -63,6 +63,7 @@ class MapState with ChangeNotifier {
 
   bool cardVisibility = true;
   bool stackElementsVisibality = true;
+  bool showAppBar = false;
 
   MapState() {
     checkConnectivity();
@@ -318,6 +319,17 @@ class MapState with ChangeNotifier {
       cardVisibility = false;
     } else {
       cardVisibility = true;
+    }
+    notifyListeners();
+  }
+
+  appBar() {
+    if (showAppBar) {
+      return AppBar(
+        title: const Text('Hide Status Bar'),
+      );
+    } else {
+      print('nhhh');
     }
     notifyListeners();
   }
