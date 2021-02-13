@@ -104,9 +104,10 @@ class _FlightsScreenState extends State<FlightsScreen> {
                       style: TextStyle(color: Colors.black, fontSize: 12)),
                 ),
                 Positioned(
-                    top: 37,
-                    right: 10,
+                    top: 25,
+                    right: 0.0,
                     child: FlatButton(
+                        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                         onPressed: () {
                           mapState.sourceController.text =
                               '${flightState.airPortNamelist[indu]} ';
@@ -122,9 +123,10 @@ class _FlightsScreenState extends State<FlightsScreen> {
                         child: Text('Origin',
                             style: TextStyle(color: Colors.purple)))),
                 Positioned(
-                  top: 37,
-                  right: 60,
+                  top: 25,
+                  right: 80,
                   child: FlatButton(
+                      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                       onPressed: () {
                         mapState.destinationController.text =
                             '${flightState.airPortNamelist[indu]} ';

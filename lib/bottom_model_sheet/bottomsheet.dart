@@ -5,18 +5,12 @@ import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 import 'package:toast/toast.dart';
 
-class BottomModelSheet extends StatelessWidget {
+class BottomModelSheet with ChangeNotifier {
   DateTime pickedDate = DateTime.now();
   TimeOfDay pickedTime = TimeOfDay.now();
-
+  int _initialLabel = 1;
   TextEditingController _flightController = TextEditingController();
   TextEditingController _commenttController = TextEditingController();
-
-  @override
-  Widget build(BuildContext context) {
-    print('BS build called');
-    return null;
-  }
 
   settingModelBottomSheet(context, distance, time) async {
     String vechile = 'Saloon ';
@@ -156,39 +150,39 @@ class BottomModelSheet extends StatelessWidget {
                                 Positioned(
                                   top: 50,
                                   left: 10.0,
-                                      child: Row(
-                                        children: [
-                                          Text(
-                                            " Vechile $index",
-                                            style: TextStyle(
-                                                color: Colors.black,
+                                  child: Row(
+                                    children: [
+                                      Text(
+                                        " Vechile $index",
+                                        style: TextStyle(
+                                            color: Colors.black,
                                             fontWeight: FontWeight.w600,
                                             fontSize: 12),
-                                          ),
-                                        ],
                                       ),
-                                    ),
-                                    Positioned(
-                                        top: 65.0,
-                                        left: 10,
-                                        child: Text(" Passangers: $index",
-                                            style: TextStyle(
-                                                color: Colors.black,
+                                    ],
+                                  ),
+                                ),
+                                Positioned(
+                                    top: 65.0,
+                                    left: 10,
+                                    child: Text(" Passangers: $index",
+                                        style: TextStyle(
+                                            color: Colors.black,
                                             fontWeight: FontWeight.w400))),
-                                    Positioned(
-                                        top: 80.0,
-                                        left: 10,
-                                        child: Text(" Suitcase: $index",
-                                            style: TextStyle(
-                                                color: Colors.black,
+                                Positioned(
+                                    top: 80.0,
+                                    left: 10,
+                                    child: Text(" Suitcase: $index",
+                                        style: TextStyle(
+                                            color: Colors.black,
                                             fontWeight: FontWeight.w400))),
-                                  ],
+                              ],
                                 )));
                       },
                     ),
                     Card(
                         elevation: 0.0,
-                        color: Colors.grey[450],
+                        color: Colors.grey[400],
                         child: Wrap(
                           children: [
                             IconButton(
@@ -209,11 +203,7 @@ class BottomModelSheet extends StatelessWidget {
                                       fontWeight: FontWeight.w700,
                                     )),
                                 onPressed: () {
-                                  print(
-                                      'date $pickedDate ${pickedDate.month} ${pickedDate.day}');
-                                  print(
-                                      ' time $pickedTime hour: ${pickedTime.hour} min: ${pickedTime.minute}'
-                                      ' period: ${pickedTime.period} ');
+                                  print('null');
                                 }),
                             IconButton(
                                 icon: Icon(Icons.add),
@@ -233,34 +223,35 @@ class BottomModelSheet extends StatelessWidget {
   }
 
   pickDate(context) async {
-    pickedDate = DateTime.now();
     DateTime date = await showDatePicker(
         confirmText: 'SAVE',
         cancelText: 'CANCEL',
         context: context,
-        initialDate: DateTime.now(),
+        initialDate: pickedDate,
         firstDate: DateTime.now(),
         lastDate: DateTime(DateTime.now().year + 1));
     if (date != null) {
       pickedDate = date;
+      notifyListeners();
     }
   }
 
   pickTime(context) async {
-    pickedTime = TimeOfDay.now();
     TimeOfDay time = await showTimePicker(
       context: context,
-      initialTime: TimeOfDay.now(),
+      initialTime: pickedTime,
       confirmText: 'SAVE',
       cancelText: 'CANCEL',
     );
     if (time != null) {
       pickedTime = time;
     }
-    return pickedTime;
+    notifyListeners();
   }
 
-  dialogShow(context) async {
+  dialogShow(context) {
+    pickedDate = DateTime.now();
+    pickedTime = TimeOfDay.now();
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -272,7 +263,7 @@ class BottomModelSheet extends StatelessWidget {
           titleTextStyle: TextStyle(
               color: Colors.white, fontSize: 20, fontWeight: FontWeight.w600),
           title: Container(
-            width: MediaQuery.of(context).size.width - 40,
+              width: MediaQuery.of(context).size.width - 40,
               padding: EdgeInsets.only(left: 10, top: 10, bottom: 20),
               child: Text(' Select Date and Time '),
               decoration: BoxDecoration(
@@ -377,19 +368,22 @@ class BottomModelSheet extends StatelessWidget {
                       activeFgColor: Colors.white,
                       inactiveBgColor: Colors.grey,
                       labels: ['YES', 'NO'],
+                      initialLabelIndex: _initialLabel,
                       // icons: [Icons.check, Icons.clear_rounded],
                       onToggle: (index) {
                         print('switched to: $index');
-                        if (index == 1) {
-                          Toast.show('Child seat off', context,
-                              duration: Toast.LENGTH_LONG);
-                        }
                         if (index == 0) {
+                          _initialLabel = index;
                           Toast.show('Child seat Selected', context,
                               duration: Toast.LENGTH_LONG);
                         }
+                        if (index == 1) {
+                          _initialLabel = index;
+                          Toast.show('Child seat off', context,
+                              duration: Toast.LENGTH_LONG);
+                        }
                       },
-                    )
+                    ),
                   ],
                 ),
                 SizedBox(height: 10),
@@ -448,6 +442,7 @@ class BottomModelSheet extends StatelessWidget {
             FlatButton(
                 color: Colors.purple,
                 onPressed: () {
+                  _initialLabel = 1;
                   Navigator.pop(context);
                 },
                 child: Text('CANCEL'))
@@ -456,4 +451,5 @@ class BottomModelSheet extends StatelessWidget {
       },
     );
   }
+
 }
