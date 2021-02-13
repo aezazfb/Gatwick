@@ -46,17 +46,17 @@ class BottomModelSheet with ChangeNotifier {
                           // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Icon(Icons.monetization_on_outlined,
-                                size: 35, color: Colors.purple),
-                            Text('${distance * 2.toInt()} ',
+                                size: 30, color: Colors.purple),
+                            Text('10000.00 ',
                                 style: TextStyle(color: Colors.black)),
                             Icon(Icons.alt_route,
-                                size: 35, color: Colors.purple),
+                                size: 30, color: Colors.purple),
                             Text('$distance miles',
                                 style: TextStyle(color: Colors.black)),
                             Spacer(),
                             Icon(
                               Icons.access_time_rounded,
-                              size: 35,
+                              size: 30,
                               color: Colors.purple,
                             ),
                             Text('$time',
@@ -137,7 +137,8 @@ class BottomModelSheet with ChangeNotifier {
                       },
                       itemBuilder: (BuildContext context, index) {
                         return Card(
-                            elevation: 15.0,
+                            elevation: 20.0,
+                            shadowColor: Colors.transparent,
                             color: Colors.grey[300],
                             child: InkWell(
                                 child: Stack(
