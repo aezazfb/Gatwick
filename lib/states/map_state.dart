@@ -16,7 +16,8 @@ import 'package:zippy_rider/bottom_model_sheet/bottomsheet.dart';
 class MapState with ChangeNotifier {
   static LatLng initialPositions;
   static LatLng _centerPoints;
-
+  DateTime userSelectedDate = DateTime.now();
+  TimeOfDay userSelectedTime = TimeOfDay.now();
   LatLng l1 = LatLng(0.0000, 0.0000);
   LatLng l2 = LatLng(0.0000, 0.0000);
 

@@ -246,12 +246,11 @@ class BottomModelSheet with ChangeNotifier {
     if (time != null) {
       pickedTime = time;
     }
+
     notifyListeners();
   }
 
   dialogShow(context) {
-    pickedDate = DateTime.now();
-    pickedTime = TimeOfDay.now();
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -296,7 +295,7 @@ class BottomModelSheet with ChangeNotifier {
                   ),
                 ),
                 ListTile(
-                  title: Text('${pickedTime.hour} : ${pickedTime.minute}'),
+                  title: Text(' ${pickedTime.hour} : ${pickedTime.minute}'),
                   leading: Icon(
                     Icons.access_time,
                     color: Colors.purple,
