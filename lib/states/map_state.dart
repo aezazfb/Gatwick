@@ -353,7 +353,6 @@ class MapState with ChangeNotifier {
     });
     notifyListeners();
   }
-
 // ignore: non_constant_identifier_names
 
 }

@@ -380,18 +380,16 @@ class MapScreenState extends State<MapScreen>{
               ],
             ),
       drawer: Drawer(
-        //  semanticLabel: 'Heloo',
-        elevation: 30,
         child: Column(
           // shrinkWrap: false,
           children: [
             DrawerHeader(
               decoration: BoxDecoration(color: Colors.purple),
-              child: Wrap(
+              child: Row(
                 children: [
                   CircleAvatar(
                     radius: 30,
-                    backgroundColor: Colors.blueGrey,
+                    backgroundColor: Colors.pink,
                     child: Icon(
                       Icons.person,
                       color: Colors.white,
@@ -420,6 +418,7 @@ class MapScreenState extends State<MapScreen>{
             ListTile(
               leading: Icon(Icons.history_toggle_off, color: Colors.purple),
               title: Text('Ride History'),
+              onTap: () => Navigator.pushNamed(context, '/ridehistory'),
             ),
             Divider(
               thickness: 0.5,
@@ -485,6 +484,7 @@ class MapScreenState extends State<MapScreen>{
             ListTile(
               leading: Icon(Icons.logout, color: Colors.purple),
               title: Text('Logout'),
+              onTap: () => Navigator.pushNamed(context, '/login'),
             ),
           ],
         ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:zippy_rider/UI/flights_screen.dart';
 import 'package:zippy_rider/UI/login_screen.dart';
 import 'package:zippy_rider/UI/profile_screen.dart';
+import 'package:zippy_rider/UI/ride_history.dart';
 import 'package:zippy_rider/models/login_model.dart';
 import 'package:zippy_rider/states/flight_state.dart';
 import 'package:zippy_rider/states/map_state.dart';
@@ -39,6 +40,8 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (context) => MapScreen(),
         '/profile': (context) => Profile(),
+        '/login': (context) => Login(),
+        '/ridehistory': (context) => RideHistory(),
         '/mapscreen': (context) => MapScreen(),
         '/flightscreen': (context) => FlightsScreen(),
       },

@@ -42,7 +42,7 @@ class LoginState extends State<Login> {
                 //Text Form field for Name
                 Text("LOGIN",
                     style: GoogleFonts.montserrat(
-                        fontSize: 30.0, color: Colors.teal)),
+                        fontSize: 30.0, color: Colors.purple)),
                 SizedBox(height: 20),
                 TextFormField(
                   onSaved: (String value) {
@@ -140,7 +140,7 @@ class LoginState extends State<Login> {
                 SizedBox(height: 12.0),
 
                 FlatButton(
-                    color: Colors.teal,
+                    color: Colors.purple,
                     onPressed: () {
                       if (_formKey.currentState.validate()) {
                         sendMail();
