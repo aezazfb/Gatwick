@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -5,7 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:zippy_rider/states/map_state.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
-class MapScreen extends StatefulWidget{
+class MapScreen extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
     return MapScreenState();
@@ -21,21 +23,21 @@ class MapScreenState extends State<MapScreen>{
     final mapState = Provider.of<MapState>(context);
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.transparent.withOpacity(0.0),
+        backgroundColor: Colors.white24.withOpacity(0.1),
         title: Text('Zippy Rider'),
         centerTitle: true,
       ),
       body: mapState.initialPosition == null
           ? Container(
-              child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    SpinKitRotatingCircle(
-                      color: Colors.purple,
-                      size: 50.0,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  SpinKitRotatingCircle(
+                    color: Colors.purple,
+                    size: 50.0,
                   )
                 ],
               ),
@@ -272,41 +274,41 @@ class MapScreenState extends State<MapScreen>{
                     padding: EdgeInsets.all(0.0),
                     itemBuilder: (context, index) {
                       if (mapState.suggestion.isNotEmpty) {
-                              return Card(
-                                margin: EdgeInsets.only(bottom: 1.0),
-                                child: ListTile(
-                                  title: Text(
-                                    mapState.suggestion[index],
-                                    style: TextStyle(color: Colors.black),
-                                  ),
-                                  onTap: () {
-                                    if (flage == true) {
-                                      mapState.sourceController.text =
-                                          mapState.suggestion[index].toString();
+                        return Card(
+                          margin: EdgeInsets.only(bottom: 1.0),
+                          child: ListTile(
+                            title: Text(
+                              mapState.suggestion[index],
+                              style: TextStyle(color: Colors.black),
+                            ),
+                            onTap: () {
+                              if (flage == true) {
+                                mapState.sourceController.text =
+                                    mapState.suggestion[index].toString();
                                 mapState.details(
                                     mapState.suggestion[index].toString(),
                                     flage);
                               }
                               if (flage == false) {
                                 mapState.destinationController.text =
-                                          mapState.suggestion[index].toString();
-                                      mapState.details(
-                                          mapState.suggestion[index].toString(),
-                                          flage);
-                                    }
-                                    mapState.clearfields();
-                                    mapState.clearSuggestion();
-                                  },
-                                ),
-                              );
-                            } else {
-                              return Center(
-                                child: Container(
-                                  child: CircularProgressIndicator(),
-                                ),
-                              );
-                            }
-                          },
+                                    mapState.suggestion[index].toString();
+                                mapState.details(
+                                    mapState.suggestion[index].toString(),
+                                    flage);
+                              }
+                              mapState.clearfields();
+                              mapState.clearSuggestion();
+                            },
+                          ),
+                        );
+                      } else {
+                        return Center(
+                          child: Container(
+                            child: CircularProgressIndicator(),
+                          ),
+                        );
+                      }
+                    },
                   ),
                 ),
               )),
@@ -369,16 +371,16 @@ class MapScreenState extends State<MapScreen>{
                       color: Colors.grey.shade300.withOpacity(0.7),
                       borderRadius: BorderRadius.circular(10.0),
                     ),
-                          child: IconButton(
-                            icon: Icon(Icons.flight_takeoff,
-                                color: Colors.purple),
-                            onPressed: () {
-                              Navigator.pushNamed(context, '/flightscreen');
-                            },
-                          ),
-                        ))),
-              ],
-            ),
+                    child: IconButton(
+                      icon: Icon(Icons.flight_takeoff,
+                          color: Colors.purple),
+                      onPressed: () {
+                        Navigator.pushNamed(context, '/flightscreen');
+                      },
+                    ),
+                  ))),
+        ],
+      ),
       drawer: Drawer(
         child: Column(
           // shrinkWrap: false,
@@ -404,13 +406,13 @@ class MapScreenState extends State<MapScreen>{
                               fontSize: 18,
                               fontWeight: FontWeight.w600),
                           children: [
-                        TextSpan(
-                            text: 'mussdiq.slashglobal@gmail.com',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 14,
-                                fontWeight: FontWeight.w400))
-                      ]))
+                            TextSpan(
+                                text: 'mussdiq.slashglobal@gmail.com',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w400))
+                          ]))
                 ],
               ),
               padding: EdgeInsets.only(left: 3.0, right: 3),
@@ -436,8 +438,16 @@ class MapScreenState extends State<MapScreen>{
               color: Colors.grey,
             ),
             ListTile(
-              leading: Icon(Icons.feedback, color: Colors.purple),
+              leading: Icon(Icons.info_outline_rounded, color: Colors.purple),
               title: Text('About'),
+              onTap: () {
+                showAboutDialog(
+                  context: context,
+                  applicationName: 'Zippy Riders',
+                  //applicationLegalese: 'All Rights Resrved by Slash Global',
+                  applicationVersion: '1.0.1',
+                );
+              },
             ),
             Divider(
               thickness: 0.5,
@@ -456,6 +466,7 @@ class MapScreenState extends State<MapScreen>{
             ListTile(
               leading: Icon(Icons.feedback_outlined, color: Colors.purple),
               title: Text('Give feedback'),
+              onTap: () => mapState.feedBackDialog(context),
             ),
             Divider(
               thickness: 0.5,
@@ -473,7 +484,7 @@ class MapScreenState extends State<MapScreen>{
             ),
             ListTile(
               leading:
-                  Icon(Icons.monetization_on_outlined, color: Colors.purple),
+              Icon(Icons.monetization_on_outlined, color: Colors.purple),
               title: Text('Wallet'),
             ),
             Divider(
@@ -482,10 +493,11 @@ class MapScreenState extends State<MapScreen>{
               color: Colors.grey,
             ),
             ListTile(
-              leading: Icon(Icons.logout, color: Colors.purple),
-              title: Text('Logout'),
-              onTap: () => Navigator.pushNamed(context, '/login'),
-            ),
+                leading: Icon(Icons.logout, color: Colors.purple),
+                title: Text('Logout'),
+                onTap: () {
+                  Navigator.pushNamed(context, '/login');
+                }),
           ],
         ),
       ),

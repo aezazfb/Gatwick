@@ -35,6 +35,7 @@ class MapState with ChangeNotifier {
 
   TextEditingController sourceController = TextEditingController();
   TextEditingController destinationController = TextEditingController();
+  TextEditingController feedBackController = TextEditingController();
 
   GoogleMapController get mapController => _mapController;
 
@@ -353,6 +354,79 @@ class MapState with ChangeNotifier {
     });
     notifyListeners();
   }
-// ignore: non_constant_identifier_names
 
+// ignore: non_constant_identifier_names
+  void feedBackDialog(context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          scrollable: true,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
+          insetPadding: EdgeInsets.all(10.0),
+          titlePadding: EdgeInsets.all(0.0),
+          titleTextStyle: TextStyle(
+              color: Colors.white, fontSize: 20, fontWeight: FontWeight.w600),
+          title: Container(
+            width: MediaQuery.of(context).size.width - 40,
+            padding: EdgeInsets.only(left: 10, bottom: 20, top: 10),
+            child: Text(' Feedback '),
+            decoration: BoxDecoration(
+                color: Colors.purple,
+                borderRadius: BorderRadius.only(
+                  topRight: Radius.circular(15),
+                  topLeft: Radius.circular(15),
+                )),
+          ),
+          content: Container(
+            width: MediaQuery.of(context).size.width - 40,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                SizedBox(height: 10),
+                ListTile(
+                  leading: Icon(
+                    Icons.comment_outlined,
+                    color: Colors.purple,
+                  ),
+                  title: TextFormField(
+                    controller: feedBackController,
+                    maxLines: 4,
+                    keyboardType: TextInputType.multiline,
+                    minLines: null,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      hintText: 'Add Comment',
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          actions: [
+            FlatButton(
+                color: Colors.purple,
+                onPressed: () {
+                  if (feedBackController.text.isNotEmpty) {
+                    Navigator.pop(context);
+                  } else {
+                    return null;
+                  }
+                },
+                child: Text('DONE')),
+            FlatButton(
+                color: Colors.purple,
+                onPressed: () {
+                  //_initialLabel = 1;
+                  Navigator.pop(context);
+                },
+                child: Text('CANCEL'))
+          ],
+        );
+      },
+    );
+  }
 }

@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:mailer/smtp_server.dart';
 import 'package:zippy_rider/models/login_model.dart';
@@ -188,6 +189,24 @@ class LoginState extends State<Login> {
                     },
                     child: Text("S U B M I T",
                         style: GoogleFonts.rakkas(color: Colors.white))),
+                RichText(
+                  text: TextSpan(
+                      text: 'Don\'t have account?',
+                      style: TextStyle(color: Colors.purple, fontSize: 20),
+                      children: [
+                        TextSpan(
+                            text: 'Register',
+                            style: TextStyle(
+                              decoration: TextDecoration.underline,
+                              color: Colors.amber,
+                              fontSize: 22,
+                            ),
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () {
+                                Navigator.pushNamed(context, '/mapscreen');
+                              }),
+                      ]),
+                ),
               ],
             ),
           ),
