@@ -41,6 +41,7 @@ dependencies:
   google_fonts: ^1.1.1
   toast: ^0.1.5
   mailer: ^3.2.1
+  flutter_zoom_drawer: ^1.0.4+1
 
 
 

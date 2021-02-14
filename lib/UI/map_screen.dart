@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
@@ -14,10 +15,16 @@ class MapScreen extends StatefulWidget{
 class MapScreenState extends State<MapScreen>{
   bool flage = true;
   var heightFactor = 0.0;
+
   @override
   Widget build(BuildContext context) {
     final mapState = Provider.of<MapState>(context);
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.transparent.withOpacity(0.0),
+        title: Text('Zippy Rider'),
+        centerTitle: true,
+      ),
       body: mapState.initialPosition == null
           ? Container(
               child: Column(
@@ -29,7 +36,7 @@ class MapScreenState extends State<MapScreen>{
                     SpinKitRotatingCircle(
                       color: Colors.purple,
                       size: 50.0,
-                    )
+                  )
                 ],
               ),
               SizedBox(height: 10),
@@ -205,9 +212,9 @@ class MapScreenState extends State<MapScreen>{
               child: IconButton(
                   icon: Icon(
                     Icons.swap_calls,
-                          size: 40,
-                          color: Colors.purple,
-                        ),
+                    size: 40,
+                    color: Colors.purple,
+                  ),
                   onPressed: () {
                     mapState.swapFields();
                   }),
@@ -222,11 +229,11 @@ class MapScreenState extends State<MapScreen>{
                   alignment: Alignment.center,
                   child: IconButton(
                       icon:
-                            Icon(Icons.circle, size: 17, color: Colors.purple),
-                        onPressed: () {
-                          mapState.fetchAddressFromCoordinates(
-                              mapState.centerPoints);
-                        }),
+                      Icon(Icons.circle, size: 17, color: Colors.purple),
+                      onPressed: () {
+                        mapState.fetchAddressFromCoordinates(
+                            mapState.centerPoints);
+                      }),
                 ),
               )),
 
@@ -238,22 +245,21 @@ class MapScreenState extends State<MapScreen>{
                 alignment: Alignment(0.1, -0.1),
                 child: Card(
                   color: Colors.purple.withOpacity(.8),
-                        margin: EdgeInsets.all(20.0),
-                        child: InkWell(
-                            child: Text(mapState.name,
-                                style: TextStyle(
-                                  color: Colors.white,
-                                )),
-                            onTap: () {
-                              mapState.dialogShow(context);
-                            }),
-                      ),
+                  margin: EdgeInsets.all(20.0),
+                  child: InkWell(
+                      child: Text(mapState.name,
+                          style: TextStyle(
+                            color: Colors.white,
+                          )),
+                      onTap: () {
+                        mapState.dialogShow(context);
+                      }),
+                ),
               ),
             ),
           ),
 
           //----> SEARCH SUGGESTION  LIST VIEW
-          // SizedBox(height: heightFactor),
           Positioned(
               left: 12,
               right: 17,
@@ -265,34 +271,42 @@ class MapScreenState extends State<MapScreen>{
                     itemCount: mapState.suggestion.length,
                     padding: EdgeInsets.all(0.0),
                     itemBuilder: (context, index) {
-                      return Card(
-                        margin: EdgeInsets.only(bottom: 1.0),
-                        child: ListTile(
-                          title: Text(
-                            mapState.suggestion[index],
-                            style: TextStyle(color: Colors.black),
-                          ),
-                          onTap: () {
-                            if (flage == true) {
-                              mapState.sourceController.text =
-                                  mapState.suggestion[index].toString();
-                              mapState.details(
-                                  mapState.suggestion[index].toString(),
-                                  flage);
+                      if (mapState.suggestion.isNotEmpty) {
+                              return Card(
+                                margin: EdgeInsets.only(bottom: 1.0),
+                                child: ListTile(
+                                  title: Text(
+                                    mapState.suggestion[index],
+                                    style: TextStyle(color: Colors.black),
+                                  ),
+                                  onTap: () {
+                                    if (flage == true) {
+                                      mapState.sourceController.text =
+                                          mapState.suggestion[index].toString();
+                                mapState.details(
+                                    mapState.suggestion[index].toString(),
+                                    flage);
+                              }
+                              if (flage == false) {
+                                mapState.destinationController.text =
+                                          mapState.suggestion[index].toString();
+                                      mapState.details(
+                                          mapState.suggestion[index].toString(),
+                                          flage);
+                                    }
+                                    mapState.clearfields();
+                                    mapState.clearSuggestion();
+                                  },
+                                ),
+                              );
+                            } else {
+                              return Center(
+                                child: Container(
+                                  child: CircularProgressIndicator(),
+                                ),
+                              );
                             }
-                            if (flage == false) {
-                              mapState.destinationController.text =
-                                  mapState.suggestion[index].toString();
-                              mapState.details(
-                                  mapState.suggestion[index].toString(),
-                                  flage);
-                            }
-                            mapState.clearfields();
-                            mapState.clearSuggestion();
                           },
-                        ),
-                      );
-                    },
                   ),
                 ),
               )),
@@ -306,17 +320,17 @@ class MapScreenState extends State<MapScreen>{
                   visible: mapState.stackElementsVisibality,
                   child: FlatButton(
                     color: Colors.purple.withOpacity(0.8),
-                          onPressed: () {
-                            mapState.drawPolyLine();
-                            mapState.addCircle(
-                                mapState.l1,
-                                mapState.l2,
-                                mapState.originCircle,
-                                mapState.destinationCircle);
-                            mapState.showAppBar = true;
-                            mapState.settingModelBottomSheet(context);
-                            mapState.visibility();
-                          },
+                    onPressed: () {
+                      mapState.drawPolyLine();
+                      mapState.addCircle(
+                          mapState.l1,
+                          mapState.l2,
+                          mapState.originCircle,
+                          mapState.destinationCircle);
+                      mapState.showAppBar = true;
+                      mapState.settingModelBottomSheet(context);
+                      mapState.visibility();
+                    },
                     child: Text(
                       'GET QUOTE',
                       style: TextStyle(color: Colors.white),
@@ -336,12 +350,12 @@ class MapScreenState extends State<MapScreen>{
                     ),
                     child: IconButton(
                       icon: Icon(Icons.location_searching,
-                                color: Colors.purple),
-                            onPressed: () {
-                              mapState.currentLocation();
-                              print("My Locationbutton Pressed");
-                            },
-                          ),
+                          color: Colors.purple),
+                      onPressed: () {
+                        mapState.currentLocation();
+                        print("My Locationbutton Pressed");
+                      },
+                    ),
                   ))),
 
           //----> FLIGHTS BUTTON
@@ -355,18 +369,128 @@ class MapScreenState extends State<MapScreen>{
                       color: Colors.grey.shade300.withOpacity(0.7),
                       borderRadius: BorderRadius.circular(10.0),
                     ),
-                    child: IconButton(
-                      icon: Icon(Icons.flight_takeoff,
+                          child: IconButton(
+                            icon: Icon(Icons.flight_takeoff,
                                 color: Colors.purple),
                             onPressed: () {
                               Navigator.pushNamed(context, '/flightscreen');
                             },
                           ),
-                  ))),
-        ],
+                        ))),
+              ],
+            ),
+      drawer: Drawer(
+        //  semanticLabel: 'Heloo',
+        elevation: 30,
+        child: Column(
+          // shrinkWrap: false,
+          children: [
+            DrawerHeader(
+              decoration: BoxDecoration(color: Colors.purple),
+              child: Wrap(
+                children: [
+                  CircleAvatar(
+                    radius: 30,
+                    backgroundColor: Colors.blueGrey,
+                    child: Icon(
+                      Icons.person,
+                      color: Colors.white,
+                    ),
+                  ),
+                  SizedBox(width: 4.0),
+                  RichText(
+                      text: TextSpan(
+                          text: ('Mussdiq\n'),
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18,
+                              fontWeight: FontWeight.w600),
+                          children: [
+                        TextSpan(
+                            text: 'mussdiq.slashglobal@gmail.com',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400))
+                      ]))
+                ],
+              ),
+              padding: EdgeInsets.only(left: 3.0, right: 3),
+            ),
+            ListTile(
+              leading: Icon(Icons.history_toggle_off, color: Colors.purple),
+              title: Text('Ride History'),
+            ),
+            Divider(
+              thickness: 0.5,
+              height: 1,
+              color: Colors.grey,
+            ),
+            ListTile(
+              leading: Icon(Icons.settings_applications_outlined,
+                  color: Colors.purple),
+              title: Text('Settings'),
+            ),
+            Divider(
+              thickness: 0.5,
+              height: 1,
+              color: Colors.grey,
+            ),
+            ListTile(
+              leading: Icon(Icons.feedback, color: Colors.purple),
+              title: Text('About'),
+            ),
+            Divider(
+              thickness: 0.5,
+              height: 1,
+              color: Colors.grey,
+            ),
+            ListTile(
+              leading: Icon(Icons.share_sharp, color: Colors.purple),
+              title: Text('Share'),
+            ),
+            Divider(
+              thickness: 0.5,
+              height: 1,
+              color: Colors.grey,
+            ),
+            ListTile(
+              leading: Icon(Icons.feedback_outlined, color: Colors.purple),
+              title: Text('Give feedback'),
+            ),
+            Divider(
+              thickness: 0.5,
+              height: 1,
+              color: Colors.grey,
+            ),
+            ListTile(
+              leading: Icon(Icons.call, color: Colors.purple),
+              title: Text('Contact us'),
+            ),
+            Divider(
+              thickness: 0.5,
+              height: 1,
+              color: Colors.grey,
+            ),
+            ListTile(
+              leading:
+                  Icon(Icons.monetization_on_outlined, color: Colors.purple),
+              title: Text('Wallet'),
+            ),
+            Divider(
+              thickness: 0.5,
+              height: 1,
+              color: Colors.grey,
+            ),
+            ListTile(
+              leading: Icon(Icons.logout, color: Colors.purple),
+              title: Text('Logout'),
+            ),
+          ],
+        ),
       ),
     );
   }
 
-  }
+}
 

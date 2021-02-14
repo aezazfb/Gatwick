@@ -17,6 +17,8 @@ class BottomModelSheet with ChangeNotifier {
     Step(title: Text('Android'), content: Icon(Icons.money)),
   ];
 
+//inner Drawer
+  //Slider_drawer
   settingModelBottomSheet(context, distance, time) async {
     String vechile = 'Saloon ';
     int suitCase = 0;
@@ -66,16 +68,17 @@ class BottomModelSheet with ChangeNotifier {
                             Spacer(),
                             //Icon(Icons.clean_hands_outlined,size: 40),
 
-                            DropDown(
-                              items: [
-                                'Cash',
-                                'Card',
-                              ],
-                              hint: Text('Cash',
-                                  style: TextStyle(color: Colors.black)),
-                            ),
-                          ],
-                        )),
+                          DropDown(
+                            items: [
+                              'Cash',
+                              'Card',
+                            ],
+                            hint: Text('Cash',
+                                style: TextStyle(color: Colors.black)),
+                          ),
+                        ],
+                      ),
+                    ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
