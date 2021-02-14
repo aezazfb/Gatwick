@@ -11,6 +11,11 @@ class BottomModelSheet with ChangeNotifier {
   int _initialLabel = 1;
   TextEditingController _flightController = TextEditingController();
   TextEditingController _commenttController = TextEditingController();
+  List users = [
+    Step(title: Text('Android'), content: Icon(Icons.money)),
+    Step(title: Text('iOS'), content: Icon(Icons.flight)),
+    Step(title: Text('Android'), content: Icon(Icons.money)),
+  ];
 
   settingModelBottomSheet(context, distance, time) async {
     String vechile = 'Saloon ';
@@ -39,11 +44,8 @@ class BottomModelSheet with ChangeNotifier {
                           child: Text('Driver will be Available in 10 minutes'),
                         )),
                     Card(
-                        // margin: EdgeInsets.symmetric(horizontal: 10.0),
                         color: Colors.grey[300],
-                        // margin: EdgeInsets.all(0.0),
                         child: Row(
-                          // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Icon(Icons.monetization_on_outlined,
                                 size: 30, color: Colors.purple),
@@ -63,6 +65,7 @@ class BottomModelSheet with ChangeNotifier {
                                 style: TextStyle(color: Colors.black)),
                             Spacer(),
                             //Icon(Icons.clean_hands_outlined,size: 40),
+
                             DropDown(
                               items: [
                                 'Cash',
