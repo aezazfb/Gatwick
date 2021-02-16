@@ -22,22 +22,22 @@ class MapScreenState extends State<MapScreen>{
   Widget build(BuildContext context) {
     final mapState = Provider.of<MapState>(context);
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white24.withOpacity(0.1),
-        title: Text('Zippy Rider'),
-        centerTitle: true,
-      ),
+      // appBar: AppBar(
+      //   backgroundColor: Colors.white24.withOpacity(0.1),
+      //   title: Text('Zippy Rider'),
+      //   centerTitle: true,
+      // ),
       body: mapState.initialPosition == null
           ? Container(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  SpinKitRotatingCircle(
-                    color: Colors.purple,
-                    size: 50.0,
+              child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    SpinKitRotatingCircle(
+                      color: Colors.purple,
+                      size: 50.0,
                   )
                 ],
               ),
