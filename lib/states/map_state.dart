@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:geocoder/geocoder.dart';
+import 'package:share/share.dart';
 import 'package:zippy_rider/UI/map_screen.dart';
 import 'package:zippy_rider/requests/polyline_request.dart';
 import 'package:zippy_rider/requests/suggestionRequest.dart';
@@ -356,7 +357,7 @@ class MapState with ChangeNotifier {
   }
 
 // ignore: non_constant_identifier_names
-  void feedBackDialog(context) {
+  feedBackDialog(context) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -427,6 +428,13 @@ class MapState with ChangeNotifier {
           ],
         );
       },
+    );
+  }
+
+  appshare(context) {
+    Share.share(
+      'Sharing app Link ',
+      subject: 'DemoShare',
     );
   }
 }

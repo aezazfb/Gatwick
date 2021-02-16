@@ -171,9 +171,8 @@ class LoginState extends State<Login> {
                                               .toString();
                                         });
                                         if (code == inputValue) {
-                                          Navigator.of(context).pushNamed(
-                                              '/profile',
-                                              arguments: model);
+                                          Navigator.of(context)
+                                              .pushNamed('/profile');
                                         } else {
                                           return Toast.show(
                                               'Code Does not  Match', context,
@@ -203,7 +202,8 @@ class LoginState extends State<Login> {
                             ),
                             recognizer: TapGestureRecognizer()
                               ..onTap = () {
-                                Navigator.pushNamed(context, '/mapscreen');
+                                Navigator.pushReplacementNamed(
+                                    context, '/mapscreen');
                               }),
                       ]),
                 ),

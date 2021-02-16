@@ -26,7 +26,8 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-//  Model model = Model();
+  Model model = Model();
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -39,7 +40,7 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (context) => MapScreen(),
-        '/profile': (context) => Profile(),
+        '/profile': (context) => Profile(model),
         '/login': (context) => Login(),
         '/ridehistory': (context) => RideHistory(),
         '/mapscreen': (context) => MapScreen(),

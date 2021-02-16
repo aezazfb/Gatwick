@@ -438,25 +438,9 @@ class MapScreenState extends State<MapScreen>{
               color: Colors.grey,
             ),
             ListTile(
-              leading: Icon(Icons.info_outline_rounded, color: Colors.purple),
-              title: Text('About'),
-              onTap: () {
-                showAboutDialog(
-                  context: context,
-                  applicationName: 'Zippy Riders',
-                  //applicationLegalese: 'All Rights Resrved by Slash Global',
-                  applicationVersion: '1.0.1',
-                );
-              },
-            ),
-            Divider(
-              thickness: 0.5,
-              height: 1,
-              color: Colors.grey,
-            ),
-            ListTile(
               leading: Icon(Icons.share_sharp, color: Colors.purple),
               title: Text('Share'),
+              onTap: () => mapState.appshare(context),
             ),
             Divider(
               thickness: 0.5,
@@ -484,8 +468,27 @@ class MapScreenState extends State<MapScreen>{
             ),
             ListTile(
               leading:
-              Icon(Icons.monetization_on_outlined, color: Colors.purple),
+                  Icon(Icons.monetization_on_outlined, color: Colors.purple),
               title: Text('Wallet'),
+            ),
+            Divider(
+              thickness: 0.5,
+              height: 1,
+              color: Colors.grey,
+            ),
+            ListTile(
+              leading: Icon(Icons.info_outline_rounded, color: Colors.purple),
+              title: Text('About'),
+              onTap: () {
+                showAboutDialog(
+                    context: context,
+                    applicationName: 'Zippy Riders',
+                    //applicationLegalese: 'All Rights Resrved by Slash Global',
+                    //,
+                    children: [
+                      Text('1.0.1'),
+                    ]);
+              },
             ),
             Divider(
               thickness: 0.5,
@@ -496,7 +499,7 @@ class MapScreenState extends State<MapScreen>{
                 leading: Icon(Icons.logout, color: Colors.purple),
                 title: Text('Logout'),
                 onTap: () {
-                  Navigator.pushNamed(context, '/login');
+                  Navigator.pushReplacementNamed(context, '/login');
                 }),
           ],
         ),

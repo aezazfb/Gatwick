@@ -4,6 +4,7 @@ import 'package:flutter_dropdown/flutter_dropdown.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 import 'package:toast/toast.dart';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 
 class BottomModelSheet with ChangeNotifier {
   DateTime pickedDate = DateTime.now();
@@ -11,14 +12,7 @@ class BottomModelSheet with ChangeNotifier {
   int _initialLabel = 1;
   TextEditingController _flightController = TextEditingController();
   TextEditingController _commenttController = TextEditingController();
-  List users = [
-    Step(title: Text('Android'), content: Icon(Icons.money)),
-    Step(title: Text('iOS'), content: Icon(Icons.flight)),
-    Step(title: Text('Android'), content: Icon(Icons.money)),
-  ];
 
-//inner Drawer
-  //Slider_drawer
   settingModelBottomSheet(context, distance, time) async {
     String vechile = 'Saloon ';
     int suitCase = 0;
@@ -197,7 +191,7 @@ class BottomModelSheet with ChangeNotifier {
                                 iconSize: 40,
                                 color: Colors.white,
                                 onPressed: () {
-                                  dialogShow(context);
+                                  pickDate(context);
                                 }),
                             FlatButton(
                                 minWidth:
@@ -217,7 +211,7 @@ class BottomModelSheet with ChangeNotifier {
                                 iconSize: 40,
                                 color: Colors.white,
                                 onPressed: () {
-                                  dialogShowCommment(context);
+                                  dialogShow(context);
                                 }),
                           ],
                         )),
@@ -230,112 +224,97 @@ class BottomModelSheet with ChangeNotifier {
   }
 
   pickDate(context) async {
-    DateTime date = await showDatePicker(
-        confirmText: 'SAVE',
-        cancelText: 'CANCEL',
-        context: context,
-        initialDate: pickedDate,
-        firstDate: DateTime.now(),
-        lastDate: DateTime(DateTime.now().year + 1));
-    if (date != null) {
-      pickedDate = date;
-      notifyListeners();
-    }
+    var time = DatePicker.showDateTimePicker(context,
+        showTitleActions: true,
+        minTime: pickedDate,
+        maxTime: DateTime(2021),
+        currentTime: DateTime.now(),
+        locale: LocaleType.en, onConfirm: (value) {
+      print('Time = ${value.hour} : ${value.minute}');
+      print('Date : ${value.year}/${value.month}/${value.day}');
+      print(value.hour);
+    });
   }
 
-  pickTime(context) async {
-    TimeOfDay time = await showTimePicker(
-      context: context,
-      initialTime: pickedTime,
-      confirmText: 'SAVE',
-      cancelText: 'CANCEL',
-    );
-    if (time != null) {
-      pickedTime = time;
-    }
+  // dialogShow(context) {
+  //   showDialog(
+  //     context: context,
+  //     builder: (BuildContext context) {
+  //       return AlertDialog(
+  //         shape:
+  //             RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
+  //         insetPadding: EdgeInsets.all(10.0),
+  //         titlePadding: EdgeInsets.all(0.0),
+  //         titleTextStyle: TextStyle(
+  //             color: Colors.white, fontSize: 20, fontWeight: FontWeight.w600),
+  //         title: Container(
+  //             width: MediaQuery.of(context).size.width - 40,
+  //             padding: EdgeInsets.only(left: 10, top: 10, bottom: 20),
+  //             child: Text(' Select Date and Time '),
+  //             decoration: BoxDecoration(
+  //               color: Colors.purple,
+  //               borderRadius: BorderRadius.only(
+  //                   topRight: Radius.circular(15),
+  //                   topLeft: Radius.circular(15.0)),
+  //             )),
+  //         content: Container(
+  //           width: MediaQuery.of(context).size.width - 40,
+  //           child: Column(
+  //             mainAxisSize: MainAxisSize.min,
+  //             children: [
+  //               ListTile(
+  //                 title: Text(
+  //                     '${pickedDate.year}/${pickedDate.month}/${pickedDate.day}'),
+  //                 leading: Icon(
+  //                   Icons.calendar_today_outlined,
+  //                   color: Colors.purple,
+  //                   size: 30,
+  //                 ),
+  //                 trailing: IconButton(
+  //                   icon: Icon(
+  //                     Icons.edit,
+  //                     color: Colors.black,
+  //                   ),
+  //                   onPressed: () {
+  //                     pickDate(context);
+  //                   },
+  //                 ),
+  //               ),
+  //               ListTile(
+  //                 title: Text(' ${pickedTime.hour} : ${pickedTime.minute}'),
+  //                 leading: Icon(
+  //                   Icons.access_time,
+  //                   color: Colors.purple,
+  //                   size: 30,
+  //                 ),
+  //                 trailing: IconButton(
+  //                   icon: Icon(
+  //                     Icons.edit,
+  //                     color: Colors.black,
+  //                   ),
+  //                   onPressed: () {
+  //                     pickTime(context);
+  //                   },
+  //                 ),
+  //               ),
+  //             ],
+  //           ),
+  //         ),
+  //         actions: [
+  //           FlatButton(
+  //               color: Colors.purple,
+  //               clipBehavior: Clip.hardEdge,
+  //               onPressed: () {
+  //                 Navigator.pop(context);
+  //               },
+  //               child: Text('DONE')),
+  //         ],
+  //       );
+  //     },
+  //   );
+  // }
 
-    notifyListeners();
-  }
-
-  dialogShow(context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
-          insetPadding: EdgeInsets.all(10.0),
-          titlePadding: EdgeInsets.all(0.0),
-          titleTextStyle: TextStyle(
-              color: Colors.white, fontSize: 20, fontWeight: FontWeight.w600),
-          title: Container(
-              width: MediaQuery.of(context).size.width - 40,
-              padding: EdgeInsets.only(left: 10, top: 10, bottom: 20),
-              child: Text(' Select Date and Time '),
-              decoration: BoxDecoration(
-                color: Colors.purple,
-                borderRadius: BorderRadius.only(
-                    topRight: Radius.circular(15),
-                    topLeft: Radius.circular(15.0)),
-              )),
-          content: Container(
-            width: MediaQuery.of(context).size.width - 40,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                ListTile(
-                  title: Text(
-                      '${pickedDate.year}/${pickedDate.month}/${pickedDate.day}'),
-                  leading: Icon(
-                    Icons.calendar_today_outlined,
-                    color: Colors.purple,
-                    size: 30,
-                  ),
-                  trailing: IconButton(
-                    icon: Icon(
-                      Icons.edit,
-                      color: Colors.black,
-                    ),
-                    onPressed: () {
-                      pickDate(context);
-                    },
-                  ),
-                ),
-                ListTile(
-                  title: Text(' ${pickedTime.hour} : ${pickedTime.minute}'),
-                  leading: Icon(
-                    Icons.access_time,
-                    color: Colors.purple,
-                    size: 30,
-                  ),
-                  trailing: IconButton(
-                    icon: Icon(
-                      Icons.edit,
-                      color: Colors.black,
-                    ),
-                    onPressed: () {
-                      pickTime(context);
-                    },
-                  ),
-                ),
-              ],
-            ),
-          ),
-          actions: [
-            FlatButton(
-                color: Colors.purple,
-                clipBehavior: Clip.hardEdge,
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: Text('DONE')),
-          ],
-        );
-      },
-    );
-  }
-
-  dialogShowCommment(context) async {
+  dialogShow(context) async {
     showDialog(
       context: context,
       builder: (BuildContext context) {
