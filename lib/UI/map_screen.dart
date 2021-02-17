@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -324,15 +322,12 @@ class MapScreenState extends State<MapScreen>{
                     color: Colors.purple.withOpacity(0.8),
                     onPressed: () {
                       mapState.drawPolyLine();
-                      mapState.addCircle(
-                          mapState.l1,
-                          mapState.l2,
-                          mapState.originCircle,
-                          mapState.destinationCircle);
-                      mapState.showAppBar = true;
-                      mapState.settingModelBottomSheet(context);
-                      mapState.visibility();
-                    },
+                            mapState.addCircle(mapState.l1, mapState.l2,
+                                'origin', 'destination');
+                            mapState.showAppBar = true;
+                            mapState.settingModelBottomSheet(context);
+                            mapState.visibility();
+                          },
                     child: Text(
                       'GET QUOTE',
                       style: TextStyle(color: Colors.white),

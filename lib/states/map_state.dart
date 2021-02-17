@@ -60,8 +60,6 @@ class MapState with ChangeNotifier {
   String distance;
   String time;
   String _name = '';
-  String originCircle = 'origin';
-  String destinationCircle = 'destination';
   double originHue = 70.0;
 
   bool cardVisibility = true;
@@ -300,9 +298,6 @@ class MapState with ChangeNotifier {
       l1 = l2;
       l2 = latLng;
 
-      String value = originCircle;
-      originCircle = destinationCircle;
-      destinationCircle = value;
       polyLine.last.points.clear();
     } else {
       return null;

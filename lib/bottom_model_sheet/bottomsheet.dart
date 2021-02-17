@@ -8,7 +8,7 @@ import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 
 class BottomModelSheet with ChangeNotifier {
   DateTime pickedDate = DateTime.now();
-  TimeOfDay pickedTime = TimeOfDay.now();
+//  TimeOfDay pickedTime = TimeOfDay.now();
   int _initialLabel = 1;
   TextEditingController _flightController = TextEditingController();
   TextEditingController _commenttController = TextEditingController();
@@ -226,8 +226,8 @@ class BottomModelSheet with ChangeNotifier {
   pickDate(context) async {
     var time = DatePicker.showDateTimePicker(context,
         showTitleActions: true,
-        minTime: pickedDate,
-        maxTime: DateTime(2021),
+        minTime: DateTime.now(),
+        maxTime: DateTime(1),
         currentTime: DateTime.now(),
         locale: LocaleType.en, onConfirm: (value) {
       print('Time = ${value.hour} : ${value.minute}');
