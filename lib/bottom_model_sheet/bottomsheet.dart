@@ -224,14 +224,14 @@ class BottomModelSheet with ChangeNotifier {
   }
 
   pickDate(context) async {
-     DatePicker.showDateTimePicker(context,
+    DateTime origintime = DateTime.now();
+    DatePicker.showDateTimePicker(context,
         showTitleActions: true,
-        minTime: DateTime.now(),
+        minTime: origintime,
         maxTime: DateTime(1),
         currentTime: DateTime.now(),
         locale: LocaleType.en, onConfirm: (value) {
-      print('Time = ${value.hour} : ${value.minute}');
-      print('Date : ${value.year}/${value.month}/${value.day}');
+      origintime = value;
     });
   }
 

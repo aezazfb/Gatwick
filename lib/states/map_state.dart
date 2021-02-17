@@ -339,14 +339,9 @@ class MapState with ChangeNotifier {
 
   checkConnectivity() async {
     Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
-      if (result == ConnectivityResult.mobile ||
-          result == ConnectivityResult.wifi) {
-        print('Connected');
-      }
       if (result != ConnectivityResult.mobile &&
           result != ConnectivityResult.wifi) {
         _name = "  No Internet ! \n Please Check your Internet Connection.... ";
-        print('Not Connected !');
       }
     });
     notifyListeners();
