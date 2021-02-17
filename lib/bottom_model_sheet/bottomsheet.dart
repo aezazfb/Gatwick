@@ -37,7 +37,12 @@ class BottomModelSheet with ChangeNotifier {
                     Card(
                         elevation: 0.0,
                         child: Center(
-                          child: Text('Driver will be Available in 10 minutes'),
+                          child: Row(
+                            children: [
+                              Text('Driver will be available in 10 minutes'),
+                              Text('date: 2021/2/17 Time : 24:59')
+                            ],
+                          ),
                         )),
                     Card(
                         color: Colors.grey[300],
@@ -223,19 +228,18 @@ class BottomModelSheet with ChangeNotifier {
         });
   }
 
+  //---->Date Picker
   pickDate(context) async {
-    DateTime origintime = DateTime.now();
     DatePicker.showDateTimePicker(context,
-        showTitleActions: true,
-        minTime: origintime,
+        minTime: DateTime.now(),
         maxTime: DateTime(1),
         currentTime: DateTime.now(),
         locale: LocaleType.en, onConfirm: (value) {
-      origintime = value;
+      print(value);
     });
   }
 
-
+//---->Additional Information Dialog.
   dialogShow(context) async {
     showDialog(
       context: context,
