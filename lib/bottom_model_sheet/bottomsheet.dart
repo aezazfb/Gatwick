@@ -224,7 +224,7 @@ class BottomModelSheet with ChangeNotifier {
   }
 
   pickDate(context) async {
-    var time = DatePicker.showDateTimePicker(context,
+     DatePicker.showDateTimePicker(context,
         showTitleActions: true,
         minTime: DateTime.now(),
         maxTime: DateTime(1),
@@ -232,7 +232,6 @@ class BottomModelSheet with ChangeNotifier {
         locale: LocaleType.en, onConfirm: (value) {
       print('Time = ${value.hour} : ${value.minute}');
       print('Date : ${value.year}/${value.month}/${value.day}');
-      print(value.hour);
     });
   }
 
