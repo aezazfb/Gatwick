@@ -8,15 +8,18 @@ import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 
 class BottomModelSheet with ChangeNotifier {
   DateTime pickedDate = DateTime.now();
+
 //  TimeOfDay pickedTime = TimeOfDay.now();
   int _initialLabel = 1;
   TextEditingController _flightController = TextEditingController();
   TextEditingController _commenttController = TextEditingController();
+  String date = 'Select Date';
+  String time = 'Select time';
+  String vechile = 'Saloon ';
+  int suitCase = 0;
+  int passengers = 0;
 
   settingModelBottomSheet(context, distance, time) async {
-    String vechile = 'Saloon ';
-    int suitCase = 0;
-    int passengers = 0;
     showModalBottomSheet(
         backgroundColor: Colors.deepPurple.withOpacity(0.1),
         enableDrag: true,
@@ -37,10 +40,10 @@ class BottomModelSheet with ChangeNotifier {
                     Card(
                         elevation: 0.0,
                         child: Center(
-                          child: Row(
+                          child: Wrap(
                             children: [
                               Text('Driver will be available in 10 minutes'),
-                              Text('date: 2021/2/17 Time : 24:59')
+                              Text('date: $date Time : $time')
                             ],
                           ),
                         )),
@@ -235,7 +238,8 @@ class BottomModelSheet with ChangeNotifier {
         maxTime: DateTime(1),
         currentTime: DateTime.now(),
         locale: LocaleType.en, onConfirm: (value) {
-      print(value);
+      date = '${value.day}/${value.month}/${value.year}';
+      notifyListeners();
     });
   }
 
