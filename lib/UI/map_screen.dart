@@ -15,7 +15,6 @@ class MapScreen extends StatefulWidget {
 class MapScreenState extends State<MapScreen>{
   bool flage = true;
   var heightFactor = 0.0;
-
   @override
   Widget build(BuildContext context) {
     final mapState = Provider.of<MapState>(context);
@@ -353,7 +352,7 @@ class MapScreenState extends State<MapScreen>{
                         print("My Locationbutton Pressed");
                       },
                     ),
-                  ))),
+                        ))),
 
           //----> FLIGHTS BUTTON
           Positioned(
