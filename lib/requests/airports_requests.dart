@@ -7,6 +7,7 @@ class AirportsData {
     List mapResponse;
     var url =
         'http://testing.thedivor.com/api/Generic/GetALL?table=Airports&&count=$recordcount';
+   // 'http://testing.thedivor.com/api/Generic/GetALL?officename=CYP&&tablename=CfgCustApp';
     http.Response response;
     response = await http.get(url);
     mapResponse = json.decode(response.body);

@@ -376,11 +376,18 @@ class MapScreenState extends State<MapScreen>{
         ],
       ),
       drawer: Drawer(
-        child: Column(
-          // shrinkWrap: false,
+        child: ListView(
           children: [
             DrawerHeader(
-              decoration: BoxDecoration(color: Colors.purple),
+              decoration: BoxDecoration(
+                  gradient: SweepGradient(center: Alignment.topLeft, colors: [
+                Colors.black45,
+                Colors.purple,
+                Colors.pink,
+                //  Colors.yellowAccent,
+                //Colors.brown,
+                Colors.blue,
+              ])),
               child: Row(
                 children: [
                   CircleAvatar(
