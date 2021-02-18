@@ -43,7 +43,7 @@ class BottomModelSheet with ChangeNotifier {
                           child: Wrap(
                             children: [
                               Text('Driver will be available in 10 minutes'),
-                              Text('date: $date Time : $rideTime')
+                              Text('Date: $date , Time  $rideTime')
                             ],
                           ),
                         )),
@@ -238,7 +238,8 @@ class BottomModelSheet with ChangeNotifier {
         maxTime: DateTime(1),
         currentTime: DateTime.now(),
         locale: LocaleType.en, onConfirm: (value) {
-      date = '${value.day}/${value.month}/${value.year}';
+          date = '${value.day}/${value.month}/${value.year}';
+      rideTime = '${value.hour} : ${value.minute}';
       notifyListeners();
     });
   }
