@@ -20,7 +20,7 @@ void main() {
     child: MyApp(),
     providers: [
       ChangeNotifierProvider.value(value: MapState()),
-      ChangeNotifierProvider.value(value: FlightState())
+      ChangeNotifierProvider.value(value: FlightState()),
     ],
   ));
 }

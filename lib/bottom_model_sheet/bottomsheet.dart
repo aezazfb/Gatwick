@@ -12,43 +12,51 @@ class BottomModelSheet with ChangeNotifier {
   int _initialLabel = 1;
   TextEditingController _flightController = TextEditingController();
   TextEditingController _commenttController = TextEditingController();
+
   VehicleDetails _vehicleDetails = VehicleDetails();
+  List carDetails = [];
+  List cars = [];
 
   String vechile = 'Saloon ';
   int suitCase = 0;
   int passengers = 0;
   String rideDate = 'Select Date';
   String rideTime = 'Select time';
+  int count = 0;
 
   settingModelBottomSheet(context, distance, time) async {
+    carDetails = await _vehicleDetails.getVehicleDetails(3);
+    cars = carDetails[0]['carstype'];
     showModalBottomSheet(
         backgroundColor: Colors.deepPurple.withOpacity(0.1),
         enableDrag: true,
         context: context,
         builder: (BuildContext context) {
-          return Container(
-            margin: EdgeInsets.all(0.0),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(12.0)),
-              color: Colors.white,
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Wrap(
-                  children: [
-                    Card(
-                        elevation: 0.0,
-                        child: Center(
-                          child: Wrap(
-                            children: [
-                              Text('Driver will be available in 10 minutes'),
-                              Text('Date: $rideDate , Time  $rideTime')
-                            ],
-                          ),
-                        )),
-                    Card(
+          return StatefulBuilder(
+              builder: (BuildContext context, StateSetter setState) {
+            return Container(
+              margin: EdgeInsets.all(0.0),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(12.0)),
+                color: Colors.white,
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Wrap(
+                    children: [
+                      Card(
+                          elevation: 0.0,
+                          child: Center(
+                            child: Wrap(
+                              children: [
+                                Text('Driver will be available in 10 minutes'),
+                                Text('Date: $rideDate , Time  $rideTime')
+                              ],
+                            ),
+                          )),
+                      Card(
                         color: Colors.grey[300],
                         child: Row(
                           children: [
@@ -71,165 +79,184 @@ class BottomModelSheet with ChangeNotifier {
                             Spacer(),
                             //Icon(Icons.clean_hands_outlined,size: 40),
 
-                          DropDown(
-                            items: [
-                              'Cash',
-                              'Card',
-                            ],
-                            hint: Text('Cash',
-                                style: TextStyle(color: Colors.black)),
-                          ),
-                        ],
+                            DropDown(
+                              items: [
+                                'Cash',
+                                'Card',
+                              ],
+                              hint: Text('Cash',
+                                  style: TextStyle(color: Colors.black)),
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        SizedBox(width: 15),
-                        RotatedBox(
-                            quarterTurns: 3,
-                            child: Text(
-                              '$vechile',
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            )),
-                        Icon(Icons.local_taxi_outlined,
-                            size: 40, color: Colors.black),
-                        Spacer(),
-                        RichText(
-                            text: TextSpan(
-                                text: '$passengers\n',
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SizedBox(width: 15),
+                          RotatedBox(
+                              quarterTurns: 3,
+                              child: Text(
+                                '${cars[count]['carname']}',
                                 style: TextStyle(
                                   color: Colors.black,
+                                  fontWeight: FontWeight.w600,
                                 ),
-                                children: <TextSpan>[
-                                  TextSpan(
-                                      text: ('Passangers'),
-                                      style: TextStyle(color: Colors.black))
-                                ]),
-                            textAlign: TextAlign.center),
-                        Spacer(),
-                        RichText(
-                            text: TextSpan(
-                                text: '$suitCase\n',
-                                style: TextStyle(color: Colors.black),
-                                children: <TextSpan>[
-                                  TextSpan(
-                                      text: ('Suitcases'),
-                                      style: TextStyle(color: Colors.black))
-                                ]),
-                            textAlign: TextAlign.center),
-                        SizedBox(width: 15),
-                      ],
-                    ),
-                    Swiper(
-                      itemWidth: 140,
-                      itemHeight: 130,
-                      itemCount: 10,
-                      // outer: true,
-                      layout: SwiperLayout.CUSTOM,
-                      customLayoutOption:
-                      new CustomLayoutOption(startIndex: -1, stateCount: 3)
-                          .addTranslate([
-                        new Offset(-140.0, 30.0),
-                        new Offset(0.0, 20.0),
-                        new Offset(140.0, 30.0)
-                      ]).addOpacity([1.0, 1.0, 1.0]),
-                      scrollDirection: Axis.horizontal,
-                      onIndexChanged: (index) {
-                        print('im dsegggg $index');
-                        vechile = 'vechile $index ';
-                        suitCase = index;
-                        passengers = index;
-                      },
-                      itemBuilder: (BuildContext context, index) {
-                        return Card(
-                            elevation: 20.0,
-                            shadowColor: Colors.transparent,
-                            color: Colors.grey[300],
-                            child: InkWell(
-                                child: Stack(
-                              children: [
-                                Icon(
-                                  Icons.local_taxi_rounded,
-                                  size: 45,
-                                  color: Colors.purple,
-                                ),
-                                Positioned(
-                                  top: 50,
-                                  left: 10.0,
-                                  child: Row(
-                                    children: [
-                                      Text(
-                                        " Vechile $index",
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.w600,
-                                            fontSize: 12),
-                                      ),
-                                    ],
+                              )),
+                          Icon(Icons.local_taxi_outlined,
+                              size: 40, color: Colors.black),
+                          Spacer(),
+                          RichText(
+                              text: TextSpan(
+                                  text: '${cars[count]['carcapacity']}\n',
+                                  style: TextStyle(
+                                    color: Colors.black,
                                   ),
-                                ),
-                                Positioned(
-                                    top: 65.0,
-                                    left: 10,
-                                    child: Text(" Passangers: $index",
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.w400))),
-                                Positioned(
-                                    top: 80.0,
-                                    left: 10,
-                                    child: Text(" Suitcase: $index",
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.w400))),
-                              ],
-                                )));
-                      },
-                    ),
-                    Card(
-                        elevation: 0.0,
-                        color: Colors.grey[400],
-                        child: Wrap(
-                          children: [
-                            IconButton(
-                                icon: Icon(Icons.date_range),
-                                iconSize: 40,
-                                color: Colors.white,
-                                onPressed: () {
-                                  pickDate(context);
-                                  _vehicleDetails.getVehicleDetails(5);
-                                }),
-                            FlatButton(
-                                minWidth:
-                                    MediaQuery.of(context).size.width - 120,
-                                height: 40,
-                                color: Colors.purple,
-                                child: Text('Confirm',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.w700,
-                                    )),
-                                onPressed: () {
-                                  print('null');
-                                }),
-                            IconButton(
-                                icon: Icon(Icons.add),
-                                iconSize: 40,
-                                color: Colors.white,
-                                onPressed: () {
-                                  dialogShow(context);
-                                }),
-                          ],
-                        )),
-                  ],
-                )
-              ],
-            ),
-          );
+                                  children: <TextSpan>[
+                                    TextSpan(
+                                        text: ('Passangers'),
+                                        style: TextStyle(color: Colors.black))
+                                  ]),
+                              textAlign: TextAlign.center),
+                          Spacer(),
+                          RichText(
+                              text: TextSpan(
+                                  text: '${cars[count]['lugagecapacity']}\n',
+                                  style: TextStyle(color: Colors.black),
+                                  children: <TextSpan>[
+                                    TextSpan(
+                                        text: ('Suitcases'),
+                                        style: TextStyle(color: Colors.black))
+                                  ]),
+                              textAlign: TextAlign.center),
+                          SizedBox(width: 15),
+                        ],
+                      ),
+                      Swiper(
+                        itemWidth: 140,
+                        itemHeight: 130,
+                        itemCount: 5,
+                        // outer: true,
+                        layout: SwiperLayout.CUSTOM,
+                        customLayoutOption: new CustomLayoutOption(
+                                startIndex: -1, stateCount: 3)
+                            .addTranslate([
+                          new Offset(-140.0, 30.0),
+                          new Offset(0.0, 20.0),
+                          new Offset(140.0, 30.0)
+                        ]).addOpacity([1.0, 1.0, 1.0]),
+                        scrollDirection: Axis.horizontal,
+                        onIndexChanged: (index) {
+                          setState(() {
+                            count = index;
+                          });
+                        },
+                        itemBuilder: (BuildContext context, index) {
+                          return Card(
+                              elevation: 20.0,
+                              shadowColor: Colors.transparent,
+                              color: Colors.grey[300],
+                              child: InkWell(
+                                  child: Stack(
+                                children: [
+                                  Icon(
+                                    Icons.local_taxi_rounded,
+                                    size: 45,
+                                    color: Colors.purple,
+                                  ),
+                                  Positioned(
+                                    top: 50,
+                                    left: 10.0,
+                                    child: Row(
+                                      children: [
+                                        Text(
+                                          "${cars[index]['carname']}",
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.w600,
+                                              fontSize: 12),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Positioned(
+                                      top: 65.0,
+                                      left: 10,
+                                      child: Text(
+                                          "Passengers: ${cars[index]['carcapacity']}",
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.w400))),
+                                  Positioned(
+                                      top: 80.0,
+                                      left: 10,
+                                      child: Text(
+                                          "Suitcase: ${cars[index]['lugagecapacity']}",
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.w400))),
+                                ],
+                              )));
+                        },
+                      ),
+                      Card(
+                          elevation: 0.0,
+                          color: Colors.grey[400],
+                          child: Wrap(
+                            children: [
+                              IconButton(
+                                  icon: Icon(Icons.date_range),
+                                  iconSize: 40,
+                                  color: Colors.white,
+                                  onPressed: () {
+                                    // pickDate(context);
+
+                                    DatePicker.showDateTimePicker(context,
+                                        minTime: DateTime.now(),
+                                        maxTime: DateTime(1),
+                                        currentTime: DateTime.now(),
+                                        locale: LocaleType.en,
+                                        onConfirm: (value) {
+                                      setState(() {
+                                        rideDate =
+                                            '${value.day}/${value.month}/${value.year}';
+                                        rideTime =
+                                            '${value.hour} : ${value.minute}';
+                                      });
+                                    });
+
+                                    print(carDetails);
+                                    print('__________________________\n');
+                                    print(cars[0]['carname']);
+                                  }),
+                              FlatButton(
+                                  minWidth:
+                                      MediaQuery.of(context).size.width - 120,
+                                  height: 40,
+                                  color: Colors.purple,
+                                  child: Text('Confirm',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w700,
+                                      )),
+                                  onPressed: () {
+                                    print('null');
+                                  }),
+                              IconButton(
+                                  icon: Icon(Icons.add),
+                                  iconSize: 40,
+                                  color: Colors.white,
+                                  onPressed: () {
+                                    dialogShow(context);
+                                  }),
+                            ],
+                          )),
+                    ],
+                  )
+                ],
+              ),
+            );
+          });
         });
   }
 
@@ -369,5 +396,4 @@ class BottomModelSheet with ChangeNotifier {
       },
     );
   }
-
 }
