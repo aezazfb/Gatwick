@@ -14,7 +14,7 @@ class BottomModelSheet with ChangeNotifier {
   TextEditingController _flightController = TextEditingController();
   TextEditingController _commenttController = TextEditingController();
   String date = 'Select Date';
-  String time = 'Select time';
+  String rideTime = 'Select time';
   String vechile = 'Saloon ';
   int suitCase = 0;
   int passengers = 0;
@@ -43,7 +43,7 @@ class BottomModelSheet with ChangeNotifier {
                           child: Wrap(
                             children: [
                               Text('Driver will be available in 10 minutes'),
-                              Text('date: $date Time : $time')
+                              Text('date: $date Time : $rideTime')
                             ],
                           ),
                         )),
