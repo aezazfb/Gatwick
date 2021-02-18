@@ -2,22 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter_dropdown/flutter_dropdown.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
+import 'package:provider/provider.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 import 'package:toast/toast.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+import 'package:zippy_rider/states/map_state.dart';
 
 class BottomModelSheet with ChangeNotifier {
   DateTime pickedDate = DateTime.now();
-
-//  TimeOfDay pickedTime = TimeOfDay.now();
   int _initialLabel = 1;
   TextEditingController _flightController = TextEditingController();
   TextEditingController _commenttController = TextEditingController();
-  String date = 'Select Date';
-  String rideTime = 'Select time';
+
   String vechile = 'Saloon ';
   int suitCase = 0;
   int passengers = 0;
+  String rideDate = 'Select Date';
+  String rideTime = 'Select time';
 
   settingModelBottomSheet(context, distance, time) async {
     showModalBottomSheet(
@@ -43,7 +44,7 @@ class BottomModelSheet with ChangeNotifier {
                           child: Wrap(
                             children: [
                               Text('Driver will be available in 10 minutes'),
-                              Text('Date: $date , Time  $rideTime')
+                              Text('Date: $rideDate , Time  $rideTime')
                             ],
                           ),
                         )),
@@ -238,7 +239,7 @@ class BottomModelSheet with ChangeNotifier {
         maxTime: DateTime(1),
         currentTime: DateTime.now(),
         locale: LocaleType.en, onConfirm: (value) {
-          date = '${value.day}/${value.month}/${value.year}';
+      rideDate = '${value.day}/${value.month}/${value.year}';
       rideTime = '${value.hour} : ${value.minute}';
       notifyListeners();
     });

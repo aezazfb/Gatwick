@@ -6,11 +6,11 @@ import 'package:geolocator/geolocator.dart';
 import 'package:geocoder/geocoder.dart';
 import 'package:share/share.dart';
 import 'package:zippy_rider/UI/map_screen.dart';
-import 'package:zippy_rider/requests/polyline_request.dart';
-import 'package:zippy_rider/requests/suggestionRequest.dart';
+import 'package:zippy_rider/requests/map_screen/polyline_request.dart';
+import 'package:zippy_rider/requests/map_screen/suggestionRequest.dart';
 import 'package:flutter/material.dart';
-import 'package:zippy_rider/requests/detailsRequest.dart';
-import 'package:zippy_rider/requests/distance_time_calculate.dart';
+import 'package:zippy_rider/requests/map_screen/detailsRequest.dart';
+import 'package:zippy_rider/requests/map_screen/distance_time_calculate.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:zippy_rider/bottom_model_sheet/bottomsheet.dart';
 

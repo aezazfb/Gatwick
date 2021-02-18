@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:zippy_rider/requests/airports_requests.dart';
+import 'package:zippy_rider/requests/airport_screen//airports_requests.dart';
 
 class FlightState with ChangeNotifier {
   AirportsData airportsData = AirportsData();
