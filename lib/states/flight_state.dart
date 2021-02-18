@@ -3,7 +3,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:zippy_rider/requests/airport_screen//airports_requests.dart';
 
 class FlightState with ChangeNotifier {
-  AirportsData airportsData = AirportsData();
+  AirportsDetails _airportsDetails = AirportsDetails();
 
   Set<Marker> _markers = Set();
   List<String> images = [
@@ -35,7 +35,7 @@ class FlightState with ChangeNotifier {
   }
 
   _saveData() async {
-    data = await airportsData.getAirportsData(15);
+    data = await _airportsDetails.getAirportsDetails(15);
     for (int i = 0; i < 12; i++) {
       latLangList.add(LatLng(data[i]['Latitude'], data[i]['Longitude']));
       airPortNamelist.add(data[i]['Place']);
