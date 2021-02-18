@@ -62,6 +62,13 @@ class Profile extends StatelessWidget {
                     fontWeight: FontWeight.w700,
                   )),
             ),
+            FlatButton(
+              color: Colors.purple,
+              onPressed: () {
+                Navigator.pushNamed(context, '/mapscreen');
+              },
+              child: Text('Book Ride Now'),
+            )
           ],
         ),
       ),

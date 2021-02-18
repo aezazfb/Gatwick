@@ -171,8 +171,10 @@ class LoginState extends State<Login> {
                                               .toString();
                                         });
                                         if (code == inputValue) {
-                                          Navigator.of(context)
-                                              .pushNamed('/profile');
+                                          Navigator.of(context).push(
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      Profile(model)));
                                         } else {
                                           return Toast.show(
                                               'Code Does not  Match', context,
@@ -269,9 +271,6 @@ class LoginState extends State<Login> {
       }
     }
 
-    void showToast(String msg, {int duration, int gravity}) {
-      Toast.show(msg, context, duration: duration, gravity: gravity);
-    }
 
     var connection = PersistentConnection(smtpServer);
     await connection.send(message);

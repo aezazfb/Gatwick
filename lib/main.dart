@@ -26,7 +26,7 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  Model model = Model();
+   final Model model = Model();
 
   @override
   Widget build(BuildContext context) {

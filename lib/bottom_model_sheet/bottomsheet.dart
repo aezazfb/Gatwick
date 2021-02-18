@@ -2,17 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter_dropdown/flutter_dropdown.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
-import 'package:provider/provider.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 import 'package:toast/toast.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
-import 'package:zippy_rider/states/map_state.dart';
+import 'package:zippy_rider/requests/bottom_sheet/vehicle_details.dart';
 
 class BottomModelSheet with ChangeNotifier {
   DateTime pickedDate = DateTime.now();
   int _initialLabel = 1;
   TextEditingController _flightController = TextEditingController();
   TextEditingController _commenttController = TextEditingController();
+  VehicleDetails _vehicleDetails = VehicleDetails();
 
   String vechile = 'Saloon ';
   int suitCase = 0;
@@ -201,6 +201,7 @@ class BottomModelSheet with ChangeNotifier {
                                 color: Colors.white,
                                 onPressed: () {
                                   pickDate(context);
+                                  _vehicleDetails.getVehicleDetails(5);
                                 }),
                             FlatButton(
                                 minWidth:
