@@ -90,51 +90,55 @@ class BottomModelSheet with ChangeNotifier {
                           ],
                         ),
                       ),
-                      Card(
+                      SizedBox(
+                          height: 70.0,
+                          //levation: 0.0,
                           child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        //crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          SizedBox(width: 15),
-                          RotatedBox(
-                              quarterTurns: 3,
-                              child: Text(
-                                '${cars[count]['carname']}',
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 10,
-                                ),
-                              )),
-                          Icon(Icons.local_taxi_outlined,
-                              size: 50, color: Colors.black),
-                          Spacer(),
-                          RichText(
-                              text: TextSpan(
-                                  text: '${cars[count]['carcapacity']}\n',
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                  ),
-                                  children: <TextSpan>[
-                                    TextSpan(
-                                        text: ('Passangers'),
-                                        style: TextStyle(color: Colors.black))
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            //crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              SizedBox(width: 15),
+                              RotatedBox(
+                                  quarterTurns: 3,
+                                  child: Text(
+                                    '${cars[count]['carname']}',
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 10,
+                                    ),
+                                  )),
+                              Icon(Icons.local_taxi_outlined,
+                                  size: 40, color: Colors.black),
+                              Spacer(),
+                              RichText(
+                                  text: TextSpan(
+                                      text: '${cars[count]['carcapacity']}\n',
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                      ),
+                                      children: <TextSpan>[
+                                        TextSpan(
+                                            text: ('Passangers'),
+                                            style: TextStyle(color: Colors.black))
                                   ]),
                               textAlign: TextAlign.center),
                           Spacer(),
                           RichText(
                               text: TextSpan(
-                                  text: '${cars[count]['lugagecapacity']}\n',
-                                  style: TextStyle(color: Colors.black),
-                                  children: <TextSpan>[
-                                    TextSpan(
-                                        text: ('Suitcases'),
-                                        style: TextStyle(color: Colors.black))
-                                  ]),
-                              textAlign: TextAlign.center),
-                          SizedBox(width: 15),
-                        ],
-                      )),
+                                      text:
+                                          '${cars[count]['lugagecapacity']}\n',
+                                      style: TextStyle(color: Colors.black),
+                                      children: <TextSpan>[
+                                        TextSpan(
+                                            text: ('Suitcases'),
+                                            style:
+                                                TextStyle(color: Colors.black))
+                                      ]),
+                                  textAlign: TextAlign.center),
+                              SizedBox(width: 15),
+                            ],
+                          )),
                       Swiper(
                         itemWidth: 140,
                         itemHeight: 130,

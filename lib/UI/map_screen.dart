@@ -190,27 +190,48 @@ class MapScreenState extends State<MapScreen>{
                             mapState.marker.remove(markers);
                             mapState.destinationController.clear();
                             mapState.clearfields();
-                            mapState.clearSuggestion();
-                          }),
-                      hintText: "go to...",
-                      border: InputBorder.none,
-                      contentPadding: EdgeInsets.only(
-                          left: 6.0, top: 8.0, right: 6.0),
-                    ),
-                  ),
-                ),
-              )),
+                                  mapState.clearSuggestion();
+                                }),
+                            hintText: "go to...",
+                            border: InputBorder.none,
+                            contentPadding: EdgeInsets.only(
+                                left: 6.0, top: 8.0, right: 6.0),
+                          ),
+                        ),
+                      ),
+                    )),
 
-          //----> SWAP FIELDS  BUTTON
-          Positioned(
-            top: 80,
-            left: 5.0,
-            // right: 2.0,
-            child: Visibility(
-              visible: mapState.stackElementsVisibality,
-              child: IconButton(
-                  icon: Icon(
-                    Icons.swap_calls,
+                Positioned(
+                    top: 175,
+                    right: 10,
+                    child: Visibility(
+                      visible: mapState.stackElementsVisibality,
+                      child: Card(
+                        color: Colors.black45,
+                        child: InkWell(
+                          borderRadius: BorderRadius.circular(10.0),
+                          child: Text(
+                            ' Add Vias ',
+                            style:
+                                TextStyle(color: Colors.white, fontSize: 17.0),
+                          ),
+                          onTap: () {
+                            print('Vias Pressed');
+                          },
+                        ),
+                      ),
+                    )),
+
+                //----> SWAP FIELDS  BUTTON
+                Positioned(
+                  top: 80,
+                  left: 5.0,
+                  // right: 2.0,
+                  child: Visibility(
+                    visible: mapState.stackElementsVisibality,
+                    child: IconButton(
+                        icon: Icon(
+                          Icons.swap_calls,
                     size: 40,
                     color: Colors.purple,
                   ),
