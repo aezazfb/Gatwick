@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:zippy_rider/UI/add_vias_screen.dart';
 import 'package:zippy_rider/UI/flights_screen.dart';
 import 'package:zippy_rider/UI/login_screen.dart';
 import 'package:zippy_rider/UI/profile_screen.dart';
@@ -45,6 +46,7 @@ class MyApp extends StatelessWidget {
         '/ridehistory': (context) => RideHistory(),
         '/mapscreen': (context) => MapScreen(),
         '/flightscreen': (context) => FlightsScreen(),
+        '/viasscreen': (context) => AddVias(),
       },
     );
   }

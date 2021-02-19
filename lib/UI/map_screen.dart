@@ -216,7 +216,7 @@ class MapScreenState extends State<MapScreen>{
                                 TextStyle(color: Colors.white, fontSize: 17.0),
                           ),
                           onTap: () {
-                            print('Vias Pressed');
+                            Navigator.pushNamed(context, '/viasscreen');
                           },
                         ),
                       ),
@@ -348,22 +348,22 @@ class MapScreenState extends State<MapScreen>{
                             mapState.settingModelBottomSheet(context);
                             mapState.visibility();
                           },
-                    child: Text(
-                      'GET QUOTE',
-                      style: TextStyle(color: Colors.white),
-                    ),
-                  ))),
+                          child: Text(
+                            'GET QUOTE',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ))),
 
-          //---->   CURRENT POSITION BUTTTON
-          Positioned(
-              bottom: 70,
-              left: 17,
-              child: Visibility(
-                  visible: mapState.stackElementsVisibality,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.grey.shade300.withOpacity(0.7),
-                      borderRadius: BorderRadius.circular(10.0),
+                //---->   CURRENT POSITION BUTTTON
+                Positioned(
+                    bottom: 70,
+                    left: 17,
+                    child: Visibility(
+                        visible: mapState.stackElementsVisibality,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.grey.shade300.withOpacity(0.7),
+                            borderRadius: BorderRadius.circular(10.0),
                     ),
                     child: IconButton(
                       icon: Icon(Icons.location_searching,

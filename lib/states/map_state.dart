@@ -38,6 +38,8 @@ class MapState with ChangeNotifier {
   TextEditingController destinationController = TextEditingController();
   TextEditingController feedBackController = TextEditingController();
 
+  TextEditingController viasController = TextEditingController();
+
   GoogleMapController get mapController => _mapController;
 
   LatLng get initialPosition => initialPositions;
