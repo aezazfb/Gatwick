@@ -90,8 +90,10 @@ class BottomModelSheet with ChangeNotifier {
                           ],
                         ),
                       ),
-                      Row(
+                      Card(
+                          child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
+                        //crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
                           SizedBox(width: 15),
                           RotatedBox(
@@ -100,11 +102,12 @@ class BottomModelSheet with ChangeNotifier {
                                 '${cars[count]['carname']}',
                                 style: TextStyle(
                                   color: Colors.black,
-                                  fontWeight: FontWeight.w600,
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 10,
                                 ),
                               )),
                           Icon(Icons.local_taxi_outlined,
-                              size: 40, color: Colors.black),
+                              size: 50, color: Colors.black),
                           Spacer(),
                           RichText(
                               text: TextSpan(
@@ -131,7 +134,7 @@ class BottomModelSheet with ChangeNotifier {
                               textAlign: TextAlign.center),
                           SizedBox(width: 15),
                         ],
-                      ),
+                      )),
                       Swiper(
                         itemWidth: 140,
                         itemHeight: 130,
