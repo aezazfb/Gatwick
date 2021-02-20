@@ -344,7 +344,6 @@ class MapScreenState extends State<MapScreen>{
                       mapState.drawPolyLine();
                             mapState.addCircle(mapState.l1, mapState.l2,
                                 'origin', 'destination');
-                            mapState.showAppBar = true;
                             mapState.settingModelBottomSheet(context);
                             mapState.visibility();
                           },

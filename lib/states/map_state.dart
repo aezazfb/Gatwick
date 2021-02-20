@@ -31,6 +31,7 @@ class MapState with ChangeNotifier {
   List<LatLng> polyCoordinates = [];
   PolylinePoints polylinePoints;
   List suggestion = [];
+  List viasSuggestionList = [];
   List<LatLng> latLangList = [];
   Position position;
 
@@ -126,6 +127,11 @@ class MapState with ChangeNotifier {
 //---->FETCH SUGGESTION ON SEARCH
   suggestions(value) async {
     suggestion = await suggestionRequest.getSuggestion(value);
+    notifyListeners();
+  }
+
+  viaSuggestion(value) async {
+    viasSuggestionList = await suggestionRequest.getSuggestion(value);
     notifyListeners();
   }
 
