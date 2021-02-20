@@ -47,7 +47,7 @@ class CalculateDistanceTime{
     } else {
       print('Calculation Not Found');
     }
-    String a = '${duration.toStringAsFixed(2)}';
+    String a = '${duration.toStringAsFixed(0)}';
     list.add(distance);
     list.add(a);
     return list;

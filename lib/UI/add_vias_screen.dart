@@ -184,19 +184,22 @@ class _AddViasState extends State<AddVias> {
             top: 190,
             left: 30,
             right: 30,
-            child: SizedBox(
-                height: (viasList.length * 2) * 40.0,
+            child: Container(
                 child: ListView.builder(
                     shrinkWrap: true,
                     itemCount: viasList.length,
                     itemBuilder: (context, index) {
                       if (index == 0) {
-                        listTitle = '  Vias: \n \n';
+                        listTitle = '  Via: \n \n';
                       } else {
                         listTitle = '';
                       }
                       return ListTile(
-                        title: Text('$listTitle ${viasList[index]}'),
+                        title: Text(
+                          '$listTitle ${viasList[index]}',
+                          style: TextStyle(color: Colors.purpleAccent),
+                        ),
+                        tileColor: Colors.black12,
                         trailing: IconButton(
                           icon: Icon(Icons.remove_circle_outline),
                           onPressed: () {
@@ -284,6 +287,8 @@ class _AddViasState extends State<AddVias> {
                               //mapState.details(mapState.suggestion[index].toString(), flage);
                               viasList.add(mapState.viasSuggestionList[index]
                                   .toString());
+                              mapState.viasController.text =
+                                  mapState.viasSuggestionList[index].toString();
                               setState(() {
                                 mapState.viasSuggestionList.clear();
                               });

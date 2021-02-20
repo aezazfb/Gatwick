@@ -74,7 +74,7 @@ class BottomModelSheet with ChangeNotifier {
                               size: 30,
                               color: Colors.purple,
                             ),
-                            Text('$time',
+                            Text('$time mins',
                                 style: TextStyle(color: Colors.black)),
                             Spacer(),
                             //Icon(Icons.clean_hands_outlined,size: 40),
