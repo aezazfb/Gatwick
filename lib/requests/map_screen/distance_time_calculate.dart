@@ -39,7 +39,9 @@ class CalculateDistanceTime{
       print(disx1);
       print(dursd1);
       named = named / 1609.34;
-      distance = named.toStringAsFixed(2);
+      disx = disx / 1609.34;
+      disx1 = disx1 / 1609.34;
+      distance = (named + disx + disx1).toStringAsFixed(2);
       duration = duration + dursd + dursd1;
       duration = duration / 60;
     } else {
