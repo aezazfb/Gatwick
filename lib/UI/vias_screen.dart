@@ -7,13 +7,14 @@ import 'package:zippy_rider/states/vias_state.dart';
 
 class AddVias extends StatefulWidget {
   @override
-  _AddViasState createState() => _AddViasState();
+  AddViasState createState() => AddViasState();
 }
 
-class _AddViasState extends State<AddVias> {
+class AddViasState extends State<AddVias> {
   bool flage = true;
   var heightFactor = 0.0;
-  var count = 1;
+
+  //var count = 1;
   List viasList = [];
   String listTitle = '';
 
@@ -368,13 +369,6 @@ class _AddViasState extends State<AddVias> {
                   child: FlatButton(
                     color: Colors.purple.withOpacity(0.8),
                     onPressed: () {
-                      print(viasList);
-                      // mapState.drawPolyLine();
-                      // mapState.addCircle(
-                      //     mapState.l1, mapState.l2, 'origin', 'destination');
-                      // mapState.showAppBar = true;
-                      print(viasState.viasLatLangList);
-                      // mapState.settingModelBottomSheet(context);
                       viasState.calculateVias(
                           mapState.l1, mapState.l2, context);
                       mapState.addMarker(

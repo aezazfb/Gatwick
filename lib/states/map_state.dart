@@ -6,6 +6,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:geocoder/geocoder.dart';
 import 'package:share/share.dart';
 import 'package:zippy_rider/UI/map_screen.dart';
+import 'package:zippy_rider/UI/vias_screen.dart';
 import 'package:zippy_rider/requests/map_screen/polyline_request.dart';
 import 'package:zippy_rider/requests/map_screen/suggestionRequest.dart';
 import 'package:flutter/material.dart';
@@ -13,6 +14,7 @@ import 'package:zippy_rider/requests/map_screen/detailsRequest.dart';
 import 'package:zippy_rider/requests/map_screen/distance_time_calculate.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:zippy_rider/bottom_model_sheet/bottomsheet.dart';
+import 'package:zippy_rider/states/vias_state.dart';
 
 class MapState with ChangeNotifier {
   static LatLng initialPositions;
@@ -34,7 +36,7 @@ class MapState with ChangeNotifier {
   List viasSuggestionList = [];
   List<LatLng> latLangList = [];
   Position position;
-
+  List dummyList = [];
   TextEditingController sourceController = TextEditingController();
   TextEditingController destinationController = TextEditingController();
   TextEditingController feedBackController = TextEditingController();
@@ -59,6 +61,7 @@ class MapState with ChangeNotifier {
   MapScreenState mapScreenState = MapScreenState();
   CalculateDistanceTime calculateDistanceTime = CalculateDistanceTime();
   BottomModelSheet bottomModelSheet = BottomModelSheet();
+  AddViasState viasScreen = AddViasState();
 
   String distance;
   String time;
@@ -219,12 +222,14 @@ class MapState with ChangeNotifier {
 //----> BOTTOM MODEL SHEET
 
   settingModelBottomSheet(context) async {
-    List list = await calculateDistanceTime.calculateDistanceTime(l1, l2);
     if (sourceController.text.toString().isNotEmpty &&
         destinationController.text.toString().isNotEmpty) {
+      List list = await calculateDistanceTime.calculateDistanceTime(l1, l2);
       bottomModelSheet.settingModelBottomSheet(context, list[0], list[1]);
+      print('Map Screen');
     } else {
-      return null;
+      // viasState.calculateVias(l1, l2, context);
+      print('Vias Screen');
     }
     notifyListeners();
   }

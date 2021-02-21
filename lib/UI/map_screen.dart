@@ -4,6 +4,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:zippy_rider/states/map_state.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:zippy_rider/states/vias_state.dart';
 
 class MapScreen extends StatefulWidget {
   @override
@@ -18,6 +19,7 @@ class MapScreenState extends State<MapScreen>{
   @override
   Widget build(BuildContext context) {
     final mapState = Provider.of<MapState>(context);
+    final viasState = Provider.of<ViasState>(context);
     return Scaffold(
       // appBar: AppBar(
       //   backgroundColor: Colors.white24.withOpacity(0.1),
@@ -344,7 +346,12 @@ class MapScreenState extends State<MapScreen>{
                       mapState.drawPolyLine();
                             mapState.addCircle(mapState.l1, mapState.l2,
                                 'origin', 'destination');
-                            mapState.settingModelBottomSheet(context);
+                      if (viasState.viasLatLangList.isEmpty) {
+                              mapState.settingModelBottomSheet(context);
+                            } else {
+                              viasState.calculateVias(
+                                  mapState.l1, mapState.l2, context);
+                            }
                             mapState.visibility();
                           },
                           child: Text(
