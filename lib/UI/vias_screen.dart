@@ -1,7 +1,9 @@
 import 'package:appbar_textfield/appbar_textfield.dart';
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:zippy_rider/states/map_state.dart';
+import 'package:zippy_rider/states/vias_state.dart';
 
 class AddVias extends StatefulWidget {
   @override
@@ -18,6 +20,7 @@ class _AddViasState extends State<AddVias> {
   @override
   Widget build(BuildContext context) {
     final mapState = Provider.of<MapState>(context);
+    final viasState = Provider.of<ViasState>(context);
     return Scaffold(
       appBar: AppBarTextField(
         title: Text('Add Vias'),
@@ -197,20 +200,21 @@ class _AddViasState extends State<AddVias> {
                       return ListTile(
                         title: Text(
                           '$listTitle ${viasList[index]}',
-                          style: TextStyle(color: Colors.purpleAccent),
                         ),
-                        tileColor: Colors.black12,
                         trailing: IconButton(
-                          icon: Icon(Icons.remove_circle_outline),
+                          icon: Icon(Icons.remove_circle_outline,
+                              color: Colors.red),
                           onPressed: () {
                             setState(() {
                               viasList.removeAt(index);
+                              viasState.viasLatLangList.removeAt(index);
                             });
                           },
                         ),
                       );
                     })),
           ),
+
           //---->SUGGESTIONS LIST VIEW
           Positioned(
               left: 12,
@@ -284,11 +288,16 @@ class _AddViasState extends State<AddVias> {
                               style: TextStyle(color: Colors.black),
                             ),
                             onTap: () {
-                              //mapState.details(mapState.suggestion[index].toString(), flage);
+                              // mapState.details(mapState.suggestion[index].toString(), flage);
+                              viasState.viasDetails(mapState
+                                  .viasSuggestionList[index]
+                                  .toString());
+
                               viasList.add(mapState.viasSuggestionList[index]
                                   .toString());
                               mapState.viasController.text =
                                   mapState.viasSuggestionList[index].toString();
+                              // viasState.viaSuggestion(value)
                               setState(() {
                                 mapState.viasSuggestionList.clear();
                               });
@@ -360,11 +369,16 @@ class _AddViasState extends State<AddVias> {
                     color: Colors.purple.withOpacity(0.8),
                     onPressed: () {
                       print(viasList);
-                      mapState.drawPolyLine();
-                      mapState.addCircle(
-                          mapState.l1, mapState.l2, 'origin', 'destination');
-                      mapState.showAppBar = true;
-                      mapState.settingModelBottomSheet(context);
+                      // mapState.drawPolyLine();
+                      // mapState.addCircle(
+                      //     mapState.l1, mapState.l2, 'origin', 'destination');
+                      // mapState.showAppBar = true;
+                      print(viasState.viasLatLangList);
+                      // mapState.settingModelBottomSheet(context);
+                      viasState.calculateVias(
+                          mapState.l1, mapState.l2, context);
+                      mapState.addMarker(
+                          viasState.viasLatLangList[0], 'vias', flage, 70);
                       mapState.visibility();
                     },
                     child: Text(

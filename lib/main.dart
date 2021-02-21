@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:zippy_rider/UI/add_vias_screen.dart';
+import 'package:zippy_rider/UI/vias_screen.dart';
 import 'package:zippy_rider/UI/flights_screen.dart';
 import 'package:zippy_rider/UI/login_screen.dart';
 import 'package:zippy_rider/UI/profile_screen.dart';
@@ -7,6 +7,7 @@ import 'package:zippy_rider/UI/ride_history.dart';
 import 'package:zippy_rider/models/login_model.dart';
 import 'package:zippy_rider/states/flight_state.dart';
 import 'package:zippy_rider/states/map_state.dart';
+import 'package:zippy_rider/states/vias_state.dart';
 import 'UI/map_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/services.dart';
@@ -26,6 +27,7 @@ void main() {
     providers: [
       ChangeNotifierProvider.value(value: MapState()),
       ChangeNotifierProvider.value(value: FlightState()),
+      ChangeNotifierProvider.value(value: ViasState()),
     ],
   ));
 }

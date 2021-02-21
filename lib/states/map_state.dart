@@ -220,11 +220,9 @@ class MapState with ChangeNotifier {
 
   settingModelBottomSheet(context) async {
     List list = await calculateDistanceTime.calculateDistanceTime(l1, l2);
-    distance = list[0];
-    time = list[1];
     if (sourceController.text.toString().isNotEmpty &&
         destinationController.text.toString().isNotEmpty) {
-      bottomModelSheet.settingModelBottomSheet(context, distance, time);
+      bottomModelSheet.settingModelBottomSheet(context, list[0], list[1]);
     } else {
       return null;
     }
