@@ -2,6 +2,7 @@ import 'package:appbar_textfield/appbar_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:toast/toast.dart';
 import 'package:zippy_rider/states/map_state.dart';
 import 'package:zippy_rider/states/vias_state.dart';
 
@@ -292,12 +293,15 @@ class AddViasState extends State<AddVias> {
                               viasState.viasDetails(mapState
                                   .viasSuggestionList[index]
                                   .toString());
-
-                              viasState.viasList.add(mapState
-                                  .viasSuggestionList[index]
-                                  .toString());
-                              mapState.viasController.text =
-                                  mapState.viasSuggestionList[index].toString();
+                              if (viasState.viasList.length < 7) {
+                                viasState.viasList.add(mapState
+                                    .viasSuggestionList[index]
+                                    .toString());
+                              } else {
+                                Toast.show('You Can not add more than 7 vias ',
+                                    context,
+                                    duration: Toast.LENGTH_LONG);
+                              }
                               setState(() {
                                 mapState.viasSuggestionList.clear();
                               });
@@ -331,13 +335,14 @@ class AddViasState extends State<AddVias> {
                       viasState.addMarker(
                           viasState.viasLatLangList[0], 'Vias', flage, 70);
                       viasState.drawPolyLine();
+
                       CameraPosition cameraPosition = new CameraPosition(
                           target: LatLng(viasState.viasLatLangList[0].latitude,
                               viasState.viasLatLangList[0].longitude),
                           zoom: 14);
                       mapState.mapControllerr.animateCamera(
                           CameraUpdate.newCameraPosition(cameraPosition));
-                      mapState.visibility();
+                      Navigator.pushNamed(context, '/mapscreen');
                     },
                     child: Text(
                       'GET QUOTE',
