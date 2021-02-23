@@ -343,14 +343,20 @@ class MapScreenState extends State<MapScreen>{
                   child: FlatButton(
                     color: Colors.purple.withOpacity(0.8),
                     onPressed: () {
-                      mapState.drawPolyLine();
-                            mapState.addCircle(mapState.l1, mapState.l2,
-                                'origin', 'destination');
-                      if (viasState.viasLatLangList.isEmpty) {
+                            if (viasState.viasLatLangList.isEmpty) {
                               mapState.settingModelBottomSheet(context);
+                              mapState.drawPolyLine(mapState.polyCoordinates);
+                              print(
+                                  'Here ori desi poli points ${mapState.polyCoordinates}');
+                              mapState.addCircle(mapState.l1, mapState.l2,
+                                  'origin', 'destination');
                             } else {
-                              viasState.calculateVias(
+                        viasState.calculateVias(
                                   mapState.l1, mapState.l2, context);
+                              mapState
+                                  .drawPolyLine(viasState.viasPolyLinePoints);
+                              print(
+                                  'Here vias poli points ${viasState.viasPolyLinePoints}');
                             }
                             mapState.visibility();
                           },

@@ -24,13 +24,13 @@ class MapState with ChangeNotifier {
   LatLng l1 = LatLng(0.0000, 0.0000);
   LatLng l2 = LatLng(0.0000, 0.0000);
 
-  GoogleMapController _mapController;
+  GoogleMapController mapControllerr;
 
   bool locationServiceActive = true;
   Set<Marker> _markers = Set();
   Set<Circle> _circles = Set<Circle>();
   Set<Polyline> polyLine = Set();
-  List<LatLng> polyCoordinates = [];
+  List<dynamic> polyCoordinates = [];
   PolylinePoints polylinePoints;
   List suggestion = [];
   List viasSuggestionList = [];
@@ -43,7 +43,7 @@ class MapState with ChangeNotifier {
 
   TextEditingController viasController = TextEditingController();
 
-  GoogleMapController get mapController => _mapController;
+  GoogleMapController get mapController => mapControllerr;
 
   LatLng get initialPosition => initialPositions;
 
@@ -81,7 +81,7 @@ class MapState with ChangeNotifier {
 
   //----> Creating onMapCreated for our Map
   void onCreate(GoogleMapController controller) {
-    _mapController = controller;
+    mapControllerr = controller;
     notifyListeners();
   }
 
@@ -143,7 +143,7 @@ class MapState with ChangeNotifier {
     LatLng latLng = await locationDetails.getLocationDetails(value);
     CameraPosition cameraPosition = new CameraPosition(
         target: LatLng(latLng.latitude, latLng.longitude), zoom: 14);
-    _mapController
+    mapControllerr
         .animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
     if (flage == true) {
       latLangList.insert(0, latLng);
@@ -159,7 +159,7 @@ class MapState with ChangeNotifier {
   }
 
 //----> ADD MARKER ON MAP
-  addMarker(LatLng position, String _title, bool flage, double hue) {
+  addMarker(LatLng position, String _title, bool flage, double hue) async {
     _markers.add(Marker(
       visible: true,
       markerId: MarkerId("$flage"),
@@ -169,6 +169,8 @@ class MapState with ChangeNotifier {
         title: _title,
       ),
     ));
+    polyCoordinates = await fetchPolylinePoints.getPolyPoints(l1, l2);
+    notifyListeners();
   }
 
 //---->ADD CIRCLES ON SOURCE AND DESTINATION
@@ -196,16 +198,15 @@ class MapState with ChangeNotifier {
   }
 
 //----> ADD POLYLINE ON GOOGLE MAPS
-  drawPolyLine() async {
+  drawPolyLine(List<dynamic> latLngList) async {
     if (sourceController.text.toString().isNotEmpty &&
         destinationController.text.toString().isNotEmpty) {
       if (polyLine.length == 0 || polyLine.last.points.length == 0) {
-        polyCoordinates = await fetchPolylinePoints.getPolyPoints(l1, l2);
         polyLine.add(
           Polyline(
             polylineId: PolylineId("poly"),
             visible: true,
-            points: polyCoordinates,
+            points: latLngList,
             width: 5,
             color: Colors.purple,
           ),
@@ -228,8 +229,7 @@ class MapState with ChangeNotifier {
       bottomModelSheet.settingModelBottomSheet(context, list[0], list[1]);
       print('Map Screen');
     } else {
-      // viasState.calculateVias(l1, l2, context);
-      print('Vias Screen');
+      return null;
     }
     notifyListeners();
   }

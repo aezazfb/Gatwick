@@ -15,7 +15,7 @@ class AddViasState extends State<AddVias> {
   var heightFactor = 0.0;
 
   //var count = 1;
-  List viasList = [];
+
   String listTitle = '';
 
   @override
@@ -191,7 +191,7 @@ class AddViasState extends State<AddVias> {
             child: Container(
                 child: ListView.builder(
                     shrinkWrap: true,
-                    itemCount: viasList.length,
+                    itemCount: viasState.viasList.length,
                     itemBuilder: (context, index) {
                       if (index == 0) {
                         listTitle = '  Via: \n \n';
@@ -200,14 +200,14 @@ class AddViasState extends State<AddVias> {
                       }
                       return ListTile(
                         title: Text(
-                          '$listTitle ${viasList[index]}',
+                          '$listTitle ${viasState.viasList[index]}',
                         ),
                         trailing: IconButton(
                           icon: Icon(Icons.remove_circle_outline,
                               color: Colors.red),
                           onPressed: () {
                             setState(() {
-                              viasList.removeAt(index);
+                              viasState.viasList.removeAt(index);
                               viasState.viasLatLangList.removeAt(index);
                             });
                           },
@@ -289,16 +289,15 @@ class AddViasState extends State<AddVias> {
                               style: TextStyle(color: Colors.black),
                             ),
                             onTap: () {
-                              // mapState.details(mapState.suggestion[index].toString(), flage);
                               viasState.viasDetails(mapState
                                   .viasSuggestionList[index]
                                   .toString());
 
-                              viasList.add(mapState.viasSuggestionList[index]
+                              viasState.viasList.add(mapState
+                                  .viasSuggestionList[index]
                                   .toString());
                               mapState.viasController.text =
                                   mapState.viasSuggestionList[index].toString();
-                              // viasState.viaSuggestion(value)
                               setState(() {
                                 mapState.viasSuggestionList.clear();
                               });
@@ -317,48 +316,6 @@ class AddViasState extends State<AddVias> {
                 ),
               )),
 
-          //---->ADD VIAS BUTTON
-          // Positioned(
-          //     bottom: 70,
-          //     left: 17,
-          //     child: Visibility(
-          //         visible: mapState.stackElementsVisibality,
-          //         child: Container(
-          //           decoration: BoxDecoration(
-          //             color: Colors.grey.shade300.withOpacity(0.7),
-          //             borderRadius: BorderRadius.circular(10.0),
-          //           ),
-          //           child: IconButton(
-          //             icon: Icon(Icons.add, color: Colors.purple),
-          //             onPressed: () {
-          //               setState(() {
-          //                 _viasVisibility = true;
-          //               });
-          //               print("My Locationbutton Pressed");
-          //             },
-          //           ),
-          //         ))),
-
-          //----> ADD VIAS FROM MAP BUTTON
-          // Positioned(
-          //     bottom: 70,
-          //     right: 17,
-          //     child: Visibility(
-          //         visible: mapState.stackElementsVisibality,
-          //         child: Container(
-          //           decoration: BoxDecoration(
-          //             color: Colors.grey.shade300.withOpacity(0.7),
-          //             borderRadius: BorderRadius.circular(10.0),
-          //           ),
-          //           child: IconButton(
-          //             icon: Icon(Icons.location_on, color: Colors.purple),
-          //             onPressed: () {
-          //               print(viasList);
-          //               Navigator.pushNamed(context, '/flightscreen');
-          //             },
-          //           ),
-          //         ))),
-
           //GET QUOTE BUTTON
           Positioned(
               bottom: 15,
@@ -371,8 +328,15 @@ class AddViasState extends State<AddVias> {
                     onPressed: () {
                       viasState.calculateVias(
                           mapState.l1, mapState.l2, context);
-                      mapState.addMarker(
-                          viasState.viasLatLangList[0], 'vias', flage, 70);
+                      viasState.addMarker(
+                          viasState.viasLatLangList[0], 'Vias', flage, 70);
+
+                      CameraPosition cameraPosition = new CameraPosition(
+                          target: LatLng(viasState.viasLatLangList[0].latitude,
+                              viasState.viasLatLangList[0].longitude),
+                          zoom: 14);
+                      mapState.mapControllerr.animateCamera(
+                          CameraUpdate.newCameraPosition(cameraPosition));
                       mapState.visibility();
                     },
                     child: Text(
