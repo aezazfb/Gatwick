@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:zippy_rider/bottom_model_sheet/bottomsheet.dart';
@@ -28,9 +29,9 @@ class ViasState with ChangeNotifier {
         await _calculateViasDistanceTime.viasPolyline(l1, l2, viasLatLangList);
     await _bottomModelSheet.settingModelBottomSheet(
         context, timeDisList[1], timeDisList[0]);
+
     decodePolyLine();
     timeDisList.clear();
-
     notifyListeners();
   }
 
@@ -57,6 +58,26 @@ class ViasState with ChangeNotifier {
         title: _title,
       ),
     ));
+    notifyListeners();
+  }
+
+  drawPolyLine() async {
+    print(
+        'vias Polyline Points________________________________________________________\n $viasPolyLinePoints');
+    if (polyLine.length == 0 && polyLine.first == null) {
+      print("polyline length ${polyLine.length}");
+      polyLine.add(
+        Polyline(
+          polylineId: PolylineId("poly"),
+          visible: true,
+          points: viasPolyLinePoints,
+          width: 5,
+          color: Colors.purple,
+        ),
+      );
+    } else {
+      return null;
+    }
     notifyListeners();
   }
 }

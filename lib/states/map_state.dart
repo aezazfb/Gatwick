@@ -169,7 +169,6 @@ class MapState with ChangeNotifier {
         title: _title,
       ),
     ));
-    polyCoordinates = await fetchPolylinePoints.getPolyPoints(l1, l2);
     notifyListeners();
   }
 
@@ -201,12 +200,14 @@ class MapState with ChangeNotifier {
   drawPolyLine(List<dynamic> latLngList) async {
     if (sourceController.text.toString().isNotEmpty &&
         destinationController.text.toString().isNotEmpty) {
-      if (polyLine.length == 0 || polyLine.last.points.length == 0) {
+      polyCoordinates = await fetchPolylinePoints.getPolyPoints(l1, l2);
+      if (polyLine.length == 0) {
+        print("polyline length ${polyLine.length}");
         polyLine.add(
           Polyline(
             polylineId: PolylineId("poly"),
             visible: true,
-            points: latLngList,
+            points: polyCoordinates,
             width: 5,
             color: Colors.purple,
           ),
@@ -214,8 +215,6 @@ class MapState with ChangeNotifier {
       } else {
         return null;
       }
-    } else {
-      return null;
     }
     notifyListeners();
   }
