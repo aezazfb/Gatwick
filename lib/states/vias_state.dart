@@ -62,22 +62,16 @@ class ViasState with ChangeNotifier {
   }
 
   drawPolyLine() async {
-    print(
-        'vias Polyline Points________________________________________________________\n $viasPolyLinePoints');
-    if (polyLine.length == 0 && polyLine.first == null) {
-      print("polyline length ${polyLine.length}");
       polyLine.add(
-        Polyline(
-          polylineId: PolylineId("poly"),
-          visible: true,
-          points: viasPolyLinePoints,
-          width: 5,
-          color: Colors.purple,
-        ),
-      );
-    } else {
-      return null;
-    }
+      Polyline(
+        polylineId: PolylineId("poly"),
+        visible: true,
+        points: viasPolyLinePoints,
+        width: 5,
+        color: Colors.purple,
+      ),
+    );
+    print("polyline length ${polyLine.length}");
     notifyListeners();
   }
 }

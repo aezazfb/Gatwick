@@ -16,6 +16,8 @@ class MapScreen extends StatefulWidget {
 class MapScreenState extends State<MapScreen>{
   bool flage = true;
   var heightFactor = 0.0;
+  Set<Polyline> _polyline;
+
   @override
   Widget build(BuildContext context) {
     final mapState = Provider.of<MapState>(context);
@@ -52,26 +54,26 @@ class MapScreenState extends State<MapScreen>{
         children: [
           GoogleMap(
             tiltGesturesEnabled: true,
-            mapType: MapType.normal,
-            zoomControlsEnabled: false,
-            initialCameraPosition: CameraPosition(
-              target: mapState.initialPosition,
-              zoom: 17,
-            ),
-            onMapCreated: mapState.onCreate,
-            markers: mapState.marker,
-            polylines: mapState.polyLine,
-            circles: mapState.circle,
-            onCameraMove: mapState.onCameraMove,
-            onCameraMoveStarted: () {
-              mapState.checkConnectivity();
-              mapState.stackElementsVisibality = false;
-            },
-            onCameraIdle: () {
-              mapState.fetchAddressFromCoordinates(mapState.centerPoints);
-              mapState.cameraIdle();
-            },
-          ),
+                  mapType: MapType.normal,
+                  zoomControlsEnabled: false,
+                  initialCameraPosition: CameraPosition(
+                    target: mapState.initialPosition,
+                    zoom: 17,
+                  ),
+                  onMapCreated: mapState.onCreate,
+                  markers: mapState.marker,
+                  polylines: _polyline,
+                  circles: mapState.circle,
+                  onCameraMove: mapState.onCameraMove,
+                  onCameraMoveStarted: () {
+                    mapState.checkConnectivity();
+                    mapState.stackElementsVisibality = false;
+                  },
+                  onCameraIdle: () {
+                    mapState.fetchAddressFromCoordinates(mapState.centerPoints);
+                    mapState.cameraIdle();
+                  },
+                ),
 
           //----> PICK UP TEXT FIELD
           Positioned(
@@ -344,15 +346,18 @@ class MapScreenState extends State<MapScreen>{
                     color: Colors.purple.withOpacity(0.8),
                     onPressed: () async {
                             if (viasState.viasLatLangList.isEmpty) {
-                              await mapState
-                                  .drawPolyLine(mapState.polyCoordinates);
+                              mapState.drawPolyLine(mapState.polyCoordinates);
                               mapState.settingModelBottomSheet(context);
                               mapState.addCircle(mapState.l1, mapState.l2,
                                   'origin', 'destination');
+                              _polyline = mapState.polyLine;
                             } else {
                               viasState.calculateVias(
                                   mapState.l1, mapState.l2, context);
                               viasState.drawPolyLine();
+                              print(
+                                  'Vias Polyline length___________________${viasState.polyLine.length}');
+                              _polyline = viasState.polyLine;
                             }
                             mapState.visibility();
                           },
