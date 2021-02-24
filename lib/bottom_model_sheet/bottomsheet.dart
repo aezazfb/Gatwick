@@ -28,7 +28,7 @@ class BottomModelSheet with ChangeNotifier {
     carDetails = await _vehicleDetails.getVehicleDetails(3);
     cars = carDetails[0]['carstype'];
     showModalBottomSheet(
-        backgroundColor: Colors.deepPurple.withOpacity(0.1),
+        backgroundColor: Colors.tealAccent,
         enableDrag: true,
         context: context,
         builder: (BuildContext context) {

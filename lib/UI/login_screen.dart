@@ -101,7 +101,7 @@ class LoginState extends State<Login> {
                   // controller: mailController,
                   decoration: InputDecoration(
                       contentPadding: EdgeInsets.all(5.0),
-                      prefixIcon: Icon(Icons.mail),
+                      suffixIcon: Icon(Icons.mail),
                       labelText: "E-mail",
                       hintText: "Insert tour mail here",
                       fillColor: Colors.black26,

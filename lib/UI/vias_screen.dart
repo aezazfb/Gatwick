@@ -303,8 +303,6 @@ class AddViasState extends State<AddVias> {
                               viasState.viasDetails(mapState
                                   .viasSuggestionList[index]
                                   .toString());
-                              viasState.addMarker(viasState.viasLatLangList[0],
-                                  'Vias[0]', flage, 70);
                               mapState.viasSuggestionList.clear();
                             },
                           ),
