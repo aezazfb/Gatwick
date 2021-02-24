@@ -16,7 +16,8 @@ class MapScreen extends StatefulWidget {
 class MapScreenState extends State<MapScreen>{
   bool flage = true;
   var heightFactor = 0.0;
-  Set<Polyline> _polyline;
+  Set<Polyline> _polylines;
+  Set<Marker> _markers;
 
   @override
   Widget build(BuildContext context) {
@@ -62,7 +63,7 @@ class MapScreenState extends State<MapScreen>{
                   ),
                   onMapCreated: mapState.onCreate,
                   markers: mapState.marker,
-                  polylines: _polyline,
+                  polylines: _polylines,
                   circles: mapState.circle,
                   onCameraMove: mapState.onCameraMove,
                   onCameraMoveStarted: () {
@@ -241,7 +242,8 @@ class MapScreenState extends State<MapScreen>{
                   ),
                   onPressed: () {
                     mapState.swapFields();
-                  }),
+                          viasState.polyLine.last.points.clear();
+                        }),
             ),
           ),
 
@@ -350,14 +352,14 @@ class MapScreenState extends State<MapScreen>{
                               mapState.settingModelBottomSheet(context);
                               mapState.addCircle(mapState.l1, mapState.l2,
                                   'origin', 'destination');
-                              _polyline = mapState.polyLine;
+                              _polylines = mapState.polyLine;
                             } else {
                               viasState.calculateVias(
                                   mapState.l1, mapState.l2, context);
                               viasState.drawPolyLine();
                               print(
                                   'Vias Polyline length___________________${viasState.polyLine.length}');
-                              _polyline = viasState.polyLine;
+                              _polylines = viasState.polyLine;
                             }
                             mapState.visibility();
                           },

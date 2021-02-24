@@ -74,4 +74,9 @@ class ViasState with ChangeNotifier {
     print("polyline length ${polyLine.length}");
     notifyListeners();
   }
+
+  clearFields() {
+    polyLine.first.points.clear();
+    _markers.clear();
+  }
 }

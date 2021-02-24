@@ -28,7 +28,7 @@ class AddViasState extends State<AddVias> {
         title: Text('Add Vias'),
         centerTitle: false,
         searchContainerColor: Colors.white,
-        searchButtonIcon: Icon(Icons.add_location, size: 30),
+        searchButtonIcon: Icon(Icons.location_searching_rounded, size: 30),
         onChanged: (value) {
           mapState.viaSuggestion(value);
         },
@@ -87,12 +87,12 @@ class AddViasState extends State<AddVias> {
                         //   color: Colors.black,
                       ),
                       onPressed: () {
-                        // Marker markers = mapState.marker.firstWhere(
-                        //          (p) => p.markerId == MarkerId('true'),
-                        //      orElse: () => null);
-                        //  mapState.marker.remove(markers);
+                        Marker markers = mapState.marker.firstWhere(
+                            (p) => p.markerId == MarkerId('true'),
+                            orElse: () => null);
+                        mapState.marker.remove(markers);
                         mapState.sourceController.clear();
-                        //  mapState.clearfields();
+                        mapState.clearfields();
                         mapState.clearSuggestion();
                       }),
                   hintText: "pick up",
@@ -149,10 +149,10 @@ class AddViasState extends State<AddVias> {
                         //   color: Colors.black,
                       ),
                       onPressed: () {
-                        // Marker markers = mapState.marker.firstWhere(
-                        //          (p) => p.markerId == MarkerId('false'),
-                        //      orElse: () => null);
-                        //  mapState.marker.remove(markers);
+                        Marker markers = mapState.marker.firstWhere(
+                            (p) => p.markerId == MarkerId('false'),
+                            orElse: () => null);
+                        mapState.marker.remove(markers);
                         mapState.destinationController.clear();
                         mapState.clearfields();
                         mapState.clearSuggestion();
@@ -171,8 +171,6 @@ class AddViasState extends State<AddVias> {
             top: 40,
             left: 5.0,
             // right: 2.0,
-            child: Visibility(
-              visible: mapState.stackElementsVisibality,
               child: IconButton(
                   icon: Icon(
                     Icons.swap_calls,
@@ -182,7 +180,6 @@ class AddViasState extends State<AddVias> {
                   onPressed: () {
                     mapState.swapFields();
                   }),
-            ),
           ),
           //VIAS LIST
           Positioned(
@@ -324,27 +321,28 @@ class AddViasState extends State<AddVias> {
               bottom: 15,
               right: 17,
               left: 17,
-              child: Visibility(
-                  visible: mapState.stackElementsVisibality,
                   child: FlatButton(
                     color: Colors.purple.withOpacity(0.8),
                     onPressed: () {
-                      viasState.calculateVias(
-                          mapState.l1, mapState.l2, context);
-                      viasState.drawPolyLine();
-                      CameraPosition cameraPosition = new CameraPosition(
-                          target: LatLng(viasState.viasLatLangList[0].latitude,
-                              viasState.viasLatLangList[0].longitude),
-                          zoom: 14);
-                      mapState.mapControllerr.animateCamera(
-                          CameraUpdate.newCameraPosition(cameraPosition));
-                      Navigator.pushNamed(context, '/mapscreen');
-                    },
-                    child: Text(
-                      'GET QUOTE',
-                      style: TextStyle(color: Colors.white),
-                    ),
-                  ))),
+                  for (int i = 0; i < viasState.viasLatLangList.length; i++) {
+                    mapState.addMarker(
+                        viasState.viasLatLangList[i], "Via$i", flage, 90);
+                  }
+                  viasState.calculateVias(mapState.l1, mapState.l2, context);
+                  viasState.drawPolyLine();
+                  CameraPosition cameraPosition = new CameraPosition(
+                      target: LatLng(viasState.viasLatLangList[0].latitude,
+                          viasState.viasLatLangList[0].longitude),
+                      zoom: 14);
+                  mapState.mapControllerr.animateCamera(
+                      CameraUpdate.newCameraPosition(cameraPosition));
+                  Navigator.pushNamed(context, '/mapscreen');
+                },
+                child: Text(
+                  'GET QUOTE',
+                  style: TextStyle(color: Colors.white),
+                ),
+              )),
         ],
       ),
     );
