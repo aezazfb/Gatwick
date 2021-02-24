@@ -10,9 +10,11 @@ class CalculateDistanceTime {
     int duration;
     List list = [];
     String _googleAPiKey = "AIzaSyDuoFHe7NQ5U6GZ1SSu7XcckrQ9Bi8_at0";
+
+    String _baseAPI = 'https://maps.googleapis.com/maps/api/directions/json?';
     Map mapResponse;
     var url =
-        "https://maps.googleapis.com/maps/api/directions/json?&origin=${l1.latitude},${l1.longitude}&destination=${l2.latitude},${l2.longitude}&key=$_googleAPiKey";
+        "$_baseAPI&origin=${l1.latitude},${l1.longitude}&destination=${l2.latitude},${l2.longitude}&key=$_googleAPiKey";
     http.Response response;
     print(url);
     response = await http.get(url);
