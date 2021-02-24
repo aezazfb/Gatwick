@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:zippy_rider/bottom_model_sheet/bottomsheet.dart';
 import 'package:zippy_rider/requests/map_screen/detailsRequest.dart';
@@ -51,13 +50,14 @@ class ViasState with ChangeNotifier {
   addMarker(LatLng position, String _title, bool flage, double hue) async {
     _markers.add(Marker(
       visible: true,
-      markerId: MarkerId("$flage"),
+      markerId: MarkerId("$_title"),
       position: LatLng(position.latitude, position.longitude),
       icon: BitmapDescriptor.defaultMarkerWithHue(hue),
       infoWindow: InfoWindow(
         title: _title,
       ),
     ));
+    print('marker Added');
     notifyListeners();
   }
 

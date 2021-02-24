@@ -98,7 +98,7 @@ class AddViasState extends State<AddVias> {
                   hintText: "pick up",
                   border: InputBorder.none,
                   contentPadding:
-                  EdgeInsets.only(left: 6.0, top: 8.0, right: 6.0),
+                      EdgeInsets.only(left: 6.0, top: 8.0, right: 6.0),
                 ),
               ),
             ),
@@ -160,7 +160,7 @@ class AddViasState extends State<AddVias> {
                   hintText: "go to...",
                   border: InputBorder.none,
                   contentPadding:
-                  EdgeInsets.only(left: 6.0, top: 8.0, right: 6.0),
+                      EdgeInsets.only(left: 6.0, top: 8.0, right: 6.0),
                 ),
               ),
             ),
@@ -291,25 +291,6 @@ class AddViasState extends State<AddVias> {
                               style: TextStyle(color: Colors.black),
                             ),
                             onTap: () {
-                              viasState.viasDetails(mapState
-                                  .viasSuggestionList[index]
-                                  .toString());
-                              CameraPosition cameraPosition =
-                                  new CameraPosition(
-                                      target: LatLng(
-                                          viasState
-                                              .viasLatLangList[index].latitude,
-                                          viasState.viasLatLangList[index]
-                                              .longitude),
-                                      zoom: 14);
-                              mapState.mapControllerr.animateCamera(
-                                  CameraUpdate.newCameraPosition(
-                                      cameraPosition));
-                              viasState.addMarker(
-                                  viasState.viasLatLangList[index],
-                                  'Vias[$index]',
-                                  flage,
-                                  70);
                               if (viasState.viasList.length < 7) {
                                 viasState.viasList.add(mapState
                                     .viasSuggestionList[index]
@@ -319,9 +300,12 @@ class AddViasState extends State<AddVias> {
                                     context,
                                     duration: Toast.LENGTH_LONG);
                               }
-                              setState(() {
-                                mapState.viasSuggestionList.clear();
-                              });
+                              viasState.viasDetails(mapState
+                                  .viasSuggestionList[index]
+                                  .toString());
+                              viasState.addMarker(viasState.viasLatLangList[0],
+                                  'Vias[0]', flage, 70);
+                              mapState.viasSuggestionList.clear();
                             },
                           ),
                         );
