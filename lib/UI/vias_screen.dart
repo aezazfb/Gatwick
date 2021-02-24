@@ -179,7 +179,8 @@ class AddViasState extends State<AddVias> {
                   ),
                   onPressed: () {
                     mapState.swapFields();
-                  }),
+                  viasState.clearFields();
+                }),
           ),
           //VIAS LIST
           Positioned(

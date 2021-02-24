@@ -221,7 +221,8 @@ class MapScreenState extends State<MapScreen>{
                                 TextStyle(color: Colors.white, fontSize: 17.0),
                           ),
                           onTap: () {
-                            Navigator.pushNamed(context, '/viasscreen');
+                            Navigator.pushReplacementNamed(
+                                context, '/viasscreen');
                           },
                         ),
                       ),
@@ -242,7 +243,7 @@ class MapScreenState extends State<MapScreen>{
                   ),
                   onPressed: () {
                     mapState.swapFields();
-                          viasState.polyLine.last.points.clear();
+                          viasState.clearFields();
                         }),
             ),
           ),

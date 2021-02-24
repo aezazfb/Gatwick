@@ -77,6 +77,6 @@ class ViasState with ChangeNotifier {
 
   clearFields() {
     polyLine.first.points.clear();
-    _markers.clear();
+    notifyListeners();
   }
 }
