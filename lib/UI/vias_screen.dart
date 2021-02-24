@@ -209,6 +209,7 @@ class AddViasState extends State<AddVias> {
                           onPressed: () {
                             setState(() {
                               viasState.viasList.removeAt(index);
+                              viasState.polyLine.last.points.clear();
                               viasState.viasLatLangList.removeAt(index);
                             });
                           },
@@ -335,7 +336,6 @@ class AddViasState extends State<AddVias> {
                       viasState.addMarker(
                           viasState.viasLatLangList[0], 'Vias', flage, 70);
                       viasState.drawPolyLine();
-
                       CameraPosition cameraPosition = new CameraPosition(
                           target: LatLng(viasState.viasLatLangList[0].latitude,
                               viasState.viasLatLangList[0].longitude),

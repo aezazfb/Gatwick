@@ -16,7 +16,6 @@ class CalculateDistanceTime {
     var url =
         "$_baseAPI&origin=${l1.latitude},${l1.longitude}&destination=${l2.latitude},${l2.longitude}&key=$_googleAPiKey";
     http.Response response;
-    print(url);
     response = await http.get(url);
     mapResponse = json.decode(response.body);
 
@@ -27,8 +26,6 @@ class CalculateDistanceTime {
       distance = named.toDouble();
       distance = distance / 1609.3.toDouble();
       duration = (duration ~/ 60).toInt();
-      print('distance: $distance');
-      print('duration: $duration');
     } else {
       print('Calculation Not Found');
     }
@@ -38,6 +35,4 @@ class CalculateDistanceTime {
     list.add(a);
     return list;
   }
-
-//  https://maps.googleapis.com/maps/api/directions/json?&origin=37.785834,-122.406417&destination=37.77559448481996,-122.40550853312017&waypoints=24.896,67.0814&key=AIzaSyDuoFHe7NQ5U6GZ1SSu7XcckrQ9Bi8_at0
 }
