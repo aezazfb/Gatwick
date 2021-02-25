@@ -16,7 +16,7 @@ class CalculateDistanceTime {
     http.Response response;
     response = await http.get(url);
     mapResponse = json.decode(response.body);
-
+    print(url);
     List data = mapResponse['routes'];
     if (data.isNotEmpty) {
       var named = data[0]['legs'][0]['distance']['value'];
