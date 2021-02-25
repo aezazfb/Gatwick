@@ -225,7 +225,7 @@ class MapState with ChangeNotifier {
     if (sourceController.text.toString().isNotEmpty &&
         destinationController.text.toString().isNotEmpty) {
       List list = await calculateDistanceTime.calculateDistanceTime(l1, l2);
-      bottomModelSheet.settingModelBottomSheet(context, list[0], list[1]);
+      bottomModelSheet.settingModelBottomSheet(context, 'aa', 'bb');
       print('Map Screen');
     } else {
       return null;

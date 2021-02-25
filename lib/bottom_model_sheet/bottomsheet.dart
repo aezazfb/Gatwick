@@ -331,7 +331,7 @@ class BottomModelSheet with ChangeNotifier {
                         }
                         if (index == 1) {
                           _initialLabel = index;
-                          Toast.show('Child seat off', context,
+                          Toast.show('Child seat not selected', context,
                               duration: Toast.LENGTH_LONG);
                         }
                       },

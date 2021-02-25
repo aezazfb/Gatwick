@@ -27,10 +27,15 @@ class CalculateDistanceTime {
     } else {
       print('Calculation Not Found');
     }
-    String a = '${duration.toStringAsFixed(0)}';
-    String b = '${distance.toStringAsFixed(2)}';
-    list.add(b);
-    list.add(a);
+    if (data.isNotEmpty) {
+      String a = '${duration.toStringAsFixed(0)}';
+      String b = '${distance.toStringAsFixed(2)}';
+      list.add(b);
+      list.add(a);
+    } else {
+      print('EMPTY');
+    }
+
     return list;
   }
 }

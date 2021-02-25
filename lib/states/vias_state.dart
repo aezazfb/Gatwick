@@ -24,6 +24,7 @@ class ViasState with ChangeNotifier {
   calculateVias(LatLng l1, LatLng l2, context) async {
     timeDisList = await _calculateViasDistanceTime.calculateViasDistanceTime(
         l1, l2, viasLatLangList);
+
     decodedPolylineString =
         await _calculateViasDistanceTime.viasPolyline(l1, l2, viasLatLangList);
     await _bottomModelSheet.settingModelBottomSheet(

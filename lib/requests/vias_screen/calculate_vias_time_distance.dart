@@ -60,7 +60,7 @@ class CalculateViasDistanceTime {
   viasPolyline(LatLng l1, LatLng l2, List<LatLng> list) async {
     var url;
 
-    String _googleAPiKey = "AIzaSyDuoFHe7NQ5U6GZ1SSu7XcckrQ9Bi8_at0";
+    String _googleAPIKey = "AIzaSyDuoFHe7NQ5U6GZ1SSu7XcckrQ9Bi8_at0";
     String _baseAPI =
         'https://maps.googleapis.com/maps/api/directions/json?&origin';
     Map mapResponse;
@@ -75,7 +75,7 @@ class CalculateViasDistanceTime {
     }
 
     url =
-        "$_baseAPI=${l1.latitude},${l1.longitude}&destination=${l2.latitude},${l2.longitude}&waypoints=$waypoint&key=$_googleAPiKey";
+        "$_baseAPI=${l1.latitude},${l1.longitude}&destination=${l2.latitude},${l2.longitude}&waypoints=$waypoint&key=$_googleAPIKey";
     print(url);
 
     http.Response response;
