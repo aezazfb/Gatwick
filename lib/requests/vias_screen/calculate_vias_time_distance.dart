@@ -41,9 +41,10 @@ class CalculateViasDistanceTime {
         var dur = data[0]['legs'][i]['duration']['value'];
         distance = distance + dis;
         duration = duration + dur;
+        viasPolylineString = data[0]['overview_polyline'];
       }
     }
-    viasPolylineString = data[0]['overview_polyline'];
+
     print('Distance :$distance');
     print('Duration : $duration');
     duration = (duration / 60).toInt();

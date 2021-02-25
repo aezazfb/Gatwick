@@ -2,6 +2,8 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import 'package:toast/toast.dart';
+
 class CalculateDistanceTime {
   calculateDistanceTime(LatLng l1, LatLng l2) async {
     double distance;
@@ -32,9 +34,7 @@ class CalculateDistanceTime {
       String b = '${distance.toStringAsFixed(2)}';
       list.add(b);
       list.add(a);
-    } else {
-      print('EMPTY');
-    }
+    } else {}
 
     return list;
   }

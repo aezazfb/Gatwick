@@ -14,7 +14,6 @@ import 'package:zippy_rider/requests/map_screen/detailsRequest.dart';
 import 'package:zippy_rider/requests/map_screen/distance_time_calculate.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:zippy_rider/bottom_model_sheet/bottomsheet.dart';
-import 'package:zippy_rider/states/vias_state.dart';
 
 class MapState with ChangeNotifier {
   static LatLng initialPositions;
@@ -153,7 +152,6 @@ class MapState with ChangeNotifier {
       latLangList.insert(latLangList.length, latLng);
       l2 = latLangList[latLangList.length - 1];
     }
-
     addMarker(latLng, value, flage, originHue);
     notifyListeners();
   }
@@ -174,6 +172,7 @@ class MapState with ChangeNotifier {
 
 //---->ADD CIRCLES ON SOURCE AND DESTINATION
   addCircle(LatLng latLng1, LatLng latLng2, String id1, String id2) async {
+    //SOURCE CIRCLE
     _circles.add(Circle(
       circleId: CircleId(id1),
       center: latLng1,
@@ -183,7 +182,7 @@ class MapState with ChangeNotifier {
       fillColor: Colors.greenAccent,
       radius: 10.0,
     ));
-
+    //DESTINATION
     _circles.add(Circle(
       circleId: CircleId(id2),
       center: latLng2,
@@ -220,7 +219,6 @@ class MapState with ChangeNotifier {
   }
 
 //----> BOTTOM MODEL SHEET
-
   settingModelBottomSheet(context) async {
     if (sourceController.text.toString().isNotEmpty &&
         destinationController.text.toString().isNotEmpty) {
@@ -246,13 +244,11 @@ class MapState with ChangeNotifier {
     var locationName =
     await Geocoder.local.findAddressesFromCoordinates(coordinates);
     var first = locationName.first;
-
     _name = first.addressLine;
-
     notifyListeners();
   }
 
-//----> DIALOG SHOW.
+//----> ADD PICKUP/DROPOFF DIALOG SHOW.
   dialogShow(context) {
     showDialog(
         context: context,
@@ -318,11 +314,7 @@ class MapState with ChangeNotifier {
 
 //----> CLEAR FIELDS.
   clearfields() {
-    if (polyLine.isNotEmpty) {
-      polyLine.last.points.clear();
-    } else {
-      return null;
-    }
+    polyLine.last.points.clear();
     notifyListeners();
   }
 
@@ -337,16 +329,19 @@ class MapState with ChangeNotifier {
     notifyListeners();
   }
 
+//CLEAR FIELDS
   clearSuggestion() {
     suggestion.clear();
     notifyListeners();
   }
 
+//ON_CAMERA_IDLE
   cameraIdle() {
     stackElementsVisibality = true;
     notifyListeners();
   }
 
+//----> CHECK INTERNET CONNECTIVITY
   checkConnectivity() async {
     Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
       if (result != ConnectivityResult.mobile &&
@@ -357,7 +352,7 @@ class MapState with ChangeNotifier {
     notifyListeners();
   }
 
-// ignore: non_constant_identifier_names
+//----> FEED BACK DIALOGBOX
   feedBackDialog(context) {
     showDialog(
       context: context,
@@ -432,6 +427,7 @@ class MapState with ChangeNotifier {
     );
   }
 
+//---->Share App Link
   appshare(context) {
     Share.share(
       'Sharing app Link ',

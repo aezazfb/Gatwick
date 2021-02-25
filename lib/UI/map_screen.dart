@@ -24,11 +24,6 @@ class MapScreenState extends State<MapScreen>{
     final mapState = Provider.of<MapState>(context);
     final viasState = Provider.of<ViasState>(context);
     return Scaffold(
-      // appBar: AppBar(
-      //   backgroundColor: Colors.white24.withOpacity(0.1),
-      //   title: Text('Zippy Rider'),
-      //   centerTitle: true,
-      // ),
       body: mapState.initialPosition == null
           ? Container(
               child: Column(
@@ -206,6 +201,7 @@ class MapScreenState extends State<MapScreen>{
                       ),
                     )),
 
+//---->ADD VIAS BUTTON
                 Positioned(
                     top: 175,
                     right: 10,
