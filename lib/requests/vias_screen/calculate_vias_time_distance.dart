@@ -1,11 +1,12 @@
 import 'dart:convert';
+import 'dart:core';
 import 'dart:ffi';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
-
 class CalculateViasDistanceTime {
   List timeDurlist = [];
   var viasPolylineString;
+  static Map locations = new Map();
 
   calculateViasDistanceTime(LatLng l1, LatLng l2, List<LatLng> list) async {
     int distance = 0;
