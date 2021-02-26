@@ -132,13 +132,12 @@ class MapState with ChangeNotifier {
 
   //----->GET LAT LANG FROM ADDRESS
   details(String value, bool flage) async {
-    Map<String, dynamic> map = locationDetails.getLocationDetails(value) as Map;
+    Map map = await locationDetails.getLocationDetails(value);
     LatLng latLng = LatLng(
         map['Placedetails']['lattitude'], map['Placedetails']['longitude']);
-
     CameraPosition cameraPosition = new CameraPosition(
         target: LatLng(latLng.latitude, latLng.longitude), zoom: 14);
-    mapControllerr
+    await mapControllerr
         .animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
 
     if (flage == true) {

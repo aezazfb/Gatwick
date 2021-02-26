@@ -4,20 +4,18 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:zippy_rider/GooglePlaces.dart';
 
-class LocationDetails with ChangeNotifier {
+class LocationDetails {
   GooglePlaces _googlePlaces = GooglePlaces();
 
-  Future<Map> getLocationDetails(String value) async {
+  Future<Map<String, dynamic>> getLocationDetails(String value) async {
     Map mapResponse;
     var url = 'http://testing.thedivor.com/Home/PlaceInfo?place=$value';
     print(url);
     http.Response response;
     response = await http.get(url);
     mapResponse = json.decode(response.body);
-    LatLng latLng = LatLng(mapResponse['Placedetails']['lattitude'],
-        mapResponse['Placedetails']['longitude']);
     Map<String, dynamic> map = mapResponse;
-    print(map);
+
     _googlePlaces.lattitude = mapResponse['Placedetails']['lattitude'];
     _googlePlaces.longitude = mapResponse['Placedetails']['longitude'];
     _googlePlaces.placeid = mapResponse['Placedetails']['placeid'];

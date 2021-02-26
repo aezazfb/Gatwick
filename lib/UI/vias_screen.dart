@@ -335,12 +335,13 @@ class AddViasState extends State<AddVias> {
                   }
                   viasState.calculateVias(mapState.l1, mapState.l2, context);
                   viasState.drawPolyLine();
-                  CameraPosition cameraPosition = new CameraPosition(
-                      target: LatLng(viasState.viasLatLangList[0].latitude,
-                          viasState.viasLatLangList[0].longitude),
-                      zoom: 14);
-                  mapState.mapControllerr.animateCamera(
-                      CameraUpdate.newCameraPosition(cameraPosition));
+                  // CameraPosition cameraPosition = new CameraPosition(
+                  //     target: LatLng(viasState.viasLatLangList[0].latitude,
+                  //         viasState.viasLatLangList[0].longitude),
+                  //     zoom: 14);
+                  // mapState.mapControllerr.animateCamera(
+                  //     CameraUpdate.newCameraPosition(cameraPosition));
+
                   Navigator.pushNamed(context, '/mapscreen');
                 },
                 child: Text(
