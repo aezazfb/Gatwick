@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:zippy_rider/bottom_model_sheet/bottomsheet.dart';
 import 'package:zippy_rider/requests/map_screen/detailsRequest.dart';
+import 'package:zippy_rider/requests/map_screen/suggestionRequest.dart';
 import 'package:zippy_rider/requests/vias_screen/calculate_vias_time_distance.dart';
 import 'package:zippy_rider/requests/vias_screen/decode_vias_polyline.dart';
 
@@ -13,7 +14,8 @@ class ViasState with ChangeNotifier {
   List<LatLng> viasPolyLinePoints = [];
   Set<Marker> _markers = Set();
   var decodedPolylineString;
-
+  List viasSuggestionList = [];
+  SuggestionRequest suggestionRequest = SuggestionRequest();
   CalculateViasDistanceTime _calculateViasDistanceTime =
       CalculateViasDistanceTime();
   LocationDetails locationDetails = LocationDetails();
@@ -36,8 +38,16 @@ class ViasState with ChangeNotifier {
   }
 
   viasDetails(String value) async {
-    LatLng latLng = await locationDetails.getLocationDetails(value);
+    Map<String, dynamic> map = locationDetails.getLocationDetails(value) as Map;
+    LatLng latLng = LatLng(
+        map['Placedetails']['lattitude'], map['Placedetails']['longitude']);
+    // LatLng latLng = await locationDetails.getLocationDetails(value);
     viasLatLangList.add(latLng);
+    notifyListeners();
+  }
+
+  viaSuggestion(value) async {
+    viasSuggestionList = await suggestionRequest.getSuggestion(value);
     notifyListeners();
   }
 

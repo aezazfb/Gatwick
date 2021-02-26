@@ -32,7 +32,7 @@ class MapState with ChangeNotifier {
   List<dynamic> polyCoordinates = [];
   PolylinePoints polylinePoints;
   List suggestion = [];
-  List viasSuggestionList = [];
+
   List<LatLng> latLangList = [];
   Position position;
   List dummyList = [];
@@ -132,14 +132,11 @@ class MapState with ChangeNotifier {
     notifyListeners();
   }
 
-  viaSuggestion(value) async {
-    viasSuggestionList = await suggestionRequest.getSuggestion(value);
-    notifyListeners();
-  }
-
   //----->GET LAT LANG FROM ADDRESS
   details(String value, bool flage) async {
-    LatLng latLng = await locationDetails.getLocationDetails(value);
+    Map<String, dynamic> map = locationDetails.getLocationDetails(value) as Map;
+    LatLng latLng = LatLng(
+        map['Placedetails']['lattitude'], map['Placedetails']['longitude']);
     CameraPosition cameraPosition = new CameraPosition(
         target: LatLng(latLng.latitude, latLng.longitude), zoom: 14);
     mapControllerr
@@ -314,7 +311,11 @@ class MapState with ChangeNotifier {
 
 //----> CLEAR FIELDS.
   clearfields() {
-    polyLine.last.points.clear();
+    if (polyLine.isNotEmpty) {
+      polyLine.last.points.clear();
+    } else {
+      return null;
+    }
     notifyListeners();
   }
 

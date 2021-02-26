@@ -7,7 +7,7 @@ import 'package:zippy_rider/GooglePlaces.dart';
 class LocationDetails with ChangeNotifier {
   GooglePlaces _googlePlaces = GooglePlaces();
 
-  Future<dynamic> getLocationDetails(String value) async {
+  Future<Map> getLocationDetails(String value) async {
     Map mapResponse;
     var url = 'http://testing.thedivor.com/Home/PlaceInfo?place=$value';
     print(url);
@@ -26,6 +26,6 @@ class LocationDetails with ChangeNotifier {
     _googlePlaces.country = mapResponse['Placedetails']['country'];
     _googlePlaces.outcode = mapResponse['Placedetails']['outcode'];
     _googlePlaces.postcode = mapResponse['Placedetails']['postcode'];
-    return latLng;
+    return map;
   }
 }

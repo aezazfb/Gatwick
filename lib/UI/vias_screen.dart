@@ -30,11 +30,11 @@ class AddViasState extends State<AddVias> {
         searchContainerColor: Colors.white,
         searchButtonIcon: Icon(Icons.location_searching_rounded, size: 30),
         onChanged: (value) {
-          mapState.viaSuggestion(value);
+          viasState.viaSuggestion(value);
         },
         onBackPressed: () {
           setState(() {
-            mapState.viasSuggestionList.clear();
+            viasState.viasSuggestionList.clear();
           });
         },
         clearBtnIcon: Icon(Icons.clear, size: 30),
@@ -193,7 +193,7 @@ class AddViasState extends State<AddVias> {
                     itemCount: viasState.viasList.length,
                     itemBuilder: (context, index) {
                       if (index == 0) {
-                        listTitle = '  Via: \n \n';
+                        listTitle = '  Via: \n';
                       } else {
                         listTitle = '';
                       }
@@ -276,23 +276,23 @@ class AddViasState extends State<AddVias> {
               right: 4.0,
               top: 10.0,
               child: LimitedBox(
-                maxHeight: mapState.viasSuggestionList.length * 50.0,
+                maxHeight: viasState.viasSuggestionList.length * 50.0,
                 child: Container(
                   child: ListView.builder(
-                    itemCount: mapState.viasSuggestionList.length,
+                    itemCount: viasState.viasSuggestionList.length,
                     padding: EdgeInsets.all(0.0),
                     itemBuilder: (context, index) {
-                      if (mapState.viasSuggestionList.isNotEmpty) {
+                      if (viasState.viasSuggestionList.isNotEmpty) {
                         return Card(
                           margin: EdgeInsets.only(bottom: 1.0),
                           child: ListTile(
                             title: Text(
-                              mapState.viasSuggestionList[index],
+                              viasState.viasSuggestionList[index],
                               style: TextStyle(color: Colors.black),
                             ),
                             onTap: () {
                               if (viasState.viasList.length < 7) {
-                                viasState.viasList.add(mapState
+                                viasState.viasList.add(viasState
                                     .viasSuggestionList[index]
                                     .toString());
                               } else {
@@ -300,10 +300,11 @@ class AddViasState extends State<AddVias> {
                                     context,
                                     duration: Toast.LENGTH_LONG);
                               }
-                              viasState.viasDetails(mapState
+                              viasState.viasDetails(viasState
                                   .viasSuggestionList[index]
                                   .toString());
-                              mapState.viasSuggestionList.clear();
+
+                              viasState.viasSuggestionList.clear();
                             },
                           ),
                         );
