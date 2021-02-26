@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:toast/toast.dart';
 import 'package:zippy_rider/states/map_state.dart';
 import 'package:zippy_rider/states/vias_state.dart';
+import 'package:zippy_rider/utils/util.dart' as util;
 
 class AddVias extends StatefulWidget {
   @override
@@ -15,10 +16,7 @@ class AddViasState extends State<AddVias> {
   bool flage = true;
   var heightFactor = 0.0;
 
-  //var count = 1;
-
   String listTitle = '';
-
   @override
   Widget build(BuildContext context) {
     final mapState = Provider.of<MapState>(context);
@@ -174,9 +172,9 @@ class AddViasState extends State<AddVias> {
               child: IconButton(
                   icon: Icon(
                     Icons.swap_calls,
-                    size: 40,
-                    color: Colors.purple,
-                  ),
+                  size: 40,
+                  color: util.primaryColor,
+                ),
                   onPressed: () {
                     mapState.swapFields();
                   viasState.clearFields();
@@ -327,8 +325,8 @@ class AddViasState extends State<AddVias> {
               right: 17,
               left: 17,
                   child: FlatButton(
-                    color: Colors.purple.withOpacity(0.8),
-                    onPressed: () {
+                    color: util.primaryColor,
+                onPressed: () {
                   for (int i = 0; i < viasState.viasLatLangList.length; i++) {
                     mapState.addMarker(
                         viasState.viasLatLangList[i], "Via$i", flage, 90);

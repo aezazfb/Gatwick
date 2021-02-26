@@ -5,6 +5,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:zippy_rider/states/flight_state.dart';
 import 'package:zippy_rider/states/map_state.dart';
+import 'package:zippy_rider/utils/util.dart' as util;
 
 class FlightsScreen extends StatefulWidget {
   @override
@@ -114,14 +115,13 @@ class _FlightsScreenState extends State<FlightsScreen> {
                           mapState.l1 = LatLng(
                               flightState.latLangList[indu].latitude,
                               flightState.latLangList[indu].longitude);
-
                           MapState.initialPositions = LatLng(
                               flightState.latLangList[indu].latitude,
                               flightState.latLangList[indu].longitude);
                           Navigator.pushNamed(context, '/');
                         },
                         child: Text('Origin',
-                            style: TextStyle(color: Colors.purple)))),
+                            style: TextStyle(color: util.primaryColor)))),
                 Positioned(
                   top: 25,
                   right: 80,
@@ -139,7 +139,7 @@ class _FlightsScreenState extends State<FlightsScreen> {
                         Navigator.pushNamed(context, '/');
                       },
                       child: Text("Destination",
-                          style: TextStyle(color: Colors.purple))),
+                          style: TextStyle(color: util.primaryColor))),
                 ),
                 // alignment: Alignment.bottomLeft,
               ]),

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:zippy_rider/models/login_model.dart';
+import 'package:zippy_rider/utils/util.dart' as util;
 
 class Profile extends StatelessWidget {
   // Model model = Model();
@@ -63,7 +64,7 @@ class Profile extends StatelessWidget {
                   )),
             ),
             FlatButton(
-              color: Colors.purple,
+              color: util.primaryColor,
               onPressed: () {
                 Navigator.pushNamed(context, '/mapscreen');
               },

@@ -11,12 +11,13 @@ import 'package:zippy_rider/states/vias_state.dart';
 import 'UI/map_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/services.dart';
+import 'package:zippy_rider/utils/util.dart' as util;
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-    statusBarColor: Colors.purple,
-    systemNavigationBarColor: Colors.purple,
+    statusBarColor: util.primaryColor,
+    systemNavigationBarColor: util.primaryColor,
   ));
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
@@ -41,7 +42,7 @@ class MyApp extends StatelessWidget {
       title: 'ZippyRides',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: Colors.purple,
+        primarySwatch: util.primaryColor,
         //visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       initialRoute: '/',

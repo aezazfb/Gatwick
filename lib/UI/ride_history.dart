@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:zippy_rider/utils/util.dart' as util;
 
 class RideHistory extends StatelessWidget {
   @override
@@ -12,7 +13,7 @@ class RideHistory extends StatelessWidget {
               title: Text('Station Cars'),
               bottom: TabBar(
                 labelPadding: EdgeInsets.zero,
-                indicatorColor: Colors.purple,
+                indicatorColor: util.primaryColor,
                 physics: BouncingScrollPhysics(),
                 unselectedLabelColor: Colors.white,
                 labelStyle: TextStyle(
@@ -22,7 +23,7 @@ class RideHistory extends StatelessWidget {
                 unselectedLabelStyle: TextStyle(
                   fontSize: 15,
                 ),
-                labelColor: Colors.purple,
+                labelColor: util.primaryColor,
                 indicatorSize: TabBarIndicatorSize.tab,
                 indicator: BoxDecoration(
                   color: Colors.white,

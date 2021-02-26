@@ -7,6 +7,7 @@ import 'package:mailer/mailer.dart';
 import 'package:toast/toast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:zippy_rider/UI/profile_screen.dart';
+import 'package:zippy_rider/utils/util.dart' as util;
 
 class Login extends StatefulWidget {
   @override
@@ -43,7 +44,7 @@ class LoginState extends State<Login> {
                 //Text Form field for Name
                 Text("LOGIN",
                     style: GoogleFonts.montserrat(
-                        fontSize: 30.0, color: Colors.purple)),
+                        fontSize: 30.0, color: util.primaryColor)),
                 SizedBox(height: 20),
                 TextFormField(
                   onSaved: (String value) {
@@ -141,7 +142,7 @@ class LoginState extends State<Login> {
                 SizedBox(height: 12.0),
 
                 FlatButton(
-                    color: Colors.purple,
+                    color: util.primaryColor,
                     onPressed: () {
                       if (_formKey.currentState.validate()) {
                         sendMail();
@@ -193,7 +194,7 @@ class LoginState extends State<Login> {
                 RichText(
                   text: TextSpan(
                       text: 'Don\'t have account?',
-                      style: TextStyle(color: Colors.purple, fontSize: 20),
+                      style: TextStyle(color: util.primaryColor, fontSize: 20),
                       children: [
                         TextSpan(
                             text: 'Register',

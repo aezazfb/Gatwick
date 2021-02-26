@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:zippy_rider/states/map_state.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:zippy_rider/states/vias_state.dart';
+import 'package:zippy_rider/utils/util.dart' as util;
 
 class MapScreen extends StatefulWidget {
   @override
@@ -33,9 +34,9 @@ class MapScreenState extends State<MapScreen>{
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     SpinKitRotatingCircle(
-                      color: Colors.purple,
+                      color: util.primaryColor,
                       size: 50.0,
-                  )
+                    )
                 ],
               ),
               SizedBox(height: 10),
@@ -234,9 +235,9 @@ class MapScreenState extends State<MapScreen>{
                     child: IconButton(
                         icon: Icon(
                           Icons.swap_calls,
-                    size: 40,
-                    color: Colors.purple,
-                  ),
+                          size: 40,
+                          color: util.primaryColor,
+                        ),
                   onPressed: () {
                     mapState.swapFields();
                           viasState.clearFields();
@@ -266,17 +267,17 @@ class MapScreenState extends State<MapScreen>{
               child: Align(
                 alignment: Alignment(0.1, -0.1),
                 child: Card(
-                  color: Colors.purple.withOpacity(.8),
-                  margin: EdgeInsets.all(20.0),
-                  child: InkWell(
-                      child: Text(mapState.name,
-                          style: TextStyle(
-                            color: Colors.white,
-                          )),
-                      onTap: () {
-                        mapState.dialogShow(context);
-                      }),
-                ),
+                  color: util.primaryColor.withOpacity(0.8),
+                        margin: EdgeInsets.all(20.0),
+                        child: InkWell(
+                            child: Text(mapState.name,
+                                style: TextStyle(
+                                  color: Colors.white,
+                                )),
+                            onTap: () {
+                              mapState.dialogShow(context);
+                            }),
+                      ),
               ),
             ),
           ),
@@ -342,8 +343,8 @@ class MapScreenState extends State<MapScreen>{
               child: Visibility(
                   visible: mapState.stackElementsVisibality,
                   child: FlatButton(
-                    color: Colors.purple.withOpacity(0.8),
-                    onPressed: () async {
+                    color: util.primaryColor,
+                          onPressed: () async {
                             if (viasState.viasLatLangList.isEmpty) {
                               mapState.drawPolyLine(mapState.polyCoordinates);
                               mapState.settingModelBottomSheet(context);
@@ -378,13 +379,13 @@ class MapScreenState extends State<MapScreen>{
                             borderRadius: BorderRadius.circular(10.0),
                     ),
                     child: IconButton(
-                      icon: Icon(Icons.location_searching,
-                          color: Colors.purple),
-                      onPressed: () {
-                        mapState.currentLocation();
-                        print("My Locationbutton Pressed");
-                      },
-                    ),
+                            icon: Icon(Icons.location_searching,
+                                color: util.primaryColor),
+                            onPressed: () {
+                              mapState.currentLocation();
+                              print("My Locationbutton Pressed");
+                            },
+                          ),
                         ))),
 
           //----> FLIGHTS BUTTON
@@ -399,12 +400,12 @@ class MapScreenState extends State<MapScreen>{
                       borderRadius: BorderRadius.circular(10.0),
                     ),
                     child: IconButton(
-                      icon: Icon(Icons.flight_takeoff,
-                          color: Colors.purple),
-                      onPressed: () {
-                        Navigator.pushNamed(context, '/flightscreen');
-                      },
-                    ),
+                            icon: Icon(Icons.flight_takeoff,
+                                color: util.primaryColor),
+                            onPressed: () {
+                              Navigator.pushNamed(context, '/flightscreen');
+                            },
+                          ),
                   ))),
         ],
       ),
@@ -452,7 +453,7 @@ class MapScreenState extends State<MapScreen>{
               padding: EdgeInsets.only(left: 3.0, right: 3),
             ),
             ListTile(
-              leading: Icon(Icons.history_toggle_off, color: Colors.purple),
+              leading: Icon(Icons.history_toggle_off, color: util.primaryColor),
               title: Text('Ride History'),
               onTap: () => Navigator.pushNamed(context, '/ridehistory'),
             ),
@@ -463,7 +464,7 @@ class MapScreenState extends State<MapScreen>{
             ),
             ListTile(
               leading: Icon(Icons.settings_applications_outlined,
-                  color: Colors.purple),
+                  color: util.primaryColor),
               title: Text('Settings'),
             ),
             Divider(
@@ -472,7 +473,7 @@ class MapScreenState extends State<MapScreen>{
               color: Colors.grey,
             ),
             ListTile(
-              leading: Icon(Icons.share_sharp, color: Colors.purple),
+              leading: Icon(Icons.share_sharp, color: util.primaryColor),
               title: Text('Share'),
               onTap: () => mapState.appshare(context),
             ),
@@ -482,7 +483,7 @@ class MapScreenState extends State<MapScreen>{
               color: Colors.grey,
             ),
             ListTile(
-              leading: Icon(Icons.feedback_outlined, color: Colors.purple),
+              leading: Icon(Icons.feedback_outlined, color: util.primaryColor),
               title: Text('Give feedback'),
               onTap: () => mapState.feedBackDialog(context),
             ),
@@ -501,8 +502,8 @@ class MapScreenState extends State<MapScreen>{
               color: Colors.grey,
             ),
             ListTile(
-              leading:
-                  Icon(Icons.monetization_on_outlined, color: Colors.purple),
+              leading: Icon(Icons.monetization_on_outlined,
+                  color: util.primaryColor),
               title: Text('Wallet'),
             ),
             Divider(
@@ -511,7 +512,8 @@ class MapScreenState extends State<MapScreen>{
               color: Colors.grey,
             ),
             ListTile(
-              leading: Icon(Icons.info_outline_rounded, color: Colors.purple),
+              leading:
+                  Icon(Icons.info_outline_rounded, color: util.primaryColor),
               title: Text('About'),
               onTap: () {
                 showAboutDialog(
@@ -530,7 +532,7 @@ class MapScreenState extends State<MapScreen>{
               color: Colors.grey,
             ),
             ListTile(
-                leading: Icon(Icons.logout, color: Colors.purple),
+                leading: Icon(Icons.logout, color: util.primaryColor),
                 title: Text('Logout'),
                 onTap: () {
                   Navigator.pushReplacementNamed(context, '/login');
