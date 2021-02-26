@@ -303,8 +303,9 @@ class AddViasState extends State<AddVias> {
                               viasState.viasDetails(viasState
                                   .viasSuggestionList[index]
                                   .toString());
-
-                              viasState.viasSuggestionList.clear();
+                              setState(() {
+                                viasState.viasSuggestionList.clear();
+                              });
                             },
                           ),
                         );
