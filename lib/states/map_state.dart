@@ -139,7 +139,7 @@ class MapState with ChangeNotifier {
 
   //----->GET LAT LANG FROM ADDRESS
   details(String value, bool flage) async {
-    LatLng latLng = await locationDetails.getLocationDetails(value, flage);
+    LatLng latLng = await locationDetails.getLocationDetails(value);
     CameraPosition cameraPosition = new CameraPosition(
         target: LatLng(latLng.latitude, latLng.longitude), zoom: 14);
     mapControllerr

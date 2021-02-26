@@ -207,7 +207,9 @@ class AddViasState extends State<AddVias> {
                           onPressed: () {
                             setState(() {
                               viasState.viasList.removeAt(index);
-                              viasState.polyLine.last.points.clear();
+                              if (viasState.polyLine.isNotEmpty) {
+                                viasState.polyLine.last.points.clear();
+                              }
                               viasState.viasLatLangList.removeAt(index);
                             });
                           },

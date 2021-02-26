@@ -251,12 +251,11 @@ class MapScreenState extends State<MapScreen>{
                 child: Align(
                   alignment: Alignment.center,
                   child: IconButton(
-                      icon:
-                      Icon(Icons.circle, size: 17, color: Colors.purple),
-                      onPressed: () {
-                        mapState.fetchAddressFromCoordinates(
-                            mapState.centerPoints);
-                      }),
+                      icon: Icon(Icons.circle, size: 12, color: Colors.black),
+                        onPressed: () {
+                          mapState.fetchAddressFromCoordinates(
+                              mapState.centerPoints);
+                        }),
                 ),
               )),
 
@@ -306,20 +305,21 @@ class MapScreenState extends State<MapScreen>{
                               if (flage == true) {
                                 mapState.sourceController.text =
                                     mapState.suggestion[index].toString();
-                                mapState.details(
-                                    mapState.suggestion[index].toString(),
-                                    flage);
-                              }
-                              if (flage == false) {
-                                mapState.destinationController.text =
-                                    mapState.suggestion[index].toString();
-                                mapState.details(
-                                    mapState.suggestion[index].toString(),
-                                    flage);
-                              }
-                              mapState.clearfields();
-                              mapState.clearSuggestion();
-                            },
+                                      mapState.details(
+                                          mapState.suggestion[index].toString(),
+                                          flage);
+                                    }
+                                    if (flage == false) {
+                                      mapState.destinationController.text =
+                                          mapState.suggestion[index].toString();
+                                      mapState.details(
+                                          mapState.suggestion[index].toString(),
+                                          flage);
+                                    }
+                                    mapState.suggestion.clear();
+                                    mapState.clearfields();
+                                    mapState.clearSuggestion();
+                                  },
                           ),
                         );
                       } else {

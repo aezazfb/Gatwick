@@ -1,3 +1,5 @@
+import 'package:zippy_rider/requests/map_screen/detailsRequest.dart';
+
 class GooglePlaces {
   var _id = null;
   String placeid = "ChIJt3-FKDsKdkgRrsljcgmJThU";
