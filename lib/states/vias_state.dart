@@ -38,10 +38,11 @@ class ViasState with ChangeNotifier {
   }
 
   viasDetails(String value) async {
-    Map<String, dynamic> map = locationDetails.getLocationDetails(value) as Map;
+    Map<String, dynamic> map = await locationDetails.getLocationDetails(value);
+
     LatLng latLng = LatLng(
         map['Placedetails']['lattitude'], map['Placedetails']['longitude']);
-    // LatLng latLng = await locationDetails.getLocationDetails(value);
+
     viasLatLangList.add(latLng);
     notifyListeners();
   }
