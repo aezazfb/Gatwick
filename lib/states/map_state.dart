@@ -89,9 +89,7 @@ class MapState with ChangeNotifier {
     position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
     initialPositions = LatLng(position.latitude, position.longitude);
-
     l1 = LatLng(position.latitude, position.longitude);
-
     Coordinates latLng =
     Coordinates(initialPosition.latitude, initialPosition.longitude);
     var addreslocation =
@@ -137,10 +135,12 @@ class MapState with ChangeNotifier {
     Map<String, dynamic> map = locationDetails.getLocationDetails(value) as Map;
     LatLng latLng = LatLng(
         map['Placedetails']['lattitude'], map['Placedetails']['longitude']);
+
     CameraPosition cameraPosition = new CameraPosition(
         target: LatLng(latLng.latitude, latLng.longitude), zoom: 14);
     mapControllerr
         .animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
+
     if (flage == true) {
       latLangList.insert(0, latLng);
       l1 = latLangList[0];
