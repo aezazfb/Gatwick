@@ -135,6 +135,7 @@ class MapState with ChangeNotifier {
     Map map = await locationDetails.getLocationDetails(value);
     LatLng latLng = LatLng(
         map['Placedetails']['lattitude'], map['Placedetails']['longitude']);
+
     CameraPosition cameraPosition = new CameraPosition(
         target: LatLng(latLng.latitude, latLng.longitude), zoom: 14);
     await mapControllerr
