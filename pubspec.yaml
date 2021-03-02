@@ -42,6 +42,7 @@ dependencies:
   appbar_textfield: ^1.0.1+1
   fluttertoast: ^7.1.1
   basic_utils: ^1.5.1
+  requests: ^3.3.0
 
 
 
