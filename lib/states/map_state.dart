@@ -136,9 +136,8 @@ class MapState with ChangeNotifier {
 
   //----->GET LAT LANG FROM ADDRESS
   details(String value, bool flage) async {
-    Map map = await locationDetails.getLocationDetails(value);
-    LatLng latLng = LatLng(
-        map['Placedetails']['lattitude'], map['Placedetails']['longitude']);
+    Map<String, dynamic> map = await locationDetails.getLocationDetails(value);
+    LatLng latLng = LatLng(map['lattitude'], map['longitude']);
     CameraPosition cameraPosition = new CameraPosition(
         target: LatLng(latLng.latitude, latLng.longitude), zoom: 14);
     await mapControllerr
@@ -146,19 +145,19 @@ class MapState with ChangeNotifier {
 
     if (flage == true) {
       latLangList.insert(0, latLng);
-      originPoint = map['Placedetails'];
+      originPoint = map;
+      originDestination.add(map);
       l1 = latLangList[0];
       print(originPoint);
     }
     if (flage == false) {
       latLangList.insert(latLangList.length, latLng);
-      destinationPoint = map['Placedetails'];
+      destinationPoint = map;
+      originDestination.add(map);
       l2 = latLangList[latLangList.length - 1];
     }
     print("_________________________________________________");
 
-    originDestination.add(originPoint);
-    originDestination.add(destinationPoint);
     addMarker(latLng, value, flage, originHue);
     notifyListeners();
   }
@@ -233,7 +232,7 @@ class MapState with ChangeNotifier {
       List list = await calculateDistanceTime
           .calculateOriginDestinationTime(originDestination);
       bottomModelSheet.settingModelBottomSheet(
-          context, '${list[0]}', '${list[1]}');
+          context, '${list[0]}', '${list[0]}');
       print('Map Screen');
     } else {
       return null;

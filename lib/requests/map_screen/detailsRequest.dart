@@ -51,7 +51,17 @@ class LocationDetails {
       print(b[0]);
       print(b[1]);
     }
-
-    return map;
+    Map<String, dynamic> finalMap = {
+      "_id": null,
+      "placeid": map['Placedetails']['placeid'],
+      "address": map['Placedetails']['address'],
+      "postcode": map['Placedetails']['postcode'],
+      "outcode": map['Placedetails']['outcode'],
+      "lattitude": map['Placedetails']['lattitude'],
+      "country": map['Placedetails']['country'],
+      "city": map['Placedetails']['city'],
+      "longitude": map['Placedetails']['longitude'],
+    };
+    return finalMap;
   }
 }
