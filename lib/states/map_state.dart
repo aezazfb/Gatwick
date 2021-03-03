@@ -22,7 +22,9 @@ class MapState with ChangeNotifier {
   TimeOfDay userSelectedTime = TimeOfDay.now();
   LatLng l1 = LatLng(0.0000, 0.0000);
   LatLng l2 = LatLng(0.0000, 0.0000);
-
+  Map originPoint = {};
+  Map destinationPoint = {};
+  List<Map<String, dynamic>> originDestination = [];
   GoogleMapController mapControllerr;
 
   bool locationServiceActive = true;
@@ -135,7 +137,6 @@ class MapState with ChangeNotifier {
     Map map = await locationDetails.getLocationDetails(value);
     LatLng latLng = LatLng(
         map['Placedetails']['lattitude'], map['Placedetails']['longitude']);
-
     CameraPosition cameraPosition = new CameraPosition(
         target: LatLng(latLng.latitude, latLng.longitude), zoom: 14);
     await mapControllerr
@@ -143,12 +144,20 @@ class MapState with ChangeNotifier {
 
     if (flage == true) {
       latLangList.insert(0, latLng);
+      originPoint = map['Placedetails'];
+      originDestination.add(originPoint);
       l1 = latLangList[0];
     }
     if (flage == false) {
       latLangList.insert(latLangList.length, latLng);
+      destinationPoint = map['Placedetails'];
+      originDestination.add(destinationPoint);
       l2 = latLangList[latLangList.length - 1];
     }
+    print("_________________________________________________");
+    print(originPoint);
+    print(destinationPoint);
+
     addMarker(latLng, value, flage, originHue);
     notifyListeners();
   }
@@ -219,8 +228,11 @@ class MapState with ChangeNotifier {
   settingModelBottomSheet(context) async {
     if (sourceController.text.toString().isNotEmpty &&
         destinationController.text.toString().isNotEmpty) {
-      List list = await calculateDistanceTime.calculateDistanceTime(l1, l2);
-      bottomModelSheet.settingModelBottomSheet(context, 'aa', 'bb');
+      calculateDistanceTime.calculateDistanceTime(l1, l2);
+      List list = await calculateDistanceTime
+          .calculateOriginDestinationTime(originDestination);
+      bottomModelSheet.settingModelBottomSheet(
+          context, '${list[0]}', '${list[1]}');
       print('Map Screen');
     } else {
       return null;

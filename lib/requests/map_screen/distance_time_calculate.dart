@@ -38,4 +38,24 @@ class CalculateDistanceTime {
 
     return list;
   }
+
+  calculateOriginDestinationTime(List<Map<String, dynamic>> list) async {
+    List list = [];
+    final req =
+        await http.post('http://testing.thedivor.com/api/API/GetDistance',
+            headers: {
+              'Content-Type': 'application/json; charset=UTF-8',
+            },
+            body: jsonEncode(list));
+
+    print(
+        '___________________________________________________________ \n ++++++++++++++++++++++++++++++++\n * \n * ');
+    if (req.statusCode == 200) {
+      String a = jsonDecode(req.body);
+      var b = a.split(",");
+      list.add(b);
+      print(b);
+    }
+    return list;
+  }
 }
