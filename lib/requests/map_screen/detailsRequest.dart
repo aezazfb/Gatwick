@@ -1,4 +1,3 @@
-import 'package:basic_utils/basic_utils.dart';
 import 'package:http/http.dart' as http;
 import 'package:requests/requests.dart';
 
@@ -51,7 +50,6 @@ class LocationDetails {
       "city": "Greater London",
       "longitude": -0.0379635,
     };
-
     Map<String, dynamic> dropoff = {
       "_id": "",
       "placeid": "",
@@ -76,18 +74,51 @@ class LocationDetails {
 
     // print(await http.read('https://example.com/foobar.txt'));
 
+
+    var jsonPickUp = {
+      "_id": "",
+      "placeid": " ",
+      "address": "Kenley Road, London SW19 3DW, UK",
+      "postcode": "SE23 3RF",
+      "outcode": "SE23",
+      "lattitude": 51.404556,
+      "country": "",
+      "city": "",
+      "longitude": -0.194486
+    };
+    var jsonDrpoff = {
+      "_id": "",
+      "placeid": "ChIJ7ZFe_0gCdkgRRcALA0ZN5EE",
+      "address": "Brockley Road, London SE4 2BY, UK",
+      "postcode": "SE4 2BY",
+      "outcode": "SE4",
+      "lattitude": 51.454334,
+      "country": "United Kingdom",
+      "city": "Greater London",
+      "longitude": -0.0379635,
+    };
+    var a = json.encode(jsonPickUp);
+    var b = json.encode(jsonDrpoff);
+
+    List list = ['$a', '$b'];
+
+
+    var num = list.cast().toSet();
     var req = await Requests.post(
         'http://testing.thedivor.com/api/API/GetDistance',
         headers: {'Content-Type': 'application/json'},
-        body: {pickup, dropoff});
-    print(
-        'response_____________O______________)___________________0___________O_________\n');
-    print(req.json());
-    print(req.content());
+        body: num
+    );
+
+
     if (req.statusCode == 200) {
       print(
           'response_____________O______________)___________________0___________O_________\n');
+      print(req.content());
     }
+
+
+
 
 //
 //     var url3 =
