@@ -22,9 +22,11 @@ class MapState with ChangeNotifier {
   TimeOfDay userSelectedTime = TimeOfDay.now();
   LatLng l1 = LatLng(0.0000, 0.0000);
   LatLng l2 = LatLng(0.0000, 0.0000);
-  Map originPoint = {};
-  Map destinationPoint = {};
-  List<Map<String, dynamic>> originDestination = [];
+
+  Map<String, dynamic> originPoint = {};
+  Map<String, dynamic> destinationPoint = {};
+  List<Map<String, dynamic>> originDestination;
+
   GoogleMapController mapControllerr;
 
   bool locationServiceActive = true;
@@ -145,19 +147,18 @@ class MapState with ChangeNotifier {
     if (flage == true) {
       latLangList.insert(0, latLng);
       originPoint = map['Placedetails'];
-      originDestination.add(originPoint);
       l1 = latLangList[0];
+      print(originPoint);
     }
     if (flage == false) {
       latLangList.insert(latLangList.length, latLng);
       destinationPoint = map['Placedetails'];
-      originDestination.add(destinationPoint);
       l2 = latLangList[latLangList.length - 1];
     }
     print("_________________________________________________");
-    print(originPoint);
-    print(destinationPoint);
 
+    originDestination.add(originPoint);
+    originDestination.add(destinationPoint);
     addMarker(latLng, value, flage, originHue);
     notifyListeners();
   }
