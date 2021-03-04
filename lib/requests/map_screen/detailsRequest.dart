@@ -5,7 +5,7 @@ import 'package:zippy_rider/GooglePlaces.dart';
 class LocationDetails {
   GooglePlaces googlePlaces = new GooglePlaces();
 
-  Future<Map<String, dynamic>> getLocationDetails(String value) async {
+  getLocationDetails(String value) async {
     Map mapResponse;
     var url = 'http://testing.thedivor.com/Home/PlaceInfo?place=$value';
     http.Response response;
@@ -62,6 +62,8 @@ class LocationDetails {
       "city": map['Placedetails']['city'],
       "longitude": map['Placedetails']['longitude'],
     };
+    print(finalMap);
     return finalMap;
   }
 }
+

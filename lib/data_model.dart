@@ -18,7 +18,7 @@ class BookingData with ChangeNotifier {
   bool changed = false;
   String drvrreqcallsign = '';
   List logc = [];
-  String tag = '1 0f 1';
+  String tag = '1 of 1';
   String from_outcode = '';
   int fare = 0;
   String drvrname = '';
