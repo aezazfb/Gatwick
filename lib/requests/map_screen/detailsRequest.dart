@@ -4,7 +4,6 @@ import 'package:zippy_rider/GooglePlaces.dart';
 
 class LocationDetails {
   GooglePlaces googlePlaces = new GooglePlaces();
-
   getLocationDetails(String value) async {
     Map mapResponse;
     var url = 'http://testing.thedivor.com/Home/PlaceInfo?place=$value';
