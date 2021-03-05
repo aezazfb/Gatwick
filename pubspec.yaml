@@ -31,7 +31,6 @@ dependencies:
   flutter_spinkit: ^4.1.2+1
   flutter_polyline_points: ^0.2.4
   flutter_swiper: ^1.1.6
-  connection_status_bar: ^1.1.4
   flutter_dropdown: ^0.0.8
   toggle_switch: ^0.1.8
   google_fonts: ^1.1.1
@@ -43,7 +42,8 @@ dependencies:
   fluttertoast: ^7.1.1
   basic_utils: ^1.5.1
   requests: ^3.3.0
-
+  maps_curved_line: ^0.2.0
+  connectivity: ^3.0.2
 
 
   # The following adds the Cupertino Icons font to your application.

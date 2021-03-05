@@ -13,6 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:zippy_rider/requests/map_screen/detailsRequest.dart';
 import 'package:zippy_rider/requests/map_screen/distance_time_calculate.dart';
 import 'package:connectivity/connectivity.dart';
+import 'package:maps_curved_line/maps_curved_line.dart';
 import 'package:zippy_rider/bottom_model_sheet/bottomsheet.dart';
 
 class MapState with ChangeNotifier {
@@ -133,9 +134,11 @@ class MapState with ChangeNotifier {
   //----->GET LAT LANG FROM ADDRESS
   details(String value, bool flage) async {
     Map<String, dynamic> map = await locationDetails.getLocationDetails(value);
-    LatLng latLng = LatLng(map['lattitude'], map['longitude']);
+    LatLng latLng = LatLng(
+        map['Placedetails']['lattitude'], map['Placedetails']['longitude']);
     CameraPosition cameraPosition = new CameraPosition(
         target: LatLng(latLng.latitude, latLng.longitude), zoom: 14);
+    print(cameraPosition);
     await mapControllerr
         .animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
 
@@ -148,7 +151,6 @@ class MapState with ChangeNotifier {
       l2 = latLangList[latLangList.length - 1];
     }
     print("_________________________________________________");
-
     addMarker(latLng, value, flage, originHue);
     notifyListeners();
   }
@@ -193,7 +195,7 @@ class MapState with ChangeNotifier {
   }
 
 //----> ADD POLYLINE ON GOOGLE MAPS
-  drawPolyLine(List<dynamic> latLngList) async {
+  drawPolyLine(LatLng l1, LatLng l2) async {
     if (sourceController.text.toString().isNotEmpty &&
         destinationController.text.toString().isNotEmpty) {
       polyCoordinates = await fetchPolylinePoints.getPolyPoints(l1, l2);
@@ -203,7 +205,7 @@ class MapState with ChangeNotifier {
           Polyline(
             polylineId: PolylineId("poly"),
             visible: true,
-            points: polyCoordinates,
+            points: MapsCurvedLines.getPointsOnCurve(l1, l2),
             width: 5,
             color: Colors.purple,
           ),
@@ -220,8 +222,9 @@ class MapState with ChangeNotifier {
     if (sourceController.text.toString().isNotEmpty &&
         destinationController.text.toString().isNotEmpty) {
       calculateDistanceTime.calculateDistanceTime(l1, l2);
-
-      bottomModelSheet.settingModelBottomSheet(context, 'null', 'null');
+      List list = await locationDetails.getTimeDistance();
+      bottomModelSheet.settingModelBottomSheet(
+          context, '${list[0]}', '${list[1]}');
       print('Map Screen');
     } else {
       return null;

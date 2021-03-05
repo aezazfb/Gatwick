@@ -18,7 +18,6 @@ class MapScreenState extends State<MapScreen>{
   bool flage = true;
   var heightFactor = 0.0;
   Set<Polyline> _polylines;
-  Set<Marker> _markers;
 
   @override
   Widget build(BuildContext context) {
@@ -346,7 +345,7 @@ class MapScreenState extends State<MapScreen>{
                     color: util.primaryColor,
                           onPressed: () async {
                             if (viasState.viasLatLangList.isEmpty) {
-                              mapState.drawPolyLine(mapState.polyCoordinates);
+                               mapState.drawPolyLine(mapState.l1, mapState.l2);
                               mapState.settingModelBottomSheet(context);
                               mapState.addCircle(mapState.l1, mapState.l2,
                                   'origin', 'destination');
@@ -354,10 +353,10 @@ class MapScreenState extends State<MapScreen>{
                             } else {
                               viasState.calculateVias(
                                   mapState.l1, mapState.l2, context);
-                              viasState.drawPolyLine();
-                              print(
-                                  'Vias Polyline length___________________${viasState.polyLine.length}');
-                              _polylines = viasState.polyLine;
+                              // viasState.drawPolyLine();
+                              // print(
+                              //     'Vias Polyline length___________________${viasState.polyLine.length}');
+                              // _polylines = viasState.polyLine;
                             }
                             mapState.visibility();
                           },

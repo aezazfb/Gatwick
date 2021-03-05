@@ -38,13 +38,12 @@ class ViasState with ChangeNotifier {
   }
 
   viasDetails(String value) async {
-    Map<String, dynamic> map = await locationDetails.getLocationDetails(value);
+    // Map<String, dynamic> map = await locationDetails.getLocationDetails(value);
 
-    LatLng latLng = LatLng(
-        map['Placedetails']['lattitude'], map['Placedetails']['longitude']);
-
-    viasLatLangList.add(latLng);
-    notifyListeners();
+    // LatLng latLng = LatLng(
+    //     map['Placedetails']['lattitude'], map['Placedetails']['longitude']);
+    // viasLatLangList.add(latLng);
+    // notifyListeners();
   }
 
   viaSuggestion(value) async {
