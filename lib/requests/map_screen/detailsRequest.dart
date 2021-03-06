@@ -83,14 +83,16 @@ class LocationDetails {
               'Content-Type': 'application/json; charset=UTF-8',
             },
             body: jsonEncode(params));
-
+    print("MMMMMMM\n n \n n \n");
+    print(req.body);
     if (req.statusCode == 200) {
       String a = jsonDecode(req.body);
-      var b = a.split(",");
-      print(b[0]);
-      print(b[1]);
-      list.add(b[0]);
-      list.add(b[1]);
+      print(req.body);
+      // var b = a.split(",");
+      // print(b[0]);
+      //print(b[1]);
+      // list.add(a[0]);
+      // list.add(b[1]);
     }
     return list;
   }
