@@ -1,5 +1,5 @@
 class GooglePlaces {
-  var _id = null;
+  var _id = '';
   String placeid = "ChIJt3-FKDsKdkgRrsljcgmJThU";
   String address = 'Surbiton KT6 7QD, UK';
   String postcode = "KT6 7QD";
