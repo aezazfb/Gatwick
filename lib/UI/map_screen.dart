@@ -201,7 +201,7 @@ class MapScreenState extends State<MapScreen>{
                       ),
                     )),
 
-//---->ADD VIAS BUTTON
+                //---->ADD VIAS BUTTON
                 Positioned(
                     top: 175,
                     right: 10,
@@ -228,7 +228,6 @@ class MapScreenState extends State<MapScreen>{
                 Positioned(
                   top: 80,
                   left: 5.0,
-                  // right: 2.0,
                   child: Visibility(
                     visible: mapState.stackElementsVisibality,
                     child: IconButton(
@@ -237,7 +236,7 @@ class MapScreenState extends State<MapScreen>{
                           size: 40,
                           color: util.primaryColor,
                         ),
-                  onPressed: () {
+                        onPressed: () {
                     mapState.swapFields();
                           viasState.clearFields();
                         }),
@@ -376,8 +375,8 @@ class MapScreenState extends State<MapScreen>{
                           decoration: BoxDecoration(
                             color: Colors.grey.shade300.withOpacity(0.7),
                             borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    child: IconButton(
+                          ),
+                          child: IconButton(
                             icon: Icon(Icons.location_searching,
                                 color: util.primaryColor),
                             onPressed: () {
