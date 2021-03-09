@@ -1,12 +1,9 @@
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:zippy_rider/GooglePlaces.dart';
 
 class LocationDetails {
   List<Map<String, dynamic>> params = [];
   Map<String, dynamic> point = {};
-  GooglePlaces googlePlaces = new GooglePlaces();
-
   getLocationDetails(String value) async {
     Map mapResponse;
     var url = 'http://testing.thedivor.com/Home/PlaceInfo?place=$value';
@@ -27,9 +24,7 @@ class LocationDetails {
     };
 
     params.add(point);
-    if (params.length > 2) {
-      params.removeAt(0);
-    }
+
     //Distance time Time Test Calculation.
 
     //Calculating test time and distance here using rest time and Distance API.
@@ -71,10 +66,9 @@ class LocationDetails {
     //   print(b[0]);
     //   print(b[1]);
     // }
-
     return map;
   }
-
+//----> Calculate Time and Distance
   getTimeDistance() async {
     List list = [];
     final req =
@@ -83,16 +77,10 @@ class LocationDetails {
               'Content-Type': 'application/json; charset=UTF-8',
             },
             body: jsonEncode(params));
-    print("MMMMMMM\n n \n n \n");
-    print(req.body);
     if (req.statusCode == 200) {
-      String a = jsonDecode(req.body);
-      print(req.body);
-      // var b = a.split(",");
-      // print(b[0]);
-      //print(b[1]);
-      // list.add(a[0]);
-      // list.add(b[1]);
+      Map a = jsonDecode(req.body);
+      list.add(a['distance']);
+      list.add(a['time']);
     }
     return list;
   }

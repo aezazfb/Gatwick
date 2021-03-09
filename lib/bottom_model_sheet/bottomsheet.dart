@@ -237,6 +237,7 @@ class BottomModelSheet with ChangeNotifier {
                                     print(cars[0]['carname']);
                                   }),
                               FlatButton(
+                                  // ignore: deprecated_member_use
                                   minWidth:
                                       MediaQuery.of(context).size.width - 120,
                                   height: 40,

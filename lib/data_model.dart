@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
-
-class BookingData with ChangeNotifier {
+class BookingData {
   String id = '';
   String drvrcallsign = '';
   String office = '';
@@ -53,4 +51,58 @@ class BookingData with ChangeNotifier {
   int datentime = 0;
   String pin = '';
   String jstate = '';
+
+  BookingData(
+      {this.id,
+      this.drvrcallsign,
+      this.office,
+      this.despatchtime,
+      this.jobtype,
+      this.flage,
+      this.jobmileage,
+      this.to_info,
+      this.to_outcode,
+      this.olddrvfare,
+      this.timetodespatch,
+      this.cstate,
+      this.hold,
+      this.date,
+      this.changed,
+      this.drvrreqcallsign,
+      this.logc,
+      this.tag,
+      this.from_outcode,
+      this.fare,
+      this.drvrname,
+      this.oldfare,
+      this.numofvia,
+      this.fromtovia,
+      this.comment,
+      this.bookedby,
+      this.from_info,
+      this.to,
+      this.callerid,
+      this.mstate,
+      this.orderno,
+      this.flightno,
+      this.userid,
+      this.time,
+      this.driverrate,
+      this.account,
+      this.leadtime,
+      this.from,
+      this.creditcard,
+      this.accuser,
+      this.vehicletype,
+      this.dstate,
+      this.jobref,
+      this.drvfare,
+      this.isdirty,
+      this.telephone,
+      this.custname,
+      this.drvreqdname,
+      this.logd,
+      this.datentime,
+      this.pin,
+      this.jstate});
 }

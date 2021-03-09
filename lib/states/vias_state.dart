@@ -23,27 +23,33 @@ class ViasState with ChangeNotifier {
   DecodeViasPolyLine _decodeViasPolyLine = DecodeViasPolyLine();
   Set<Polyline> polyLine = Set();
 
-  calculateVias(LatLng l1, LatLng l2, context) async {
-    timeDisList = await _calculateViasDistanceTime.calculateViasDistanceTime(
-        l1, l2, viasLatLangList);
+  // calculateVias(LatLng l1, LatLng l2, context) async {
+  //   timeDisList = await _calculateViasDistanceTime.calculateViasDistanceTime(
+  //       l1, l2, viasLatLangList);
+  //
+  //   decodedPolylineString =
+  //       await _calculateViasDistanceTime.viasPolyline(l1, l2, viasLatLangList);
+  //   await _bottomModelSheet.settingModelBottomSheet(
+  //       context, timeDisList[1], timeDisList[0]);
+  //
+  //   decodePolyLine();
+  //   timeDisList.clear();
+  //   notifyListeners();
+  // }
 
-    decodedPolylineString =
-        await _calculateViasDistanceTime.viasPolyline(l1, l2, viasLatLangList);
-    await _bottomModelSheet.settingModelBottomSheet(
-        context, timeDisList[1], timeDisList[0]);
-
-    decodePolyLine();
-    timeDisList.clear();
+  viasDetails(String value) async {
+    Map<String, dynamic> map = await locationDetails.getLocationDetails(value);
+    LatLng latLng = LatLng(
+        map['Placedetails']['lattitude'], map['Placedetails']['longitude']);
+    viasLatLangList.add(latLng);
     notifyListeners();
   }
 
-  viasDetails(String value) async {
-    // Map<String, dynamic> map = await locationDetails.getLocationDetails(value);
-
-    // LatLng latLng = LatLng(
-    //     map['Placedetails']['lattitude'], map['Placedetails']['longitude']);
-    // viasLatLangList.add(latLng);
-    // notifyListeners();
+  calculateViasDistancetime(context) async {
+    List list = await locationDetails.getTimeDistance();
+    await _bottomModelSheet.settingModelBottomSheet(context, list[0], list[1]);
+    print('${list[0]}');
+    print('${list[1]}');
   }
 
   viaSuggestion(value) async {

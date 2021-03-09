@@ -350,10 +350,9 @@ class MapScreenState extends State<MapScreen>{
                                   'origin', 'destination');
                               _polylines = mapState.polyLine;
                             } else {
-                              viasState.calculateVias(
-                                  mapState.l1, mapState.l2, context);
+                              viasState.calculateViasDistancetime(context);
                               // viasState.drawPolyLine();
-                              // print(
+                              // print(x
                               //     'Vias Polyline length___________________${viasState.polyLine.length}');
                               // _polylines = viasState.polyLine;
                             }

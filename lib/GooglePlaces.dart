@@ -1,5 +1,5 @@
 class GooglePlaces {
-  var _id = '';
+  var id = '';
   String placeid = "ChIJt3-FKDsKdkgRrsljcgmJThU";
   String address = 'Surbiton KT6 7QD, UK';
   String postcode = "KT6 7QD";
@@ -12,7 +12,7 @@ class GooglePlaces {
   GooglePlaces();
 
   GooglePlaces.paramterizedConstructor(
-      this._id,
+      {this.id,
       this.placeid,
       this.address,
       this.postcode,
@@ -20,5 +20,5 @@ class GooglePlaces {
       this.lattitude,
       this.country,
       this.city,
-      this.longitude);
+      this.longitude});
 }

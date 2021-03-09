@@ -331,8 +331,8 @@ class AddViasState extends State<AddVias> {
                     mapState.addMarker(
                         viasState.viasLatLangList[i], "Via$i", flage, 90);
                   }
-                  viasState.calculateVias(mapState.l1, mapState.l2, context);
-                  viasState.drawPolyLine();
+                  viasState.calculateViasDistancetime(context);
+                  // viasState.drawPolyLine();
                   // CameraPosition cameraPosition = new CameraPosition(
                   //     target: LatLng(viasState.viasLatLangList[0].latitude,
                   //         viasState.viasLatLangList[0].longitude),

@@ -28,7 +28,6 @@ class LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     var inputValue;
-    // TODO: implement build
     String code = randomPIN.toString();
     return Scaffold(
       body: ListView(

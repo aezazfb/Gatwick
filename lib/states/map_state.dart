@@ -223,7 +223,8 @@ class MapState with ChangeNotifier {
         destinationController.text.toString().isNotEmpty) {
       calculateDistanceTime.calculateDistanceTime(l1, l2);
       List list = await locationDetails.getTimeDistance();
-      bottomModelSheet.settingModelBottomSheet(context, '-', '-');
+      bottomModelSheet.settingModelBottomSheet(
+          context, '${list[0]}', '${list[1]}');
       print('Map Screen');
     } else {
       return null;
