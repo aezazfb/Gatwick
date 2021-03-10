@@ -7,6 +7,7 @@ import 'package:geocoder/geocoder.dart';
 import 'package:share/share.dart';
 import 'package:zippy_rider/UI/map_screen.dart';
 import 'package:zippy_rider/UI/vias_screen.dart';
+import 'package:zippy_rider/data_model.dart';
 import 'package:zippy_rider/requests/map_screen/polyline_request.dart';
 import 'package:zippy_rider/requests/map_screen/suggestionRequest.dart';
 import 'package:flutter/material.dart';
@@ -23,7 +24,6 @@ class MapState with ChangeNotifier {
   TimeOfDay userSelectedTime = TimeOfDay.now();
   LatLng l1 = LatLng(0.0000, 0.0000);
   LatLng l2 = LatLng(0.0000, 0.0000);
-
   GoogleMapController mapControllerr;
 
   bool locationServiceActive = true;
