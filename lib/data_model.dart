@@ -1,9 +1,9 @@
 import 'dart:convert';
 
-String BookingDataToJson(List<BookingData> data) =>
+String bookingDataToJson(List<BookingData> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
-List<BookingData> BookingDataFromJson(String str) => List<BookingData>.from(
+List<BookingData> bookingDataFromJson(String str) => List<BookingData>.from(
     json.decode(str).map((x) => BookingData.fromJson(x)));
 
 class BookingData {
