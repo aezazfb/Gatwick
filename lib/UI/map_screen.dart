@@ -14,8 +14,9 @@ class MapScreen extends StatefulWidget {
   }
 }
 
-class MapScreenState extends State<MapScreen>{
+class MapScreenState extends State<MapScreen> {
   bool flage = true;
+  bool _controllerflage = true;
   var heightFactor = 0.0;
   Set<Polyline> _polylines;
 
@@ -36,20 +37,20 @@ class MapScreenState extends State<MapScreen>{
                       color: util.primaryColor,
                       size: 50.0,
                     )
-                ],
-              ),
-              SizedBox(height: 10),
-              Visibility(
-                visible: mapState.locationServiceActive == false,
-                child: Text("Please enable location services!",
-                    style: TextStyle(color: Colors.grey, fontSize: 18)),
-              )
-            ],
-          ))
+                  ],
+                ),
+                SizedBox(height: 10),
+                Visibility(
+                  visible: mapState.locationServiceActive == false,
+                  child: Text("Please enable location services!",
+                      style: TextStyle(color: Colors.grey, fontSize: 18)),
+                )
+              ],
+            ))
           : Stack(
-        children: [
-          GoogleMap(
-            tiltGesturesEnabled: true,
+              children: [
+                GoogleMap(
+                  tiltGesturesEnabled: true,
                   mapType: MapType.normal,
                   zoomControlsEnabled: false,
                   initialCameraPosition: CameraPosition(
@@ -71,125 +72,127 @@ class MapScreenState extends State<MapScreen>{
                   },
                 ),
 
-          //----> PICK UP TEXT FIELD
-          Positioned(
-              top: 50.0,
-              right: 17.0,
-              left: 12.0,
-              child: Visibility(
-                visible: mapState.stackElementsVisibality,
-                child: Container(
-                  height: 55.0,
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(3.0),
-                    color: Colors.white,
-                    boxShadow: [
-                      BoxShadow(
-                          color: Colors.grey,
-                          offset: Offset(1.0, 1.0),
-                          blurRadius: 5.0,
-                          spreadRadius: 2.0)
-                    ],
-                  ),
-                  child: TextField(
-                    cursorColor: Colors.black,
-                    controller: mapState.sourceController,
-                    onChanged: (bool) {
-                      flage = true;
-                      heightFactor = 100;
-                      mapState.suggestions(bool);
-                    },
-                    onEditingComplete: () {
-                      mapState.clearSuggestion();
-                    },
-                    decoration: InputDecoration(
-                      icon: Container(
-                        child: Icon(Icons.location_on),
-                        margin: EdgeInsets.only(
-                            left: 8.0, top: 0.5, bottom: 5),
-                        width: 5.0,
-                        height: 13,
-                      ),
-                      suffix: IconButton(
-                          icon: Icon(
-                            Icons.clear,
-                            size: 15.0,
-                            //   color: Colors.black,
-                          ),
-                          onPressed: () {
-                            Marker markers = mapState.marker.firstWhere(
-                                    (p) => p.markerId == MarkerId('true'),
-                                orElse: () => null);
-                            mapState.marker.remove(markers);
-                            mapState.sourceController.clear();
-                            mapState.clearfields();
+                //----> PICK UP TEXT FIELD
+                Positioned(
+                    top: 50.0,
+                    right: 17.0,
+                    left: 12.0,
+                    child: Visibility(
+                      visible: mapState.stackElementsVisibality,
+                      child: Container(
+                        height: 55.0,
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(3.0),
+                          color: Colors.white,
+                          boxShadow: [
+                            BoxShadow(
+                                color: Colors.grey,
+                                offset: Offset(1.0, 1.0),
+                                blurRadius: 5.0,
+                                spreadRadius: 2.0)
+                          ],
+                        ),
+                        child: TextField(
+                          cursorColor: Colors.black,
+                          controller: mapState.sourceController,
+                          onChanged: (bool) {
+                            flage = true;
+                            _controllerflage = true;
+                            heightFactor = 100;
+                            mapState.suggestions(bool);
+                          },
+                          onEditingComplete: () {
                             mapState.clearSuggestion();
-                          }),
-                      hintText: "pick up",
-                      border: InputBorder.none,
-                      contentPadding:
-                      EdgeInsets.only(left: 6.0, top: 8.0, right: 6.0),
-                    ),
-                  ),
-                ),
-              )),
-
-          //----> DROP OFF  TEXT FIELD
-          Positioned(
-              top: 115.0,
-              right: 17.0,
-              left: 12.0,
-              child: Visibility(
-                visible: mapState.stackElementsVisibality,
-                child: Container(
-                  height: 55.0,
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(3.0),
-                    color: Colors.white,
-                    boxShadow: [
-                      BoxShadow(
-                          color: Colors.grey,
-                          offset: Offset(1.0, 1.0),
-                          blurRadius: 5.0,
-                          spreadRadius: 2.0)
-                    ],
-                  ),
-                  child: TextField(
-                    onChanged: (bool) {
-                      flage = false;
-                      mapState.suggestions(bool);
-                      heightFactor = 170;
-                    },
-                    cursorColor: Colors.black,
-                    controller: mapState.destinationController,
-                    onEditingComplete: () {
-                      mapState.clearSuggestion();
-                    },
-                    decoration: InputDecoration(
-                      icon: Container(
-                        margin: EdgeInsets.only(
-                            left: 8.0, top: 0.5, bottom: 10),
-                        width: 5.0,
-                        height: 13,
-                        child: Icon(
-                          Icons.local_taxi_sharp,
+                          },
+                          decoration: InputDecoration(
+                            icon: Container(
+                              child: Icon(Icons.location_on),
+                              margin: EdgeInsets.only(
+                                  left: 8.0, top: 0.5, bottom: 5),
+                              width: 5.0,
+                              height: 13,
+                            ),
+                            suffix: IconButton(
+                                icon: Icon(
+                                  Icons.clear,
+                                  size: 15.0,
+                                  //   color: Colors.black,
+                                ),
+                                onPressed: () {
+                                  Marker markers = mapState.marker.firstWhere(
+                                      (p) => p.markerId == MarkerId('true'),
+                                      orElse: () => null);
+                                  mapState.marker.remove(markers);
+                                  mapState.sourceController.clear();
+                                  mapState.clearfields();
+                                  mapState.clearSuggestion();
+                                }),
+                            hintText: "pick up",
+                            border: InputBorder.none,
+                            contentPadding: EdgeInsets.only(
+                                left: 6.0, top: 8.0, right: 6.0),
+                          ),
                         ),
                       ),
-                      suffix: IconButton(
-                          icon: Icon(
-                            Icons.clear,
-                            size: 15.0,
-                            //   color: Colors.black,
-                          ),
-                          onPressed: () {
-                            Marker markers = mapState.marker.firstWhere(
-                                    (p) => p.markerId == MarkerId('false'),
-                                orElse: () => null);
-                            mapState.marker.remove(markers);
-                            mapState.destinationController.clear();
-                            mapState.clearfields();
+                    )),
+
+                //----> DROP OFF  TEXT FIELD
+                Positioned(
+                    top: 115.0,
+                    right: 17.0,
+                    left: 12.0,
+                    child: Visibility(
+                      visible: mapState.stackElementsVisibality,
+                      child: Container(
+                        height: 55.0,
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(3.0),
+                          color: Colors.white,
+                          boxShadow: [
+                            BoxShadow(
+                                color: Colors.grey,
+                                offset: Offset(1.0, 1.0),
+                                blurRadius: 5.0,
+                                spreadRadius: 2.0)
+                          ],
+                        ),
+                        child: TextField(
+                          onChanged: (bool) {
+                            flage = true;
+                            _controllerflage = false;
+                            mapState.suggestions(bool);
+                            heightFactor = 170;
+                          },
+                          cursorColor: Colors.black,
+                          controller: mapState.destinationController,
+                          onEditingComplete: () {
+                            mapState.clearSuggestion();
+                          },
+                          decoration: InputDecoration(
+                            icon: Container(
+                              margin: EdgeInsets.only(
+                                  left: 8.0, top: 0.5, bottom: 10),
+                              width: 5.0,
+                              height: 13,
+                              child: Icon(
+                                Icons.local_taxi_sharp,
+                              ),
+                            ),
+                            suffix: IconButton(
+                                icon: Icon(
+                                  Icons.clear,
+                                  size: 15.0,
+                                  //   color: Colors.black,
+                                ),
+                                onPressed: () {
+                                  Marker markers = mapState.marker.firstWhere(
+                                      (p) => p.markerId == MarkerId('false'),
+                                      orElse: () => null);
+                                  mapState.marker.remove(markers);
+                                  mapState.destinationController.clear();
+                                  mapState.clearfields();
                                   mapState.clearSuggestion();
                                 }),
                             hintText: "go to...",
@@ -237,35 +240,35 @@ class MapScreenState extends State<MapScreen>{
                           color: util.primaryColor,
                         ),
                         onPressed: () {
-                    mapState.swapFields();
+                          mapState.swapFields();
                           viasState.clearFields();
                         }),
-            ),
-          ),
+                  ),
+                ),
 
-          //----> FIXED ICON TO FETCH CENTER POSITION ON CAMERA MOVE
-          Positioned(
-              child: Visibility(
-                visible: mapState.cardVisibility,
-                child: Align(
-                  alignment: Alignment.center,
-                  child: IconButton(
-                      icon: Icon(Icons.circle, size: 12, color: Colors.black),
+                //----> FIXED ICON TO FETCH CENTER POSITION ON CAMERA MOVE
+                Positioned(
+                    child: Visibility(
+                  visible: mapState.cardVisibility,
+                  child: Align(
+                    alignment: Alignment.center,
+                    child: IconButton(
+                        icon: Icon(Icons.circle, size: 12, color: Colors.black),
                         onPressed: () {
                           mapState.fetchAddressFromCoordinates(
                               mapState.centerPoints);
                         }),
-                ),
-              )),
+                  ),
+                )),
 
-          //CAMERA MOVE SUGGESTIONS
-          Positioned(
-            child: Visibility(
-              visible: mapState.cardVisibility,
-              child: Align(
-                alignment: Alignment(0.1, -0.1),
-                child: Card(
-                  color: util.primaryColor.withOpacity(0.8),
+                //CAMERA MOVE SUGGESTIONS
+                Positioned(
+                  child: Visibility(
+                    visible: mapState.cardVisibility,
+                    child: Align(
+                      alignment: Alignment(0.1, -0.1),
+                      child: Card(
+                        color: util.primaryColor.withOpacity(0.8),
                         margin: EdgeInsets.all(20.0),
                         child: InkWell(
                             child: Text(mapState.name,
@@ -276,39 +279,39 @@ class MapScreenState extends State<MapScreen>{
                               mapState.dialogShow(context);
                             }),
                       ),
-              ),
-            ),
-          ),
+                    ),
+                  ),
+                ),
 
-          //----> SEARCH SUGGESTION  LIST VIEW
-          Positioned(
-              left: 12,
-              right: 17,
-              top: heightFactor,
-              child: LimitedBox(
-                maxHeight: mapState.suggestion.length * 50.0,
-                child: Container(
-                  child: ListView.builder(
-                    itemCount: mapState.suggestion.length,
-                    padding: EdgeInsets.all(0.0),
-                    itemBuilder: (context, index) {
-                      if (mapState.suggestion.isNotEmpty) {
-                        return Card(
-                          margin: EdgeInsets.only(bottom: 1.0),
-                          child: ListTile(
-                            title: Text(
-                              mapState.suggestion[index],
-                              style: TextStyle(color: Colors.black),
-                            ),
-                            onTap: () {
-                              if (flage == true) {
-                                mapState.sourceController.text =
-                                    mapState.suggestion[index].toString();
+                //----> SEARCH SUGGESTION  LIST VIEW
+                Positioned(
+                    left: 12,
+                    right: 17,
+                    top: heightFactor,
+                    child: LimitedBox(
+                      maxHeight: mapState.suggestion.length * 50.0,
+                      child: Container(
+                        child: ListView.builder(
+                          itemCount: mapState.suggestion.length,
+                          padding: EdgeInsets.all(0.0),
+                          itemBuilder: (context, index) {
+                            if (mapState.suggestion.isNotEmpty) {
+                              return Card(
+                                margin: EdgeInsets.only(bottom: 1.0),
+                                child: ListTile(
+                                  title: Text(
+                                    mapState.suggestion[index],
+                                    style: TextStyle(color: Colors.black),
+                                  ),
+                                  onTap: () {
+                                    if (_controllerflage == true) {
+                                      mapState.sourceController.text =
+                                          mapState.suggestion[index].toString();
                                       mapState.details(
                                           mapState.suggestion[index].toString(),
                                           flage);
                                     }
-                                    if (flage == false) {
+                                    if (_controllerflage == false) {
                                       mapState.destinationController.text =
                                           mapState.suggestion[index].toString();
                                       mapState.details(
@@ -319,32 +322,32 @@ class MapScreenState extends State<MapScreen>{
                                     mapState.clearfields();
                                     mapState.clearSuggestion();
                                   },
-                          ),
-                        );
-                      } else {
-                        return Center(
-                          child: Container(
-                            child: CircularProgressIndicator(),
-                          ),
-                        );
-                      }
-                    },
-                  ),
-                ),
-              )),
+                                ),
+                              );
+                            } else {
+                              return Center(
+                                child: Container(
+                                  child: CircularProgressIndicator(),
+                                ),
+                              );
+                            }
+                          },
+                        ),
+                      ),
+                    )),
 
-          //----> GET QUOTE BUTTON
-          Positioned(
-              bottom: 15,
-              right: 17,
-              left: 17,
-              child: Visibility(
-                  visible: mapState.stackElementsVisibality,
-                  child: FlatButton(
-                    color: util.primaryColor,
+                //----> GET QUOTE BUTTON
+                Positioned(
+                    bottom: 15,
+                    right: 17,
+                    left: 17,
+                    child: Visibility(
+                        visible: mapState.stackElementsVisibality,
+                        child: FlatButton(
+                          color: util.primaryColor,
                           onPressed: () async {
                             if (viasState.viasLatLangList.isEmpty) {
-                               mapState.drawPolyLine(mapState.l1, mapState.l2);
+                              mapState.drawPolyLine(mapState.l1, mapState.l2);
                               mapState.settingModelBottomSheet(context);
                               mapState.addCircle(mapState.l1, mapState.l2,
                                   'origin', 'destination');
@@ -385,27 +388,27 @@ class MapScreenState extends State<MapScreen>{
                           ),
                         ))),
 
-          //----> FLIGHTS BUTTON
-          Positioned(
-              bottom: 70,
-              right: 17,
-              child: Visibility(
-                  visible: mapState.stackElementsVisibality,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.grey.shade300.withOpacity(0.7),
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    child: IconButton(
+                //----> FLIGHTS BUTTON
+                Positioned(
+                    bottom: 70,
+                    right: 17,
+                    child: Visibility(
+                        visible: mapState.stackElementsVisibality,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.grey.shade300.withOpacity(0.7),
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          child: IconButton(
                             icon: Icon(Icons.flight_takeoff,
                                 color: util.primaryColor),
                             onPressed: () {
                               Navigator.pushNamed(context, '/flightscreen');
                             },
                           ),
-                  ))),
-        ],
-      ),
+                        ))),
+              ],
+            ),
       drawer: Drawer(
         child: ListView(
           children: [
@@ -438,13 +441,13 @@ class MapScreenState extends State<MapScreen>{
                               fontSize: 18,
                               fontWeight: FontWeight.w600),
                           children: [
-                            TextSpan(
-                                text: 'mussdiq.slashglobal@gmail.com',
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w400))
-                          ]))
+                        TextSpan(
+                            text: 'mussdiq.slashglobal@gmail.com',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400))
+                      ]))
                 ],
               ),
               padding: EdgeInsets.only(left: 3.0, right: 3),
@@ -539,6 +542,4 @@ class MapScreenState extends State<MapScreen>{
       ),
     );
   }
-
 }
-

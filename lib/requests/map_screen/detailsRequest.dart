@@ -4,7 +4,8 @@ import 'dart:convert';
 class LocationDetails {
   List<Map<String, dynamic>> params = [];
   Map<String, dynamic> point = {};
-  getLocationDetails(String value) async {
+
+  getLocationDetails(String value, bool flage) async {
     Map mapResponse;
     var url = 'http://testing.thedivor.com/Home/PlaceInfo?place=$value';
     http.Response response;
@@ -22,8 +23,15 @@ class LocationDetails {
       "city": map['Placedetails']['city'],
       "longitude": map['Placedetails']['longitude'],
     };
-
-    params.add(point);
+    if (flage == true || params.length == 0) {
+      params.insert(0, point);
+    }
+    if (flage == true || params.length != 0) {
+      params.insert(1, point);
+    }
+    if (flage == false) {
+      params.add(point);
+    }
 
     //Distance time Time Test Calculation.
 
@@ -68,8 +76,10 @@ class LocationDetails {
     // }
     return map;
   }
+
 //----> Calculate Time and Distance
   getTimeDistance() async {
+    print("________\n${params.length}");
     List list = [];
     final req =
         await http.post('http://testing.thedivor.com/api/API/GetDistance',
@@ -85,4 +95,3 @@ class LocationDetails {
     return list;
   }
 }
-

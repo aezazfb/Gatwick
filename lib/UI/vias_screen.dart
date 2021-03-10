@@ -13,10 +13,11 @@ class AddVias extends StatefulWidget {
 }
 
 class AddViasState extends State<AddVias> {
-  bool flage = true;
+  bool flage = false;
   var heightFactor = 0.0;
 
   String listTitle = '';
+
   @override
   Widget build(BuildContext context) {
     final mapState = Provider.of<MapState>(context);
@@ -28,6 +29,7 @@ class AddViasState extends State<AddVias> {
         searchContainerColor: Colors.white,
         searchButtonIcon: Icon(Icons.location_searching_rounded, size: 30),
         onChanged: (value) {
+          flage = false;
           viasState.viaSuggestion(value);
         },
         onBackPressed: () {
@@ -169,14 +171,14 @@ class AddViasState extends State<AddVias> {
             top: 40,
             left: 5.0,
             // right: 2.0,
-              child: IconButton(
-                  icon: Icon(
-                    Icons.swap_calls,
+            child: IconButton(
+                icon: Icon(
+                  Icons.swap_calls,
                   size: 40,
                   color: util.primaryColor,
                 ),
-                  onPressed: () {
-                    mapState.swapFields();
+                onPressed: () {
+                  mapState.swapFields();
                   viasState.clearFields();
                 }),
           ),
@@ -298,9 +300,10 @@ class AddViasState extends State<AddVias> {
                                     context,
                                     duration: Toast.LENGTH_LONG);
                               }
-                              viasState.viasDetails(viasState
-                                  .viasSuggestionList[index]
-                                  .toString());
+                              viasState.viasDetails(
+                                  viasState.viasSuggestionList[index]
+                                      .toString(),
+                                  flage);
                               setState(() {
                                 viasState.viasSuggestionList.clear();
                               });
@@ -324,22 +327,14 @@ class AddViasState extends State<AddVias> {
               bottom: 15,
               right: 17,
               left: 17,
-                  child: FlatButton(
-                    color: util.primaryColor,
+              child: FlatButton(
+                color: util.primaryColor,
                 onPressed: () {
                   for (int i = 0; i < viasState.viasLatLangList.length; i++) {
                     mapState.addMarker(
                         viasState.viasLatLangList[i], "Via$i", flage, 90);
                   }
                   viasState.calculateViasDistancetime(context);
-                  // viasState.drawPolyLine();
-                  // CameraPosition cameraPosition = new CameraPosition(
-                  //     target: LatLng(viasState.viasLatLangList[0].latitude,
-                  //         viasState.viasLatLangList[0].longitude),
-                  //     zoom: 14);
-                  // mapState.mapControllerr.animateCamera(
-                  //     CameraUpdate.newCameraPosition(cameraPosition));
-
                   Navigator.pushNamed(context, '/mapscreen');
                 },
                 child: Text(

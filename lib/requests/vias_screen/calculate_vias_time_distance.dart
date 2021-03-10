@@ -11,7 +11,6 @@ class CalculateViasDistanceTime {
     int distance = 0;
     int duration = 0;
     var url;
-
     String _googleAPiKey = "AIzaSyDuoFHe7NQ5U6GZ1SSu7XcckrQ9Bi8_at0";
     String _baseAPI =
         'https://maps.googleapis.com/maps/api/directions/json?&origin';
@@ -82,7 +81,6 @@ class CalculateViasDistanceTime {
     http.Response response;
     response = await http.get(url);
     mapResponse = json.decode(response.body);
-
     List data = mapResponse['routes'];
     viasPolylineString = data[0]['overview_polyline']['points'];
     return viasPolylineString;

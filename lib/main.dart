@@ -12,6 +12,7 @@ import 'UI/map_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/services.dart';
 import 'package:zippy_rider/utils/util.dart' as util;
+
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
@@ -33,7 +34,7 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-   final Model model = Model();
+  final Model model = Model();
 
   @override
   Widget build(BuildContext context) {

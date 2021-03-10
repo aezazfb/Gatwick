@@ -92,9 +92,9 @@ class MapState with ChangeNotifier {
     initialPositions = LatLng(position.latitude, position.longitude);
     l1 = LatLng(position.latitude, position.longitude);
     Coordinates latLng =
-    Coordinates(initialPosition.latitude, initialPosition.longitude);
+        Coordinates(initialPosition.latitude, initialPosition.longitude);
     var addreslocation =
-    await Geocoder.local.findAddressesFromCoordinates(latLng);
+        await Geocoder.local.findAddressesFromCoordinates(latLng);
     var first = addreslocation.first;
     if (first.addressLine.isNotEmpty) {
       sourceController.text = first.addressLine;
@@ -133,7 +133,8 @@ class MapState with ChangeNotifier {
 
   //----->GET LAT LANG FROM ADDRESS
   details(String value, bool flage) async {
-    Map<String, dynamic> map = await locationDetails.getLocationDetails(value);
+    Map<String, dynamic> map =
+        await locationDetails.getLocationDetails(value, flage);
     LatLng latLng = LatLng(
         map['Placedetails']['lattitude'], map['Placedetails']['longitude']);
     CameraPosition cameraPosition = new CameraPosition(
@@ -241,9 +242,9 @@ class MapState with ChangeNotifier {
 //----> FETCH ADDRESSES FROM COORDINATES
   fetchAddressFromCoordinates(LatLng latLng) async {
     Coordinates coordinates =
-    new Coordinates(latLng.latitude, latLng.longitude);
+        new Coordinates(latLng.latitude, latLng.longitude);
     var locationName =
-    await Geocoder.local.findAddressesFromCoordinates(coordinates);
+        await Geocoder.local.findAddressesFromCoordinates(coordinates);
     var first = locationName.first;
     _name = first.addressLine;
     notifyListeners();

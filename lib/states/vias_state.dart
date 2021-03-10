@@ -37,8 +37,9 @@ class ViasState with ChangeNotifier {
   //   notifyListeners();
   // }
 
-  viasDetails(String value) async {
-    Map<String, dynamic> map = await locationDetails.getLocationDetails(value);
+  viasDetails(String value, bool flage) async {
+    Map<String, dynamic> map =
+        await locationDetails.getLocationDetails(value, flage);
     LatLng latLng = LatLng(
         map['Placedetails']['lattitude'], map['Placedetails']['longitude']);
     viasLatLangList.add(latLng);
@@ -79,7 +80,7 @@ class ViasState with ChangeNotifier {
   }
 
   drawPolyLine() async {
-      polyLine.add(
+    polyLine.add(
       Polyline(
         polylineId: PolylineId("poly"),
         visible: true,
