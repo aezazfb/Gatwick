@@ -1,17 +1,22 @@
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:zippy_rider/models/places_info_details.dart';
 
 class LocationDetails {
   List<Map<String, dynamic>> params = [];
   Map<String, dynamic> point = {};
+  List placesDetails = <Placedetails>[];
 
   getLocationDetails(String value, bool flage) async {
     Map mapResponse;
     var url = 'http://testing.thedivor.com/Home/PlaceInfo?place=$value';
+    print('Places info url\n ');
+    print(url);
     http.Response response;
     response = await http.get(url);
     mapResponse = json.decode(response.body);
     Map<String, dynamic> map = mapResponse;
+
     Map<String, dynamic> point = {
       "_id": null,
       "placeid": map['Placedetails']['placeid'],
