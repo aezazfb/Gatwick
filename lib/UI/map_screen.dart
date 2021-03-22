@@ -455,7 +455,7 @@ class MapScreenState extends State<MapScreen> {
             ListTile(
               leading: Icon(Icons.history_toggle_off, color: util.primaryColor),
               title: Text('Ride History'),
-              onTap: () => Navigator.pushNamed(context, '/ridehistory'),
+              onTap: () => Navigator.pushNamed(context, '/bookinghistory'),
             ),
             Divider(
               thickness: 0.5,
