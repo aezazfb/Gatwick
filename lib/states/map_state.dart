@@ -8,6 +8,7 @@ import 'package:share/share.dart';
 import 'package:zippy_rider/UI/map_screen.dart';
 import 'package:zippy_rider/UI/vias_screen.dart';
 import 'package:zippy_rider/data_model.dart';
+import 'package:zippy_rider/models/places_info_details.dart';
 import 'package:zippy_rider/requests/map_screen/polyline_request.dart';
 import 'package:zippy_rider/requests/map_screen/suggestionRequest.dart';
 import 'package:flutter/material.dart';
@@ -33,7 +34,6 @@ class MapState with ChangeNotifier {
   List<dynamic> polyCoordinates = [];
   PolylinePoints polylinePoints;
   List suggestion = [];
-
   List<LatLng> latLangList = [];
   Position position;
   List dummyList = [];
@@ -69,7 +69,7 @@ class MapState with ChangeNotifier {
   double originHue = 70.0;
 
   bool cardVisibility = true;
-  bool stackElementsVisibality = true;
+  bool stackElementsVisibility = true;
   bool showAppBar = false;
 
   MapState() {
@@ -93,9 +93,9 @@ class MapState with ChangeNotifier {
     l1 = LatLng(position.latitude, position.longitude);
     Coordinates latLng =
         Coordinates(initialPosition.latitude, initialPosition.longitude);
-    var addreslocation =
+    var addresslocation =
         await Geocoder.local.findAddressesFromCoordinates(latLng);
-    var first = addreslocation.first;
+    var first = addresslocation.first;
     if (first.addressLine.isNotEmpty) {
       sourceController.text = first.addressLine;
     } else {
@@ -263,15 +263,15 @@ class MapState with ChangeNotifier {
                   size: 40, color: Colors.black),
             ),
             content: Text(
-                "Please Specify That you want to set this Location as you Destination or Origin?"),
+                "Please Specify that you want to set this Location as your Destination or Origin?"),
             actions: [
-              FlatButton(
+              TextButton(
                 child: Text("CANCEL"),
                 onPressed: () {
                   Navigator.pop(context);
                 },
               ),
-              FlatButton(
+              TextButton(
                 child: Text("ORIGIN"),
                 onPressed: () async {
                   sourceController.text = name;
@@ -281,7 +281,7 @@ class MapState with ChangeNotifier {
                   Navigator.pop(context);
                 },
               ),
-              FlatButton(
+              TextButton(
                 child: Text("DESTINATION"),
                 onPressed: () {
                   destinationController.text = name;
@@ -324,7 +324,7 @@ class MapState with ChangeNotifier {
     notifyListeners();
   }
 
-//----> CHANGES VISIBILITY OF STACK EELEMENTS.
+//----> CHANGES VISIBILITY OF STACK ELEMENTS.
   visibility() {
     if (destinationController.text.toString().isNotEmpty &&
         sourceController.text.toString().isNotEmpty) {
@@ -343,7 +343,7 @@ class MapState with ChangeNotifier {
 
 //ON_CAMERA_IDLE
   cameraIdle() {
-    stackElementsVisibality = true;
+    stackElementsVisibility = true;
     notifyListeners();
   }
 

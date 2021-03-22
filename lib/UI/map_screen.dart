@@ -25,6 +25,7 @@ class MapScreenState extends State<MapScreen> {
     final mapState = Provider.of<MapState>(context);
     final viasState = Provider.of<ViasState>(context);
     return Scaffold(
+      //check MapState() that starts initialPosition
       body: mapState.initialPosition == null
           ? Container(
               child: Column(
@@ -64,7 +65,7 @@ class MapScreenState extends State<MapScreen> {
                   onCameraMove: mapState.onCameraMove,
                   onCameraMoveStarted: () {
                     mapState.checkConnectivity();
-                    mapState.stackElementsVisibality = false;
+                    mapState.stackElementsVisibility = false;
                   },
                   onCameraIdle: () {
                     mapState.fetchAddressFromCoordinates(mapState.centerPoints);
@@ -78,7 +79,7 @@ class MapScreenState extends State<MapScreen> {
                     right: 17.0,
                     left: 12.0,
                     child: Visibility(
-                      visible: mapState.stackElementsVisibality,
+                      visible: mapState.stackElementsVisibility,
                       child: Container(
                         height: 55.0,
                         width: double.infinity,
@@ -143,7 +144,7 @@ class MapScreenState extends State<MapScreen> {
                     right: 17.0,
                     left: 12.0,
                     child: Visibility(
-                      visible: mapState.stackElementsVisibality,
+                      visible: mapState.stackElementsVisibility,
                       child: Container(
                         height: 55.0,
                         width: double.infinity,
@@ -184,7 +185,6 @@ class MapScreenState extends State<MapScreen> {
                                 icon: Icon(
                                   Icons.clear,
                                   size: 15.0,
-                                  //   color: Colors.black,
                                 ),
                                 onPressed: () {
                                   Marker markers = mapState.marker.firstWhere(
@@ -209,7 +209,7 @@ class MapScreenState extends State<MapScreen> {
                     top: 175,
                     right: 10,
                     child: Visibility(
-                      visible: mapState.stackElementsVisibality,
+                      visible: mapState.stackElementsVisibility,
                       child: Card(
                         color: Colors.black45,
                         child: InkWell(
@@ -232,7 +232,7 @@ class MapScreenState extends State<MapScreen> {
                   top: 80,
                   left: 5.0,
                   child: Visibility(
-                    visible: mapState.stackElementsVisibality,
+                    visible: mapState.stackElementsVisibility,
                     child: IconButton(
                         icon: Icon(
                           Icons.swap_calls,
@@ -250,9 +250,9 @@ class MapScreenState extends State<MapScreen> {
                 Positioned(
                     child: Visibility(
                   visible: mapState.cardVisibility,
-                  child: Align(
-                    alignment: Alignment.center,
-                    child: IconButton(
+                      child: Align(
+                        alignment: Alignment.center,
+                        child: IconButton(
                         icon: Icon(Icons.circle, size: 12, color: Colors.black),
                         onPressed: () {
                           mapState.fetchAddressFromCoordinates(
@@ -342,7 +342,7 @@ class MapScreenState extends State<MapScreen> {
                     right: 17,
                     left: 17,
                     child: Visibility(
-                        visible: mapState.stackElementsVisibality,
+                        visible: mapState.stackElementsVisibility,
                         child: FlatButton(
                           color: util.primaryColor,
                           onPressed: () async {
@@ -372,7 +372,7 @@ class MapScreenState extends State<MapScreen> {
                     bottom: 70,
                     left: 17,
                     child: Visibility(
-                        visible: mapState.stackElementsVisibality,
+                        visible: mapState.stackElementsVisibility,
                         child: Container(
                           decoration: BoxDecoration(
                             color: Colors.grey.shade300.withOpacity(0.7),
@@ -393,7 +393,7 @@ class MapScreenState extends State<MapScreen> {
                     bottom: 70,
                     right: 17,
                     child: Visibility(
-                        visible: mapState.stackElementsVisibality,
+                        visible: mapState.stackElementsVisibility,
                         child: Container(
                           decoration: BoxDecoration(
                             color: Colors.grey.shade300.withOpacity(0.7),

@@ -16,12 +16,11 @@ class ViasState with ChangeNotifier {
   var decodedPolylineString;
   List viasSuggestionList = [];
   SuggestionRequest suggestionRequest = SuggestionRequest();
-  CalculateViasDistanceTime _calculateViasDistanceTime =
-      CalculateViasDistanceTime();
   LocationDetails locationDetails = LocationDetails();
   BottomModelSheet _bottomModelSheet = BottomModelSheet();
   DecodeViasPolyLine _decodeViasPolyLine = DecodeViasPolyLine();
   Set<Polyline> polyLine = Set();
+
 
   // calculateVias(LatLng l1, LatLng l2, context) async {
   //   timeDisList = await _calculateViasDistanceTime.calculateViasDistanceTime(
@@ -36,6 +35,7 @@ class ViasState with ChangeNotifier {
   //   timeDisList.clear();
   //   notifyListeners();
   // }
+
 
   viasDetails(String value, bool flage) async {
     Map<String, dynamic> map =

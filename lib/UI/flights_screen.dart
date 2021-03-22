@@ -149,7 +149,7 @@ class _FlightsScreenState extends State<FlightsScreen> {
               top: 40,
               right: 17,
               child: Visibility(
-                  visible: mapState.stackElementsVisibality,
+                  visible: mapState.stackElementsVisibility,
                   child: Container(
                     decoration: BoxDecoration(
                       color: Colors.grey.shade300.withOpacity(0.7),
