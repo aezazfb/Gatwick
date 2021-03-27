@@ -240,6 +240,7 @@ class LoginState extends State<Login> {
   Future sendMail() async {
     String userName = 'abdulrahman369888@gmail.com';
     String password = 'arsain778866';
+    // ignore: deprecated_member_use
     final smtpServer = gmail(userName, password);
     String _mail = _mailController.text.toString();
     final message = Message()

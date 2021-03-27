@@ -2,10 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter_dropdown/flutter_dropdown.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
+import 'package:provider/provider.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 import 'package:toast/toast.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+import 'package:zippy_rider/models/BookingModel.dart';
 import 'package:zippy_rider/requests/bottom_sheet/vehicle_details.dart';
+import 'package:zippy_rider/states/map_state.dart';
+import 'package:zippy_rider/states/vias_state.dart';
+import 'package:zippy_rider/utils/util.dart' as util;
+
 
 class BottomModelSheet with ChangeNotifier {
   DateTime pickedDate = DateTime.now();
@@ -16,6 +22,8 @@ class BottomModelSheet with ChangeNotifier {
   VehicleDetails _vehicleDetails = VehicleDetails();
   List carDetails = [];
   List cars = [];
+  List<Fromtovia> fromToViaList = [];
+  List<List<dynamic>> logc = [];
 
   String vechile = 'Saloon ';
   int suitCase = 0;
@@ -24,7 +32,9 @@ class BottomModelSheet with ChangeNotifier {
   String rideTime = 'Select time';
   int count = 0;
 
-  settingModelBottomSheet(context, distance, time) async {
+  settingModelBottomSheet(context,distance, time) async {
+    final mapState = Provider.of<MapState>(context, listen: false);
+    final viasState = Provider.of<ViasState>(context, listen: false);
     carDetails = await _vehicleDetails.getVehicleDetails(3);
     cars = carDetails[0]['carstype'];
     showModalBottomSheet(
@@ -120,12 +130,13 @@ class BottomModelSheet with ChangeNotifier {
                                       children: <TextSpan>[
                                         TextSpan(
                                             text: ('Passangers'),
-                                            style: TextStyle(color: Colors.black))
-                                  ]),
-                              textAlign: TextAlign.center),
-                          Spacer(),
-                          RichText(
-                              text: TextSpan(
+                                            style:
+                                                TextStyle(color: Colors.black))
+                                      ]),
+                                  textAlign: TextAlign.center),
+                              Spacer(),
+                              RichText(
+                                  text: TextSpan(
                                       text:
                                           '${cars[count]['lugagecapacity']}\n',
                                       style: TextStyle(color: Colors.black),
@@ -237,7 +248,6 @@ class BottomModelSheet with ChangeNotifier {
                                     print(cars[0]['carname']);
                                   }),
                               FlatButton(
-                                  // ignore: deprecated_member_use
                                   minWidth:
                                       MediaQuery.of(context).size.width - 120,
                                   height: 40,
@@ -248,7 +258,161 @@ class BottomModelSheet with ChangeNotifier {
                                         fontWeight: FontWeight.w700,
                                       )),
                                   onPressed: () {
-                                    print('null');
+
+                                    if (viasState.viasList.length == 0) {
+                                      //print('fromtovia: ${viasState.viasList}');
+                                      Fromtovia fromtovia1 = Fromtovia(
+                                          info: "",
+                                          address:
+                                              mapState.sourceController.text,
+                                          lat: mapState.l1.latitude,
+                                          lon: mapState.l1.longitude,
+                                          postcode: mapState.postcode1);
+
+                                      Fromtovia fromtovia2 = Fromtovia(
+                                          info: "",
+                                          address: mapState
+                                              .destinationController.text,
+                                          lat: mapState.l2.latitude,
+                                          lon: mapState.l2.longitude,
+                                          postcode: mapState.postcode2);
+
+                                      fromToViaList.add(fromtovia1);
+                                      fromToViaList.add(fromtovia2);
+
+                                      for (int i = 0; i < 7; i++) {
+                                        Fromtovia extrafromtovia = Fromtovia(
+                                            info: null,
+                                            address: null,
+                                            lat: 0.0,
+                                            lon: 0.0,
+                                            postcode: null);
+
+                                        fromToViaList.add(extrafromtovia);
+                                      }
+                                    }
+                                    print('reached here: ');
+                                    List<dynamic> listofLogc = [];
+                                    listofLogc.add(
+                                        DateTime.now().millisecondsSinceEpoch);
+                                    listofLogc.add("booked");
+                                    listofLogc.add("tayyab.slash@gmail.com");
+                                    listofLogc.add("TaxisNetworkAndroid");
+
+                                    print("logc ${logc.length}");
+                                    logc.add(listofLogc);
+
+                                    /*print(
+                                        'from: ${mapState.sourceController.text}');
+                                    print('from_info:');
+                                    print('from_outcode: ${mapState.outcode1}');*/
+                                    //print('logc: ${DateTime.now().millisecondsSinceEpoch}');
+                                    /*    print('office: ${util.office}');
+                                    print('telephone: ');
+                                    print('userid: ');
+                                    print('custname: ');
+                                    print('time: ${rideTime}');
+                                    print('date: ${rideDate}');
+                                    print(
+                                        'to: ${mapState.destinationController.text}');
+                                    print('to_info:');
+                                    print('to_outcode: ${mapState.outcode2}');
+                                    print('fare:');
+                                    print('drvfare:');
+                                    print('jobmileage:');
+                                    print('jobref:');
+                                    print('mstate:');
+                                    print('timetodespatch:');
+                                    print('datentime:');
+                                    print('changed:');
+                                    print('account:');
+                                    print('accuser:');
+                                    print('bookedby:');
+                                    print('comment:');
+                                    print('creditcard:');
+                                    print('cstate:');
+                                    print('despatchtime:');
+                                    print('driverrate:');
+                                    print('drvrcallsign:');
+                                    print('drvreqdname:');
+                                    print('drvrname:');
+                                    print('drvrreqcallsign:');
+                                    print('dstate:');
+                                    print('flag:');
+                                    print('flightno:');
+                                    print('hold:');
+                                    print('isdirty:');
+                                    print('jobtype:');
+                                    print('jstate:');
+                                    print('leadtime:');
+                                    print('logd:');
+                                    print('numofvia:');
+                                    print('oldfare:');
+                                    print('olddrvfare:');
+                                    print('orderno:');
+                                    print('tag:');
+                                    print('vehicletype:');
+                                    print('pin:');
+                                    print('calledid:');*/
+
+
+                                    BookingModel bookingModel = BookingModel(
+                                      from: mapState.sourceController.text.toString(),
+                                      fromInfo: "",
+                                      fromOutcode: mapState.outcode1,
+                                      fromtovia: fromToViaList,
+                                        logc: logc,
+                                      office: util.office,
+                                      telephone: "03310331556",
+                                      userid:"tayyab.slash@gmail.com",
+                                      custname: "tayyab test",
+                                      time: rideTime,
+                                      date: rideDate,
+                                      to: mapState.destinationController.text.toString(),
+                                      toInfo: "",
+                                      toOutcode: mapState.outcode2,
+                                      fare: 2.0,
+                                      drvfare: 2.0,
+                                      jobmileage: double.tryParse(distance),
+                                      jobref: "",
+                                      mstate: "",
+                                      timetodespatch: 0.0,
+                                      datentime: DateTime.now().millisecondsSinceEpoch.toDouble(),
+                                      changed: false,
+                                      account: "CARD",
+                                      accuser: "",
+                                      bookedby: "TaxisNetwork",
+                                      comment: "passenger = 1,checkin = 0,cabin = 0",
+                                      creditcard: "tayyab.slash@gmail.com",
+                                      cstate: "booked",
+                                      despatchtime: 0.0,
+                                      driverrate: "CASH",
+                                      drvrcallsign: "",
+                                      drvreqdname: "",
+                                      drvrname: "",
+                                      drvrreqcallsign: "",
+                                      dstate: "",
+                                      flag: 1,
+                                      flightno: "",
+                                      hold: false,
+                                      isdirty: false,
+                                      jobtype:  "normal",
+                                      jstate: "unallocated",
+                                      leadtime: 0.0,
+                                      logd: null,
+                                      numofvia: 0,
+                                      oldfare: 0.0,
+                                      olddrvfare: 0.0,
+                                      orderno: "",
+                                      tag: "1",
+                                      vehicletype: "S",
+                                      pin: "",
+                                      callerid: ""
+                                    );
+
+                                    //insertBooking(bookingModel);
+
+                                    print(bookingModel.toJson());
                                   }),
                               IconButton(
                                   icon: Icon(Icons.add),
@@ -275,8 +439,8 @@ class BottomModelSheet with ChangeNotifier {
         maxTime: DateTime(1),
         currentTime: DateTime.now(),
         locale: LocaleType.en, onConfirm: (value) {
-      rideDate = '${value.day}/${value.month}/${value.year}';
-      rideTime = '${value.hour} : ${value.minute}';
+      rideDate = '${value.day}-${value.month}-${value.year}';
+      rideTime = '${value.hour}:${value.minute}';
       notifyListeners();
     });
   }
@@ -404,4 +568,6 @@ class BottomModelSheet with ChangeNotifier {
       },
     );
   }
+
+
 }

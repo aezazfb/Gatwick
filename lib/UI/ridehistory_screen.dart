@@ -6,12 +6,12 @@ import 'package:zippy_rider/states/ridehistory_state.dart';
 
 import 'package:zippy_rider/utils/util.dart' as util;
 
-class BookingHistory extends StatefulWidget {
+class RideHistory extends StatefulWidget {
   @override
-  _BookingHistoryState createState() => _BookingHistoryState();
+  _RideHistoryState createState() => _RideHistoryState();
 }
 
-class _BookingHistoryState extends State<BookingHistory> {
+class _RideHistoryState extends State<RideHistory> {
   String _track = "Track";
   List<String> tempList = List<String>.generate(100, (index) => "Item $index");
 

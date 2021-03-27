@@ -35,4 +35,43 @@ class _RetrofitConfig implements RetrofitConfig {
         .toList();
     return value;
   }
+
+  @override
+  Future<List<CfgCustAppModel>> getCgfCustApp(office) async {
+    ArgumentError.checkNotNull(office, 'office');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'office': office};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.request<List<dynamic>>('/api/API/CfgCustApp',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'GET',
+            headers: <String, dynamic>{},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    var value = _result.data
+        .map((dynamic i) => CfgCustAppModel.fromJson(i as Map<String, dynamic>))
+        .toList();
+    return value;
+  }
+
+  @override
+  Future<String> insertBooking(bookingModel) async {
+    ArgumentError.checkNotNull(bookingModel, 'bookingModel');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(bookingModel?.toJson() ?? <String, dynamic>{});
+    final _result = await _dio.request<String>('/api/API/InsertBooking',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'POST',
+            headers: <String, dynamic>{},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = _result.data;
+    return value;
+  }
 }

@@ -25,6 +25,7 @@ class MapState with ChangeNotifier {
   TimeOfDay userSelectedTime = TimeOfDay.now();
   LatLng l1 = LatLng(0.0000, 0.0000);
   LatLng l2 = LatLng(0.0000, 0.0000);
+  String outcode1,outcode2,postcode1,postcode2;
   GoogleMapController mapControllerr;
 
   bool locationServiceActive = true;
@@ -133,23 +134,36 @@ class MapState with ChangeNotifier {
 
   //----->GET LAT LANG FROM ADDRESS
   details(String value, bool flage) async {
+    print("Selected Location Name: $value");
     Map<String, dynamic> map =
         await locationDetails.getLocationDetails(value, flage);
     LatLng latLng = LatLng(
         map['Placedetails']['lattitude'], map['Placedetails']['longitude']);
     CameraPosition cameraPosition = new CameraPosition(
         target: LatLng(latLng.latitude, latLng.longitude), zoom: 14);
-    print(cameraPosition);
+    //print(cameraPosition);
     await mapControllerr
         .animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
 
     if (flage == true) {
       latLangList.insert(0, latLng);
       l1 = latLangList[0];
+
+      print('outcode1: ${map['Placedetails']['outcode']}');
+      print('postcode1: ${map['Placedetails']['postcode']}');
+
+      outcode1 = map['Placedetails']['outcode'];
+      postcode1 = map['Placedetails']['postcode'];
     }
     if (flage == false) {
       latLangList.insert(latLangList.length, latLng);
       l2 = latLangList[latLangList.length - 1];
+
+      print('outcode2: ${map['Placedetails']['outcode']}');
+      print('postcode2: ${map['Placedetails']['postcode']}');
+
+      outcode2 = map['Placedetails']['outcode'];
+      postcode2 = map['Placedetails']['postcode'];
     }
     print("_________________________________________________");
     addMarker(latLng, value, flage, originHue);
@@ -220,13 +234,11 @@ class MapState with ChangeNotifier {
 
 //----> BOTTOM MODEL SHEET
   settingModelBottomSheet(context) async {
-    if (sourceController.text.toString().isNotEmpty &&
-        destinationController.text.toString().isNotEmpty) {
-      calculateDistanceTime.calculateDistanceTime(l1, l2);
+    if (sourceController.text.toString().isNotEmpty && destinationController.text.toString().isNotEmpty) {
+      //calculateDistanceTime.calculateDistanceTime(l1, l2);
       List list = await locationDetails.getTimeDistance();
-      bottomModelSheet.settingModelBottomSheet(
-          context, '${list[0]}', '${list[1]}');
-      print('Map Screen');
+      bottomModelSheet.settingModelBottomSheet(context, '${list[0]}', '${list[1]}');
+      print('Time Distance $list');
     } else {
       return null;
     }
@@ -246,6 +258,8 @@ class MapState with ChangeNotifier {
     var locationName =
         await Geocoder.local.findAddressesFromCoordinates(coordinates);
     var first = locationName.first;
+    print('total stuff: $first \n ${first.postalCode}\n${first.locality}\n${first.subLocality}\n${first.thoroughfare}'
+        '\n\n\n\n\n');
     _name = first.addressLine;
     notifyListeners();
   }

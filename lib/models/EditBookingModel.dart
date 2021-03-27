@@ -2,8 +2,6 @@
 //
 //     final booking = bookingFromJson(jsonString);
 
-import 'package:zippy_rider/models/FromToViaModel.dart';
-
 class EditBookingModel{
   EditBookingModel({
     this.id,
@@ -113,5 +111,21 @@ class EditBookingModel{
   dynamic logd;
   List<Fromtovia> fromtovia;
 
+}
+
+class Fromtovia {
+  Fromtovia({
+    this.info,
+    this.address,
+    this.lat,
+    this.lon,
+    this.postcode,
+  });
+
+  String info;
+  String address;
+  double lat;
+  double lon;
+  String postcode;
 
 }

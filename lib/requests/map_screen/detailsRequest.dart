@@ -2,6 +2,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:zippy_rider/models/places_info_details.dart';
 
+
 class LocationDetails {
   List<Map<String, dynamic>> params = [];
   Map<String, dynamic> point = {};
@@ -79,6 +80,8 @@ class LocationDetails {
     //   print(b[0]);
     //   print(b[1]);
     // }
+    //print('Point $point');
+    //print('R Map $map');
     return map;
   }
 
@@ -94,6 +97,7 @@ class LocationDetails {
             body: jsonEncode(params));
     if (req.statusCode == 200) {
       Map a = jsonDecode(req.body);
+      print('Distance: ${a['distance']} \n Time: ${a['time']}');
       list.add(a['distance']);
       list.add(a['time']);
     }

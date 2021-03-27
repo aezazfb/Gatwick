@@ -20,6 +20,7 @@ class MapScreenState extends State<MapScreen> {
   var heightFactor = 0.0;
   Set<Polyline> _polylines;
 
+
   @override
   Widget build(BuildContext context) {
     final mapState = Provider.of<MapState>(context);
@@ -161,7 +162,7 @@ class MapScreenState extends State<MapScreen> {
                         ),
                         child: TextField(
                           onChanged: (bool) {
-                            flage = true;
+                            flage = false;
                             _controllerflage = false;
                             mapState.suggestions(bool);
                             heightFactor = 170;
@@ -312,8 +313,12 @@ class MapScreenState extends State<MapScreen> {
                                           flage);
                                     }
                                     if (_controllerflage == false) {
+                                      print('false selected');
                                       mapState.destinationController.text =
                                           mapState.suggestion[index].toString();
+                                      print('selected value: ${mapState.destinationController.text}');
+                                      print('flag value: $flage');
+
                                       mapState.details(
                                           mapState.suggestion[index].toString(),
                                           flage);

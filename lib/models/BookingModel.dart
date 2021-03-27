@@ -4,7 +4,6 @@
 
 
 import 'package:json_annotation/json_annotation.dart';
-import 'package:zippy_rider/models/FromToViaModel.dart';
 
 part 'BookingModel.g.dart';
 
@@ -120,7 +119,47 @@ class BookingModel {
   List<Fromtovia> fromtovia;
 
 
-
   factory BookingModel.fromJson(Map<String, dynamic> json) => _$BookingModelFromJson(json);
   Map<String, dynamic> toJson() => _$BookingModelToJson(this);
+
+  @override
+  String toString() {
+    return '{"id": "$id", "account": "$account", "bookedby": "$bookedby", "driverrate": "$driverrate", "jobref": "$jobref",'
+        ' "jobtype": "$jobtype", "jstate": "$jstate", "office": "$office", "telephone": "$telephone", "time": "$time",'
+        ' "to": $to,\n "toInfo": "$toInfo", "toOutcode": "$toOutcode", "userid": "$userid", "vehicletype": "$vehicletype",'
+        ' "callerid": "$callerid", "pin": "$pin", "mstate": "$mstate", "tag": "$tag", "accuser": "$accuser",'
+        ' "orderno": "$orderno", "flightno": "$flightno",\n "from": "$from", "fromInfo": "$fromInfo",'
+        ' "fromOutcode": "$fromOutcode", "drvrcallsign": "$drvrcallsign", "drvrreqcallsign": "$drvrreqcallsign",'
+        ' "drvreqdname": "$drvreqdname", "drvrname": "$drvrname",\n "dstate": "$dstate", "comment": "$comment",'
+        ' "creditcard": "$creditcard", "cstate": "$cstate", "custname": "$custname", "date": "$date", "fare": $fare,'
+        ' "oldfare": $oldfare,\n "drvfare": $drvfare, "olddrvfare": $olddrvfare, "jobmileage": $jobmileage,'
+        ' "leadtime": $leadtime, "timetodespatch": $timetodespatch, "datentime": $datentime,'
+        ' "despatchtime": $despatchtime, "flag": $flag,\n "numofvia": $numofvia, "hold": $hold,'
+        ' "isdirty": $isdirty, "changed": $changed, "logc": $logc, "logd": $logd, "fromtovia": ${fromtovia.toString()}';
+  }
+}
+
+@JsonSerializable()
+class Fromtovia {
+  Fromtovia({
+    this.info,
+    this.address,
+    this.lat,
+    this.lon,
+    this.postcode,
+  });
+
+  String info;
+  String address;
+  double lat;
+  double lon;
+  String postcode;
+
+  factory Fromtovia.fromJson(Map<String, dynamic> json) => _$FromtoviaFromJson(json);
+  Map<String, dynamic> toJson() => _$FromtoviaToJson(this);
+
+  @override
+  String toString() {
+    return '{"info": "$info", "address": "$address", "lat": $lat, "lon": $lon, "postcode": "$postcode"}';
+  }
 }

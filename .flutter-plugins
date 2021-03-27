@@ -2,6 +2,9 @@
 connectivity=/Users/slashglobal/flutter/.pub-cache/hosted/pub.dartlang.org/connectivity-3.0.3/
 connectivity_for_web=/Users/slashglobal/flutter/.pub-cache/hosted/pub.dartlang.org/connectivity_for_web-0.4.0/
 connectivity_macos=/Users/slashglobal/flutter/.pub-cache/hosted/pub.dartlang.org/connectivity_macos-0.2.0/
+firebase_core=/Users/slashglobal/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_core-0.5.3/
+firebase_core_web=/Users/slashglobal/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_core_web-0.2.1+1/
+firebase_messaging=/Users/slashglobal/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_messaging-7.0.3/
 flutter_plugin_android_lifecycle=/Users/slashglobal/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_plugin_android_lifecycle-1.0.11/
 fluttertoast=/Users/slashglobal/flutter/.pub-cache/hosted/pub.dartlang.org/fluttertoast-8.0.3/
 geocoder=/Users/slashglobal/flutter/.pub-cache/hosted/pub.dartlang.org/geocoder-0.2.1/

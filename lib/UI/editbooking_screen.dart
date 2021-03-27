@@ -319,7 +319,8 @@ class _EditBookingState extends State<EditBooking> {
                                 ),
                               ),
                               Text(
-                                '${selectedBookingModel.fare}',
+                                //'${selectedBookingModel.fare}',
+                                '',
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.bold),
@@ -334,7 +335,8 @@ class _EditBookingState extends State<EditBooking> {
                                 ),
                               ),
                               Text(
-                                '${selectedBookingModel.jobmileage} miles',
+                                //'${selectedBookingModel.jobmileage} miles',
+                                '',
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.bold),
