@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "413463921154",
+    "project_id": "flutter-zippyrider",
+    "storage_bucket": "flutter-zippyrider.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:413463921154:android:2bb39438f843f278e91d1b",
+        "android_client_info": {
+          "package_name": "com.example.zippy_rider"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "413463921154-pp9lshu4rlc7m10f4cqhjv2rkfblaaju.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDonyJGWszFLl2iafRo0m6TtJH7WWOFfqM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "413463921154-pp9lshu4rlc7m10f4cqhjv2rkfblaaju.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
