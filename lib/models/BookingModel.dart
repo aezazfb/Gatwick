@@ -23,7 +23,7 @@ class BookingModel {
     this.time,
     this.to,
     this.toInfo,
-    this.toOutcode,
+    this.to_outcode,
     this.userid,
     this.vehicletype,
     this.callerid,
@@ -35,7 +35,7 @@ class BookingModel {
     this.flightno,
     this.from,
     this.fromInfo,
-    this.fromOutcode,
+    this.from_outcode,
     this.drvrcallsign,
     this.drvrreqcallsign,
     this.drvreqdname,
@@ -77,7 +77,7 @@ class BookingModel {
   String time;
   String to;
   String toInfo;
-  String toOutcode;
+  String to_outcode;
   String userid;
   String vehicletype;
   String callerid;
@@ -89,7 +89,7 @@ class BookingModel {
   String flightno;
   String from;
   String fromInfo;
-  String fromOutcode;
+  String from_outcode;
   String drvrcallsign;
   String drvrreqcallsign;
   String drvreqdname;
@@ -126,10 +126,10 @@ class BookingModel {
   String toString() {
     return '{"id": "$id", "account": "$account", "bookedby": "$bookedby", "driverrate": "$driverrate", "jobref": "$jobref",'
         ' "jobtype": "$jobtype", "jstate": "$jstate", "office": "$office", "telephone": "$telephone", "time": "$time",'
-        ' "to": $to,\n "toInfo": "$toInfo", "toOutcode": "$toOutcode", "userid": "$userid", "vehicletype": "$vehicletype",'
+        ' "to": $to,\n "toInfo": "$toInfo", "to_outcode": "$to_outcode", "userid": "$userid", "vehicletype": "$vehicletype",'
         ' "callerid": "$callerid", "pin": "$pin", "mstate": "$mstate", "tag": "$tag", "accuser": "$accuser",'
         ' "orderno": "$orderno", "flightno": "$flightno",\n "from": "$from", "fromInfo": "$fromInfo",'
-        ' "fromOutcode": "$fromOutcode", "drvrcallsign": "$drvrcallsign", "drvrreqcallsign": "$drvrreqcallsign",'
+        ' "from_outcode": "$from_outcode", "drvrcallsign": "$drvrcallsign", "drvrreqcallsign": "$drvrreqcallsign",'
         ' "drvreqdname": "$drvreqdname", "drvrname": "$drvrname",\n "dstate": "$dstate", "comment": "$comment",'
         ' "creditcard": "$creditcard", "cstate": "$cstate", "custname": "$custname", "date": "$date", "fare": $fare,'
         ' "oldfare": $oldfare,\n "drvfare": $drvfare, "olddrvfare": $olddrvfare, "jobmileage": $jobmileage,'

@@ -4,17 +4,19 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:zippy_rider/bottom_model_sheet/bottomsheet.dart';
 import 'package:zippy_rider/requests/map_screen/detailsRequest.dart';
 import 'package:zippy_rider/requests/map_screen/suggestionRequest.dart';
-import 'package:zippy_rider/requests/vias_screen/calculate_vias_time_distance.dart';
 import 'package:zippy_rider/requests/vias_screen/decode_vias_polyline.dart';
 
 class ViasState with ChangeNotifier {
-  List<LatLng> viasLatLangList = [];
+  List<LatLng> viasLatLongList = [];
   List timeDisList = [];
   List viasList = [];
   List<LatLng> viasPolyLinePoints = [];
   Set<Marker> _markers = Set();
   var decodedPolylineString;
   List viasSuggestionList = [];
+  List<String> viasPostCodeList = [];
+  List<String> viasOutCodeList = [];
+
   SuggestionRequest suggestionRequest = SuggestionRequest();
   LocationDetails locationDetails = LocationDetails();
   BottomModelSheet _bottomModelSheet = BottomModelSheet();
@@ -42,7 +44,10 @@ class ViasState with ChangeNotifier {
         await locationDetails.getLocationDetails(value, flage);
     LatLng latLng = LatLng(
         map['Placedetails']['lattitude'], map['Placedetails']['longitude']);
-    viasLatLangList.add(latLng);
+    viasLatLongList.add(latLng);
+    viasPostCodeList.add(map['Placedetails']['outcode']);
+    viasOutCodeList.add(map['Placedetails']['postcode']);
+
     notifyListeners();
   }
 

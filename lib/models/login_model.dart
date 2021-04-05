@@ -1,8 +1,8 @@
 class Model {
   String name;
   String number;
-  String mail;
+  String email;
   String password;
 
-  Model({this.name, this.number, this.mail, this.password});
+  Model({this.name, this.number, this.email, this.password});
 }

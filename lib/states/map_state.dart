@@ -7,8 +7,6 @@ import 'package:geocoder/geocoder.dart';
 import 'package:share/share.dart';
 import 'package:zippy_rider/UI/map_screen.dart';
 import 'package:zippy_rider/UI/vias_screen.dart';
-import 'package:zippy_rider/data_model.dart';
-import 'package:zippy_rider/models/places_info_details.dart';
 import 'package:zippy_rider/requests/map_screen/polyline_request.dart';
 import 'package:zippy_rider/requests/map_screen/suggestionRequest.dart';
 import 'package:flutter/material.dart';
@@ -238,6 +236,7 @@ class MapState with ChangeNotifier {
       //calculateDistanceTime.calculateDistanceTime(l1, l2);
       List list = await locationDetails.getTimeDistance();
       bottomModelSheet.settingModelBottomSheet(context, '${list[0]}', '${list[1]}');
+      //sourceController.text.toString(),destinationController.text.toString(),outcode1,outcode2,postcode1,postcode2
       print('Time Distance $list');
     } else {
       return null;

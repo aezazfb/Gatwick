@@ -3,7 +3,6 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:zippy_rider/models/BookingModel.dart';
-import 'package:zippy_rider/states/paymentType_state.dart';
 import 'package:zippy_rider/states/ridehistory_state.dart';
 
 class EditBooking extends StatefulWidget {
@@ -75,6 +74,7 @@ class _EditBookingState extends State<EditBooking> {
       return 3;
     else if (selectedBookingModel.vehicletype == '8')
       return 4;
+    return -1;
   }
 
 

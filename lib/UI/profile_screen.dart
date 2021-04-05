@@ -47,7 +47,7 @@ class Profile extends StatelessWidget {
             ),
             ListTile(
               tileColor: Colors.black12,
-              title: Text("e-mail: ${model.mail}",
+              title: Text("e-mail: ${model.email}",
                   style: TextStyle(
                     color: Colors.black,
                     fontSize: 20.0,

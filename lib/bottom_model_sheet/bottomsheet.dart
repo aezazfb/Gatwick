@@ -3,15 +3,16 @@ import 'package:flutter/painting.dart';
 import 'package:flutter_dropdown/flutter_dropdown.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 import 'package:toast/toast.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:zippy_rider/models/BookingModel.dart';
 import 'package:zippy_rider/requests/bottom_sheet/vehicle_details.dart';
+import 'package:zippy_rider/requests/map_screen/insertBooking.dart';
 import 'package:zippy_rider/states/map_state.dart';
 import 'package:zippy_rider/states/vias_state.dart';
 import 'package:zippy_rider/utils/util.dart' as util;
-
 
 class BottomModelSheet with ChangeNotifier {
   DateTime pickedDate = DateTime.now();
@@ -32,13 +33,28 @@ class BottomModelSheet with ChangeNotifier {
   String rideTime = 'Select time';
   int count = 0;
 
-  settingModelBottomSheet(context,distance, time) async {
+  SharedPreferences sharedPreferences;
+
+  //String origin, destination, origin_outcode, dest_outcode,origin_postcode, dest_postcode;
+
+  settingModelBottomSheet(context, distance, time) async {
     final mapState = Provider.of<MapState>(context, listen: false);
     final viasState = Provider.of<ViasState>(context, listen: false);
+
+    getConfigFromSharedPref();
+    /*
+    origin,destination,o_outcode,d_outcode,o_postcode,d_postcode
+    this.origin = origin;
+    this.destination = destination;
+    this.origin_outcode = o_outcode;
+    this.dest_outcode = d_outcode;
+    this.origin_postcode = o_postcode;
+    this.dest_postcode = d_postcode;*/
+
     carDetails = await _vehicleDetails.getVehicleDetails(3);
     cars = carDetails[0]['carstype'];
     showModalBottomSheet(
-        backgroundColor: Colors.tealAccent,
+        //backgroundColor: Colors.tealAccent,
         enableDrag: true,
         context: context,
         builder: (BuildContext context) {
@@ -237,9 +253,9 @@ class BottomModelSheet with ChangeNotifier {
                                         onConfirm: (value) {
                                       setState(() {
                                         rideDate =
-                                            '${value.day}/${value.month}/${value.year}';
+                                            '${value.day}-${value.month}-${value.year}';
                                         rideTime =
-                                            '${value.hour} : ${value.minute}';
+                                            '${value.hour}:${value.minute}';
                                       });
                                     });
 
@@ -258,160 +274,81 @@ class BottomModelSheet with ChangeNotifier {
                                         fontWeight: FontWeight.w700,
                                       )),
                                   onPressed: () {
+                                    fillFromToViaList(viasState, mapState);
 
-                                    if (viasState.viasList.length == 0) {
-                                      //print('fromtovia: ${viasState.viasList}');
-                                      Fromtovia fromtovia1 = Fromtovia(
-                                          info: "",
-                                          address:
-                                              mapState.sourceController.text,
-                                          lat: mapState.l1.latitude,
-                                          lon: mapState.l1.longitude,
-                                          postcode: mapState.postcode1);
+                                    fillLogcList();
 
-                                      Fromtovia fromtovia2 = Fromtovia(
-                                          info: "",
-                                          address: mapState
-                                              .destinationController.text,
-                                          lat: mapState.l2.latitude,
-                                          lon: mapState.l2.longitude,
-                                          postcode: mapState.postcode2);
-
-                                      fromToViaList.add(fromtovia1);
-                                      fromToViaList.add(fromtovia2);
-
-                                      for (int i = 0; i < 7; i++) {
-                                        Fromtovia extrafromtovia = Fromtovia(
-                                            info: null,
-                                            address: null,
-                                            lat: 0.0,
-                                            lon: 0.0,
-                                            postcode: null);
-
-                                        fromToViaList.add(extrafromtovia);
-                                      }
+                                    try {
+                                      double jobmileage =
+                                          double.tryParse(distance.toString());
+                                      print('jobmileage: $jobmileage');
+                                    } catch (e) {
+                                      print('Exception Caught: $e');
                                     }
-                                    print('reached here: ');
-                                    List<dynamic> listofLogc = [];
-                                    listofLogc.add(
-                                        DateTime.now().millisecondsSinceEpoch);
-                                    listofLogc.add("booked");
-                                    listofLogc.add("tayyab.slash@gmail.com");
-                                    listofLogc.add("TaxisNetworkAndroid");
-
-                                    print("logc ${logc.length}");
-                                    logc.add(listofLogc);
-
-                                    /*print(
-                                        'from: ${mapState.sourceController.text}');
-                                    print('from_info:');
-                                    print('from_outcode: ${mapState.outcode1}');*/
-                                    //print('logc: ${DateTime.now().millisecondsSinceEpoch}');
-                                    /*    print('office: ${util.office}');
-                                    print('telephone: ');
-                                    print('userid: ');
-                                    print('custname: ');
-                                    print('time: ${rideTime}');
-                                    print('date: ${rideDate}');
-                                    print(
-                                        'to: ${mapState.destinationController.text}');
-                                    print('to_info:');
-                                    print('to_outcode: ${mapState.outcode2}');
-                                    print('fare:');
-                                    print('drvfare:');
-                                    print('jobmileage:');
-                                    print('jobref:');
-                                    print('mstate:');
-                                    print('timetodespatch:');
-                                    print('datentime:');
-                                    print('changed:');
-                                    print('account:');
-                                    print('accuser:');
-                                    print('bookedby:');
-                                    print('comment:');
-                                    print('creditcard:');
-                                    print('cstate:');
-                                    print('despatchtime:');
-                                    print('driverrate:');
-                                    print('drvrcallsign:');
-                                    print('drvreqdname:');
-                                    print('drvrname:');
-                                    print('drvrreqcallsign:');
-                                    print('dstate:');
-                                    print('flag:');
-                                    print('flightno:');
-                                    print('hold:');
-                                    print('isdirty:');
-                                    print('jobtype:');
-                                    print('jstate:');
-                                    print('leadtime:');
-                                    print('logd:');
-                                    print('numofvia:');
-                                    print('oldfare:');
-                                    print('olddrvfare:');
-                                    print('orderno:');
-                                    print('tag:');
-                                    print('vehicletype:');
-                                    print('pin:');
-                                    print('calledid:');*/
-
 
                                     BookingModel bookingModel = BookingModel(
-                                      from: mapState.sourceController.text.toString(),
-                                      fromInfo: "",
-                                      fromOutcode: mapState.outcode1,
-                                      fromtovia: fromToViaList,
+                                        from: mapState.sourceController.text
+                                            .toString(),
+                                        fromInfo: "",
+                                        from_outcode: mapState.outcode1,
+                                        fromtovia: fromToViaList,
                                         logc: logc,
-                                      office: util.office,
-                                      telephone: "03310331556",
-                                      userid:"tayyab.slash@gmail.com",
-                                      custname: "tayyab test",
-                                      time: rideTime,
-                                      date: rideDate,
-                                      to: mapState.destinationController.text.toString(),
-                                      toInfo: "",
-                                      toOutcode: mapState.outcode2,
-                                      fare: 2.0,
-                                      drvfare: 2.0,
-                                      jobmileage: double.tryParse(distance),
-                                      jobref: "",
-                                      mstate: "",
-                                      timetodespatch: 0.0,
-                                      datentime: DateTime.now().millisecondsSinceEpoch.toDouble(),
-                                      changed: false,
-                                      account: "CARD",
-                                      accuser: "",
-                                      bookedby: "TaxisNetwork",
-                                      comment: "passenger = 1,checkin = 0,cabin = 0",
-                                      creditcard: "tayyab.slash@gmail.com",
-                                      cstate: "booked",
-                                      despatchtime: 0.0,
-                                      driverrate: "CASH",
-                                      drvrcallsign: "",
-                                      drvreqdname: "",
-                                      drvrname: "",
-                                      drvrreqcallsign: "",
-                                      dstate: "",
-                                      flag: 1,
-                                      flightno: "",
-                                      hold: false,
-                                      isdirty: false,
-                                      jobtype:  "normal",
-                                      jstate: "unallocated",
-                                      leadtime: 0.0,
-                                      logd: null,
-                                      numofvia: 0,
-                                      oldfare: 0.0,
-                                      olddrvfare: 0.0,
-                                      orderno: "",
-                                      tag: "1",
-                                      vehicletype: "S",
-                                      pin: "",
-                                      callerid: ""
-                                    );
+                                        office: util.office,
+                                        telephone: sharedPreferences.getString('cPhone').toString(),
+                                        userid: sharedPreferences.getString('cEmail').toString(),//"tayyab.slash@gmail.com",
+                                        custname: sharedPreferences.getString('cName').toString(),
+                                        time: rideTime,
+                                        date: rideDate,
+                                        to: mapState.destinationController.text
+                                            .toString(),
+                                        toInfo: "",
+                                        to_outcode: mapState.outcode2,
+                                        fare: 2.0,
+                                        drvfare: 2.0,
+                                        jobmileage: double.tryParse(
+                                            distance.toString()),
+                                        jobref: "",
+                                        mstate: "",
+                                        timetodespatch: 0.0,
+                                        datentime: DateTime.now()
+                                            .millisecondsSinceEpoch
+                                            .toDouble(),
+                                        changed: false,
+                                        account: "CARD",
+                                        accuser: "",
+                                        bookedby: "CustomerOnline",
+                                        comment:
+                                            "passenger = 1,checkin = 0,cabin = 0",
+                                        creditcard: "tayyab.slash@gmail.com",
+                                        cstate: "booked",
+                                        despatchtime: 0.0,
+                                        driverrate: "CASH",
+                                        drvrcallsign: "",
+                                        drvreqdname: "",
+                                        drvrname: "",
+                                        drvrreqcallsign: "",
+                                        dstate: "",
+                                        flag: 1,
+                                        flightno: "",
+                                        hold: false,
+                                        isdirty: false,
+                                        jobtype: "normal",
+                                        jstate: "unallocated",
+                                        leadtime: 0.0,
+                                        logd: null,
+                                        numofvia: 0,
+                                        oldfare: 0.0,
+                                        olddrvfare: 0.0,
+                                        orderno: "",
+                                        tag: "1",
+                                        vehicletype: "S",
+                                        pin: "",
+                                        callerid: "");
 
-                                    //insertBooking(bookingModel);
-
+                                    InsertBooking.insertBooking(bookingModel);
+                                    print(bookingModel.toString());
+                                    print(
+                                        '------------------------------------');
                                     print(bookingModel.toJson());
                                   }),
                               IconButton(
@@ -430,6 +367,78 @@ class BottomModelSheet with ChangeNotifier {
             );
           });
         });
+  }
+
+  getConfigFromSharedPref() async {
+   sharedPreferences = await SharedPreferences.getInstance();
+    print("Print value: ${sharedPreferences.getString('cEmail')}");
+    print("Print value: ${sharedPreferences.getString('cPhone')}");
+  }
+
+  fillLogcList() {
+    List<dynamic> listofLogc = [];
+    listofLogc.add(DateTime.now().millisecondsSinceEpoch);
+    listofLogc.add("booked");
+    listofLogc.add("tayyab.slash@gmail.com");
+    listofLogc.add("TaxisNetworkAndroid");
+
+    print("logc ${logc.length}");
+    logc.add(listofLogc);
+  }
+
+  //---->To check if( viaList is empty then put source/dest and put empty 7 data)
+  // otherwise complete added vias in FromToVia
+  fillFromToViaList(ViasState viasState, MapState mapState) {
+    print('fromtovia: $fromToViaList');
+    print('viasState.viasList: ${viasState.viasList}');
+
+    Fromtovia fromtovia1 = Fromtovia(
+        info: "",
+        address: mapState.sourceController.text,
+        lat: mapState.l1.latitude,
+        lon: mapState.l1.longitude,
+        postcode: mapState.postcode1);
+
+    Fromtovia fromtovia2 = Fromtovia(
+        info: "",
+        address: mapState.destinationController.text,
+        lat: mapState.l2.latitude,
+        lon: mapState.l2.longitude,
+        postcode: mapState.postcode2);
+
+    fromToViaList.add(fromtovia1);
+    fromToViaList.add(fromtovia2);
+
+    if (viasState.viasList.length == 0) {
+      //print('fromtovia: ${viasState.viasList}');
+      for (int i = 0; i < 7; i++) {
+        Fromtovia extrafromtovia = Fromtovia(
+            info: null, address: null, lat: 0.0, lon: 0.0, postcode: null);
+
+        fromToViaList.add(extrafromtovia);
+      }
+    } else {
+      //---> for loop to add selected vias in FromToVia, for e.g: 3 selected vias
+      for (int i = 0; i < viasState.viasList.length; i++) {
+        Fromtovia existingvia = Fromtovia(
+            info: "",
+            address: viasState.viasList[i].toString(),
+            lat: viasState.viasLatLongList[0].latitude,
+            lon: viasState.viasLatLongList[0].longitude,
+            postcode: viasState.viasPostCodeList[0]);
+
+        fromToViaList.add(existingvia);
+      }
+      //---> for loop if 7 vias are not selected then filling with empty
+      for (int i = viasState.viasList.length; i < 7; i++) {
+        Fromtovia extrafromtovia = Fromtovia(
+            info: null, address: null, lat: 0.0, lon: 0.0, postcode: null);
+
+        fromToViaList.add(extrafromtovia);
+      }
+    }
+
+    print('fromtovia: $fromToViaList');
   }
 
   //---->Date Picker
@@ -568,6 +577,4 @@ class BottomModelSheet with ChangeNotifier {
       },
     );
   }
-
-
 }

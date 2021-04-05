@@ -4,7 +4,7 @@ import 'package:dio/dio.dart' hide Headers;
 
 class InsertBooking{
 
-  void insertBooking(BookingModel insertBookingObject) async{
+  static void insertBooking(BookingModel insertBookingObject) async{
     final dio = Dio(); // Provide a dio instance
 
     dio.options.headers['content-Type'] = 'application/json';

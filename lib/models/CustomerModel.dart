@@ -1,17 +1,20 @@
 // To parse this JSON data, do
 //
-//     final customerReg = customerRegFromJson(jsonString);
+//     final customerRegModel = customerRegModelFromJson(jsonString);
 
 import 'dart:convert';
 
-part 'CustomerRegModel.g.dart';
+import 'package:json_annotation/json_annotation.dart';
 
-CustomerRegModel customerRegFromJson(String str) => CustomerRegModel.fromJson(json.decode(str));
+part 'CustomerModel.g.dart';
 
-String customerRegToJson(CustomerRegModel data) => json.encode(data.toJson());
+CustomerModel customerRegModelFromJson(String str) => CustomerModel.fromJson(json.decode(str));
 
-class CustomerRegModel {
-  CustomerRegModel({
+String customerRegModelToJson(CustomerModel data) => json.encode(data.toJson());
+
+@JsonSerializable()
+class CustomerModel {
+  CustomerModel({
     this.custUid,
     this.appname,
     this.blacklist,
@@ -49,7 +52,7 @@ class CustomerRegModel {
   int commDownValue;
   int walletamount;
 
-  factory CustomerRegModel.fromJson(Map<String, dynamic> json) => CustomerRegModel(
+  factory CustomerModel.fromJson(Map<String, dynamic> json) => CustomerModel(
     custUid: json["cust_uid"],
     appname: json["appname"],
     blacklist: json["blacklist"],
@@ -89,3 +92,6 @@ class CustomerRegModel {
     "walletamount": walletamount,
   };
 }
+
+
+

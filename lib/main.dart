@@ -1,4 +1,6 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:zippy_rider/UI/registration_screen.dart';
 import 'package:zippy_rider/UI/ridehistory_screen.dart';
 import 'package:zippy_rider/UI/editbooking_screen.dart';
 import 'package:zippy_rider/UI/vias_screen.dart';
@@ -15,7 +17,7 @@ import 'package:provider/provider.dart';
 import 'package:flutter/services.dart';
 import 'package:zippy_rider/utils/util.dart' as util;
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
     statusBarColor: util.primaryColor,
@@ -25,13 +27,15 @@ void main() {
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]);
+  await Firebase.initializeApp();
   runApp(MultiProvider(
     child: MyApp(),
     providers: [
-      ChangeNotifierProvider.value(value: MapState()),
+      ChangeNotifierProvider(child: MyApp(), create: (context) => MapState()),
       ChangeNotifierProvider.value(value: FlightState()),
       ChangeNotifierProvider.value(value: ViasState()),
       ChangeNotifierProvider.value(value: RideHistoryState()),
+      //ChangeNotifierProvider.value(value: BottomModelSheet()),
     ],
   ));
 }
@@ -47,7 +51,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: util.primaryColor,
       ),
-      initialRoute: '/',
+      initialRoute: '/login',
       routes: {
         '/': (context) => MapScreen(),
         '/profile': (context) => Profile(model),
@@ -57,6 +61,7 @@ class MyApp extends StatelessWidget {
         '/viasscreen': (context) => AddVias(),
         '/bookinghistory': (context) => RideHistory(),
         '/editbooking': (context) => EditBooking(),
+        '/registration': (context) => RegistrationScreen(),
       },
     );
   }

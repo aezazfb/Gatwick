@@ -1,13 +1,13 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'CustomerRegModel.dart';
+part of 'CustomerModel.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-CustomerRegModel _$CustomerRegModelFromJson(Map<String, dynamic> json) {
-  return CustomerRegModel(
+CustomerModel _$CustomerModelFromJson(Map<String, dynamic> json) {
+  return CustomerModel(
     custUid: json['custUid'] as String,
     appname: json['appname'] as String,
     blacklist: json['blacklist'] as bool,
@@ -28,7 +28,7 @@ CustomerRegModel _$CustomerRegModelFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$CustomerRegModelToJson(CustomerRegModel instance) =>
+Map<String, dynamic> _$CustomerModelToJson(CustomerModel instance) =>
     <String, dynamic>{
       'custUid': instance.custUid,
       'appname': instance.appname,

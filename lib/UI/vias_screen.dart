@@ -181,6 +181,7 @@ class AddViasState extends State<AddVias> {
                   viasState.clearFields();
                 }),
           ),
+
           //VIAS LIST
           Positioned(
             top: 190,
@@ -206,10 +207,13 @@ class AddViasState extends State<AddVias> {
                           onPressed: () {
                             setState(() {
                               viasState.viasList.removeAt(index);
+                              viasState.viasPostCodeList.removeAt(index);
+                              viasState.viasOutCodeList.removeAt(index);
+
                               if (viasState.polyLine.isNotEmpty) {
                                 viasState.polyLine.last.points.clear();
                               }
-                              viasState.viasLatLangList.removeAt(index);
+                              viasState.viasLatLongList.removeAt(index);
                             });
                           },
                         ),
@@ -326,14 +330,20 @@ class AddViasState extends State<AddVias> {
               bottom: 15,
               right: 17,
               left: 17,
-              child: FlatButton(
-                color: util.primaryColor,
+              child: TextButton(
+                style: TextButton.styleFrom(
+                  primary: Colors.white,
+                  backgroundColor: util.primaryColor,
+                ),
                 onPressed: () {
-                  for (int i = 0; i < viasState.viasLatLangList.length; i++) {
+                  for (int i = 0; i < viasState.viasLatLongList.length; i++) {
                     mapState.addMarker(
-                        viasState.viasLatLangList[i], "Via$i", flage, 90);
+                        viasState.viasLatLongList[i], "Via$i", flage, 90);
                   }
                   viasState.calculateViasDistancetime(context);
+                  print('Vias List: ${viasState.viasList}');
+                  print('Vias LatLng List: ${viasState.viasLatLongList}');
+
                   Navigator.pushNamed(context, '/mapscreen');
                 },
                 child: Text(

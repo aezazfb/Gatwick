@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zippy_rider/states/map_state.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:zippy_rider/states/vias_state.dart';
@@ -16,10 +17,9 @@ class MapScreen extends StatefulWidget {
 
 class MapScreenState extends State<MapScreen> {
   bool flage = true;
-  bool _controllerflage = true;
+  bool _controllerflag = true;
   var heightFactor = 0.0;
   Set<Polyline> _polylines;
-
 
   @override
   Widget build(BuildContext context) {
@@ -100,7 +100,7 @@ class MapScreenState extends State<MapScreen> {
                           controller: mapState.sourceController,
                           onChanged: (bool) {
                             flage = true;
-                            _controllerflage = true;
+                            _controllerflag = true;
                             heightFactor = 100;
                             mapState.suggestions(bool);
                           },
@@ -163,7 +163,7 @@ class MapScreenState extends State<MapScreen> {
                         child: TextField(
                           onChanged: (bool) {
                             flage = false;
-                            _controllerflage = false;
+                            _controllerflag = false;
                             mapState.suggestions(bool);
                             heightFactor = 170;
                           },
@@ -251,9 +251,9 @@ class MapScreenState extends State<MapScreen> {
                 Positioned(
                     child: Visibility(
                   visible: mapState.cardVisibility,
-                      child: Align(
-                        alignment: Alignment.center,
-                        child: IconButton(
+                  child: Align(
+                    alignment: Alignment.center,
+                    child: IconButton(
                         icon: Icon(Icons.circle, size: 12, color: Colors.black),
                         onPressed: () {
                           mapState.fetchAddressFromCoordinates(
@@ -305,18 +305,19 @@ class MapScreenState extends State<MapScreen> {
                                     style: TextStyle(color: Colors.black),
                                   ),
                                   onTap: () {
-                                    if (_controllerflage == true) {
+                                    if (_controllerflag == true) {
                                       mapState.sourceController.text =
                                           mapState.suggestion[index].toString();
                                       mapState.details(
                                           mapState.suggestion[index].toString(),
                                           flage);
                                     }
-                                    if (_controllerflage == false) {
+                                    if (_controllerflag == false) {
                                       print('false selected');
                                       mapState.destinationController.text =
                                           mapState.suggestion[index].toString();
-                                      print('selected value: ${mapState.destinationController.text}');
+                                      print(
+                                          'selected value: ${mapState.destinationController.text}');
                                       print('flag value: $flage');
 
                                       mapState.details(
@@ -348,10 +349,13 @@ class MapScreenState extends State<MapScreen> {
                     left: 17,
                     child: Visibility(
                         visible: mapState.stackElementsVisibility,
-                        child: FlatButton(
-                          color: util.primaryColor,
+                        child: TextButton(
+                          style: TextButton.styleFrom(
+                            primary: Colors.white,
+                            backgroundColor: util.primaryColor,
+                          ),
                           onPressed: () async {
-                            if (viasState.viasLatLangList.isEmpty) {
+                            if (viasState.viasLatLongList.isEmpty) {
                               mapState.drawPolyLine(mapState.l1, mapState.l2);
                               mapState.settingModelBottomSheet(context);
                               mapState.addCircle(mapState.l1, mapState.l2,
@@ -539,7 +543,15 @@ class MapScreenState extends State<MapScreen> {
             ListTile(
                 leading: Icon(Icons.logout, color: util.primaryColor),
                 title: Text('Logout'),
-                onTap: () {
+                onTap: () async {
+                  SharedPreferences sharedPreferences =
+                      await SharedPreferences.getInstance();
+                  sharedPreferences.remove('cEmail');
+                  sharedPreferences.remove('cPhone');
+                  print(
+                      "Print value: ${sharedPreferences.getString('cEmail')}");
+                  print(
+                      "Print value: ${sharedPreferences.getString('cPhone')}");
                   Navigator.pushReplacementNamed(context, '/login');
                 }),
           ],

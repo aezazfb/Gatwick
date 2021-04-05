@@ -1,12 +1,15 @@
 import 'dart:math';
+import 'package:country_code_picker/country_code_picker.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:mailer/smtp_server.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zippy_rider/models/login_model.dart';
 import 'package:mailer/mailer.dart';
 import 'package:toast/toast.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:zippy_rider/UI/profile_screen.dart';
+import 'package:zippy_rider/requests/login_screen/customer_login_request.dart';
 import 'package:zippy_rider/utils/util.dart' as util;
 
 class Login extends StatefulWidget {
@@ -16,14 +19,27 @@ class Login extends StatefulWidget {
   }
 }
 
+
 class LoginState extends State<Login> {
   final _formKey = GlobalKey<FormState>();
   Model model = Model();
   TextEditingController _mailController = new TextEditingController();
+  TextEditingController _phoneNumberController = new TextEditingController();
+  TextEditingController _passwordNumberController = new TextEditingController();
   TextEditingController _confirmController = new TextEditingController();
 
   // Generates Random Number
   int randomPIN = Random().nextInt(10009);
+  String countrycode, phoneNumber;
+  bool emailfieldEnabled = true, numberfieldEnabled = true;
+
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getConfigFromSharedPref();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,32 +61,42 @@ class LoginState extends State<Login> {
                     style: GoogleFonts.montserrat(
                         fontSize: 30.0, color: util.primaryColor)),
                 SizedBox(height: 20),
-                TextFormField(
-                  onSaved: (String value) {
-                    model.name = value;
-                  },
-                  decoration: InputDecoration(
-                      contentPadding: EdgeInsets.all(5.0),
-                      prefixIcon: Icon(Icons.person),
-                      labelText: "Name",
-                      hintText: "Insert Name...",
-                      fillColor: Colors.black26,
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                      )),
-                  validator: _validateUserName,
-                ),
-                SizedBox(height: 12.0),
 
                 //Text Form field for Number
                 TextFormField(
-                    onSaved: (String value) {
-                      model.number = value;
+                    controller: _phoneNumberController,
+                    onChanged: (String value) {
+                      if (value.length > 0) {
+                        phoneNumber = value.trim();
+                        setState(() {
+                          emailfieldEnabled = false;
+                        });
+                      } else {
+                        setState(() {
+                          emailfieldEnabled = true;
+                        });
+                      }
                     },
+                    enabled: numberfieldEnabled,
                     keyboardType: TextInputType.number,
                     decoration: InputDecoration(
                         contentPadding: EdgeInsets.all(5.0),
-                        prefixIcon: Icon(Icons.call),
+                        prefixIcon: CountryCodePicker(
+                            onChanged: (value) {
+                              print('changedvalue $value');
+                              countrycode = value.toString();
+                            },
+                            // Initial selection and favorite can be one of code ('IT') OR dial_code('+39')
+                            initialSelection: 'PK',
+                            favorite: ['+92', 'PK'],
+                            //countryFilter: ['PK', 'GB','US'],
+                            showFlagDialog: true,
+                            //comparator: (a, b) => b.name.compareTo(a.name),
+                            //Get the country information relevant to the initial selection
+                            onInit: (code) {
+                              //print("on init ${code.name} ${code.dialCode}"),
+                              countrycode = code.toString();
+                            }),
                         labelText: "Number",
                         hintText: "0123 1231231",
                         fillColor: Colors.black26,
@@ -78,11 +104,11 @@ class LoginState extends State<Login> {
                           borderRadius: BorderRadius.circular(10.0),
                         )),
                     validator: (value) {
-                      if (value.isEmpty) {
-                        // ignore: missing_return
+                      print('Value Length: ${value.length}');
+                      if (value.isEmpty && numberfieldEnabled == true) {
                         return "Phone number can't be empty ";
                       }
-                      if (value.length < 11) {
+                      if (value.length < 10 && numberfieldEnabled == true) {
                         return "insert a valid number";
                       }
                       {
@@ -91,36 +117,48 @@ class LoginState extends State<Login> {
                       }
                     }),
                 SizedBox(height: 12.0),
-
-                //Text Form field for Mail
+                Text('OR'),
+                SizedBox(height: 12.0),
+                //Text Form field for EMail
                 TextFormField(
                   controller: _mailController,
-                  onSaved: (String value) {
-                    model.mail = value;
+                  onChanged: (String value) {
+                    if (value.length > 0) {
+                      setState(() {
+                        numberfieldEnabled = false;
+                      });
+                    } else {
+                      setState(() {
+                        numberfieldEnabled = true;
+                      });
+                    }
                   },
+                  enabled: emailfieldEnabled,
                   // controller: mailController,
                   decoration: InputDecoration(
-                      contentPadding: EdgeInsets.all(5.0),
-                      suffixIcon: Icon(Icons.mail),
-                      labelText: "E-mail",
-                      hintText: "Insert tour mail here",
-                      fillColor: Colors.black26,
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                      )),
+                    contentPadding: EdgeInsets.all(5.0),
+                    prefixIcon: Icon(Icons.mail),
+                    labelText: "E-mail",
+                    hintText: "Insert your email here",
+                    fillColor: Colors.black26,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                  ),
                   validator: _validateEmail,
                 ),
-                SizedBox(height: 12.0),
+                SizedBox(height: 50.0),
 
                 //Text Form field for Mail
                 TextFormField(
+                    controller: _passwordNumberController,
                     onSaved: (String value) {
                       model.password = value;
                     },
                     obscureText: true,
                     decoration: InputDecoration(
+                        prefixIcon: Icon(Icons.lock),
                         contentPadding: EdgeInsets.all(5.0),
-                        prefixIcon: Icon(Icons.person),
                         labelText: "Password",
                         hintText: "",
                         fillColor: Colors.black26,
@@ -129,7 +167,6 @@ class LoginState extends State<Login> {
                         )),
                     validator: (value) {
                       if (value.isEmpty) {
-                        // ignore: missing_return
                         return "password is empty ..! ";
                       }
                       if (value.length < 8) {
@@ -142,9 +179,10 @@ class LoginState extends State<Login> {
 
                 FlatButton(
                     color: util.primaryColor,
-                    onPressed: () {
+                    onPressed: () async {
                       if (_formKey.currentState.validate()) {
-                        sendMail();
+                        //CODE FOR SENDING CONFIRMATION, WILL OPEN IN FUTURE
+                        /*sendMail();
                         setState(() {
                           return showDialog(
                               context: context,
@@ -177,7 +215,7 @@ class LoginState extends State<Login> {
                                                       Profile(model)));
                                         } else {
                                           return Toast.show(
-                                              'Code Does not  Match', context,
+                                              'Code does not match', context,
                                               duration: Toast.LENGTH_LONG);
                                         }
                                       },
@@ -185,11 +223,39 @@ class LoginState extends State<Login> {
                                   ],
                                 );
                               });
-                        });
+                        });*/
+
+                        FocusScopeNode currentFocus = FocusScope.of(context);
+
+                        if (!currentFocus.hasPrimaryFocus) {
+                          currentFocus.unfocus();
+                        }
+
+                        phoneNumber = '$countrycode$phoneNumber';
+                        print('Email: ${_mailController.text} '
+                            '\n Number: ${phoneNumber} '
+                            '\n Password: ${_passwordNumberController.text}');
+                        if (emailfieldEnabled) {
+                          Map<String, dynamic> response =
+                              await CustomerLoginRequest.loginCustomer(
+                                  _mailController.text.trim(),
+                                  _passwordNumberController.text.trim(),
+                                  'email');
+                          gotoMapScreen(response);
+                        } else if (numberfieldEnabled) {
+                          Map<String, dynamic> response =
+                              await CustomerLoginRequest.loginCustomer(
+                                  phoneNumber,
+                                  _passwordNumberController.text.trim(),
+                                  'phone');
+
+                          gotoMapScreen(response);
+                        }
                       }
                     },
                     child: Text("S U B M I T",
                         style: GoogleFonts.rakkas(color: Colors.white))),
+                SizedBox(height: 22.0),
                 RichText(
                   text: TextSpan(
                       text: 'Don\'t have account?',
@@ -205,7 +271,7 @@ class LoginState extends State<Login> {
                             recognizer: TapGestureRecognizer()
                               ..onTap = () {
                                 Navigator.pushReplacementNamed(
-                                    context, '/mapscreen');
+                                    context, '/registration');
                               }),
                       ]),
                 ),
@@ -217,15 +283,52 @@ class LoginState extends State<Login> {
     );
   }
 
+  gotoMapScreen(Map<String, dynamic> response) {
+    print('This is Response: $response');
+    if (response['success'] == true) {
+      saveConfigToSharedPref(response);
+      Navigator.pushNamed(context, '/mapscreen');
+    } else {
+      Toast.show("Invalid Email/Phone or Password", context,
+          duration: Toast.LENGTH_LONG);
+    }
+  }
+
+  saveConfigToSharedPref(Map<String, dynamic> response) async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+
+    sharedPreferences.setString('cEmail', response['data']['cust_email'].toString());
+    sharedPreferences.setString('cPhone', response['data']['cust_phone'].toString());
+    sharedPreferences.setString('cName', response['data']['cust_name'].toString());
+    print("Print value: ${sharedPreferences.getString('cEmail')}");
+    print("Print value: ${sharedPreferences.getString('cPhone')}");
+    print("Print value: ${sharedPreferences.getString('cName')}");
+  }
+
+  getConfigFromSharedPref() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    print("Print value: ${sharedPreferences.getString('cEmail')}");
+    print("Print value: ${sharedPreferences.getString('cPhone')}");
+    print("Print value: ${sharedPreferences.getString('cName')}");
+    if(sharedPreferences.getString('cEmail') != null &&
+        sharedPreferences.getString('cPhone') != null &&
+        sharedPreferences.getString('cName') != null) {
+      //print('getting here');
+      Navigator.pushNamed(context, '/mapscreen');
+    }else{
+      //print(' here');
+    }
+  }
+
   //Email validator
   String _validateEmail(String value) {
     Pattern pattern =
         r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
     RegExp regex = new RegExp(pattern);
-    if (value.isEmpty) {
+    if (value.isEmpty && emailfieldEnabled == true) {
       return "Mail can't be empty";
     }
-    if (!regex.hasMatch(value))
+    if (!regex.hasMatch(value.trim()) && emailfieldEnabled == true)
       return 'Insert Valid Email';
     else
       return null;
@@ -240,7 +343,7 @@ class LoginState extends State<Login> {
   Future sendMail() async {
     String userName = 'abdulrahman369888@gmail.com';
     String password = 'arsain778866';
-    // ignore: deprecated_member_use
+
     final smtpServer = gmail(userName, password);
     String _mail = _mailController.text.toString();
     final message = Message()
@@ -271,7 +374,6 @@ class LoginState extends State<Login> {
         print('problems: ${p.code}: ${p.msg}');
       }
     }
-
 
     var connection = PersistentConnection(smtpServer);
     await connection.send(message);
