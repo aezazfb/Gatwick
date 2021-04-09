@@ -131,10 +131,10 @@ class MapState with ChangeNotifier {
   }
 
   //----->GET LAT LANG FROM ADDRESS
-  details(String value, bool flage) async {
+  details(String value, bool flage,int flag) async {
     print("Selected Location Name: $value");
     Map<String, dynamic> map =
-        await locationDetails.getLocationDetails(value, flage);
+        await LocationDetails.getLocationDetails(value, flage, flag);
     LatLng latLng = LatLng(
         map['Placedetails']['lattitude'], map['Placedetails']['longitude']);
     CameraPosition cameraPosition = new CameraPosition(

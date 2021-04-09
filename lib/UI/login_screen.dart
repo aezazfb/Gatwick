@@ -3,6 +3,7 @@ import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:mailer/smtp_server.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zippy_rider/models/login_model.dart';
@@ -19,7 +20,6 @@ class Login extends StatefulWidget {
   }
 }
 
-
 class LoginState extends State<Login> {
   final _formKey = GlobalKey<FormState>();
   Model model = Model();
@@ -28,161 +28,246 @@ class LoginState extends State<Login> {
   TextEditingController _passwordNumberController = new TextEditingController();
   TextEditingController _confirmController = new TextEditingController();
 
+  Future<bool> future;
+
   // Generates Random Number
   int randomPIN = Random().nextInt(10009);
-  String countrycode, phoneNumber;
+  String countrycode = '', phoneNumber='';
   bool emailfieldEnabled = true, numberfieldEnabled = true;
-
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    getConfigFromSharedPref();
+    //getConfigFromSharedPref();
+    future = getConfigFromSharedPref();
   }
 
   @override
   Widget build(BuildContext context) {
     var inputValue;
     String code = randomPIN.toString();
-    return Scaffold(
-      body: ListView(
-        padding: EdgeInsets.all(30.0),
-        children: [
-          Form(
-            key: _formKey,
-            child: Column(
-              children: [
-                Image.asset("assets/images/logo2.webp",
-                    height: 150, width: 150),
-                SizedBox(height: 10),
-                //Text Form field for Name
-                Text("LOGIN",
-                    style: GoogleFonts.montserrat(
-                        fontSize: 30.0, color: util.primaryColor)),
-                SizedBox(height: 20),
+    return SafeArea(
+      child: Scaffold(
+          body:
+              /*FutureBuilder(
+              future: getConfigFromSharedPref(),
+              builder: (BuildContext context, AsyncSnapshot snapshot) {
+                if (snapshot.connectionState == ConnectionState.done) {
+                  if (snapshot.data == null) {
+                    return Text('no data');
+                  } else {
+                    return Text('data present ${snapshot.data}');
+                  }
+                } else if (snapshot.connectionState ==
+                    ConnectionState.waiting) {
+                  return Text('Error'); // error
+                } else if (snapshot.connectionState == ConnectionState.active) {
+                  return Text('Active'); // error
+                } else if (snapshot.connectionState == ConnectionState.none) {
+                  return Text('None'); // error
+                } else {
+                  return CircularProgressIndicator(); // loading
+                }
+              })*/
+              FutureBuilder(
+                  future: future, //getConfigFromSharedPref(),
+                  builder: (context, AsyncSnapshot<bool> snapshot) {
+                    print('snapshot 0: ${snapshot.hasData}');
+                    print('snapshot 00: ${snapshot.hasError}');
+                    print('snapshot 000: ${snapshot.data}');
 
-                //Text Form field for Number
-                TextFormField(
-                    controller: _phoneNumberController,
-                    onChanged: (String value) {
-                      if (value.length > 0) {
-                        phoneNumber = value.trim();
-                        setState(() {
-                          emailfieldEnabled = false;
+                    if (snapshot.connectionState == ConnectionState.done) {
+                      if (snapshot.data == false) {
+                        print('Called again');
+                        return LoginScreen();
+                      } else if (snapshot.data == true) {
+                        WidgetsBinding.instance.addPostFrameCallback((_) {
+                          countrycode = '';
+                          phoneNumber = '';
+                          Navigator.pushNamed(context, '/mapscreen');
                         });
+                        //return Text('data present ${snapshot.data}');
+                        return Center(
+                          child: Container(
+                            child: CircularProgressIndicator(),
+                          ),
+                        );
                       } else {
-                        setState(() {
-                          emailfieldEnabled = true;
-                        });
+                        return Text('Failed To Load Anything');
                       }
-                    },
-                    enabled: numberfieldEnabled,
-                    keyboardType: TextInputType.number,
-                    decoration: InputDecoration(
-                        contentPadding: EdgeInsets.all(5.0),
-                        prefixIcon: CountryCodePicker(
-                            onChanged: (value) {
-                              print('changedvalue $value');
-                              countrycode = value.toString();
-                            },
-                            // Initial selection and favorite can be one of code ('IT') OR dial_code('+39')
-                            initialSelection: 'PK',
-                            favorite: ['+92', 'PK'],
-                            //countryFilter: ['PK', 'GB','US'],
-                            showFlagDialog: true,
-                            //comparator: (a, b) => b.name.compareTo(a.name),
-                            //Get the country information relevant to the initial selection
-                            onInit: (code) {
-                              //print("on init ${code.name} ${code.dialCode}"),
-                              countrycode = code.toString();
-                            }),
-                        labelText: "Number",
-                        hintText: "0123 1231231",
-                        fillColor: Colors.black26,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                        )),
-                    validator: (value) {
-                      print('Value Length: ${value.length}');
-                      if (value.isEmpty && numberfieldEnabled == true) {
-                        return "Phone number can't be empty ";
-                      }
-                      if (value.length < 10 && numberfieldEnabled == true) {
-                        return "insert a valid number";
-                      }
-                      {
-                        _formKey.currentState.save();
-                        return null;
-                      }
-                    }),
-                SizedBox(height: 12.0),
-                Text('OR'),
-                SizedBox(height: 12.0),
-                //Text Form field for EMail
-                TextFormField(
-                  controller: _mailController,
+                    } else if (snapshot.connectionState ==
+                        ConnectionState.waiting) {
+                      print('Called waiting');
+                      return Center(
+                        child: Container(
+                          child: CircularProgressIndicator(),
+                        ),
+                      );
+                    } else {
+                      return Text('Failed To Load Anything'); // loading
+                    }
+
+                    /*if (snapshot.hasData != true) {
+                      print('snapshot 1: ${snapshot.data}');
+                      return Center(
+                        child: Container(
+                          child: CircularProgressIndicator(),
+                        ),
+                      );
+                    } else if (snapshot.hasData == true) {
+                      print('snapshot 2: ${snapshot.data}');
+                      return LoginScreen();
+                    } else if (snapshot.hasError) {
+                      return Center(
+                        child: Container(
+                          child: CircularProgressIndicator(),
+                        ),
+                      );
+                    } else {
+                      return null;
+                    }*/
+                  })),
+    );
+  }
+
+  Widget LoginScreen() {
+    return ListView(
+      padding: EdgeInsets.all(30.0),
+      children: [
+        Form(
+          key: _formKey,
+          child: Column(
+            children: [
+              Image.asset("assets/images/logo2.webp", height: 150, width: 150),
+              SizedBox(height: 10),
+              //Text Form field for Name
+              Text("LOGIN",
+                  style: GoogleFonts.montserrat(
+                      fontSize: 30.0, color: util.primaryColor)),
+              SizedBox(height: 20),
+
+              //Text Form field for Number
+              TextFormField(
+                  controller: _phoneNumberController,
                   onChanged: (String value) {
                     if (value.length > 0) {
+                      phoneNumber = value.trim();
                       setState(() {
-                        numberfieldEnabled = false;
+                        emailfieldEnabled = false;
                       });
                     } else {
                       setState(() {
-                        numberfieldEnabled = true;
+                        emailfieldEnabled = true;
                       });
                     }
                   },
-                  enabled: emailfieldEnabled,
-                  // controller: mailController,
+                  enabled: numberfieldEnabled,
+                  keyboardType: TextInputType.number,
                   decoration: InputDecoration(
-                    contentPadding: EdgeInsets.all(5.0),
-                    prefixIcon: Icon(Icons.mail),
-                    labelText: "E-mail",
-                    hintText: "Insert your email here",
-                    fillColor: Colors.black26,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
+                      contentPadding: EdgeInsets.all(5.0),
+                      prefixIcon: CountryCodePicker(
+                          onChanged: (value) {
+                            print('changedvalue $value');
+                            countrycode = value.toString();
+                          },
+                          // Initial selection and favorite can be one of code ('IT') OR dial_code('+39')
+                          initialSelection: 'PK',
+                          favorite: ['+92', 'PK'],
+                          //countryFilter: ['PK', 'GB','US'],
+                          showFlagDialog: true,
+                          //comparator: (a, b) => b.name.compareTo(a.name),
+                          //Get the country information relevant to the initial selection
+                          onInit: (code) {
+                            //print("on init ${code.name} ${code.dialCode}"),
+                            countrycode = code.toString();
+                          }),
+                      labelText: "Number",
+                      hintText: "0123 1231231",
+                      fillColor: Colors.black26,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                      )),
+                  validator: (value) {
+                    print('Value Length: ${value.length}');
+                    if (value.isEmpty && numberfieldEnabled == true) {
+                      return "Phone number can't be empty ";
+                    }
+                    if (value.length < 10 && numberfieldEnabled == true) {
+                      return "insert a valid number";
+                    }
+                    {
+                      _formKey.currentState.save();
+                      return null;
+                    }
+                  }),
+              SizedBox(height: 12.0),
+              Text('OR'),
+              SizedBox(height: 12.0),
+              //Text Form field for EMail
+              TextFormField(
+                controller: _mailController,
+                onChanged: (String value) {
+                  if (value.length > 0) {
+                    setState(() {
+                      numberfieldEnabled = false;
+                    });
+                  } else {
+                    setState(() {
+                      numberfieldEnabled = true;
+                    });
+                  }
+                },
+                enabled: emailfieldEnabled,
+                // controller: mailController,
+                decoration: InputDecoration(
+                  contentPadding: EdgeInsets.all(5.0),
+                  prefixIcon: Icon(Icons.mail),
+                  labelText: "E-mail",
+                  hintText: "Insert your email here",
+                  fillColor: Colors.black26,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.0),
                   ),
-                  validator: _validateEmail,
                 ),
-                SizedBox(height: 50.0),
+                validator: _validateEmail,
+              ),
+              SizedBox(height: 50.0),
 
-                //Text Form field for Mail
-                TextFormField(
-                    controller: _passwordNumberController,
-                    onSaved: (String value) {
-                      model.password = value;
-                    },
-                    obscureText: true,
-                    decoration: InputDecoration(
-                        prefixIcon: Icon(Icons.lock),
-                        contentPadding: EdgeInsets.all(5.0),
-                        labelText: "Password",
-                        hintText: "",
-                        fillColor: Colors.black26,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                        )),
-                    validator: (value) {
-                      if (value.isEmpty) {
-                        return "password is empty ..! ";
-                      }
-                      if (value.length < 8) {
-                        return " Invalid Password ";
-                      } else {
-                        return null;
-                      }
-                    }),
-                SizedBox(height: 12.0),
+              //Text Form field for Mail
+              TextFormField(
+                  controller: _passwordNumberController,
+                  onSaved: (String value) {
+                    model.password = value;
+                  },
+                  obscureText: true,
+                  decoration: InputDecoration(
+                      prefixIcon: Icon(Icons.lock),
+                      contentPadding: EdgeInsets.all(5.0),
+                      labelText: "Password",
+                      hintText: "",
+                      fillColor: Colors.black26,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                      )),
+                  validator: (value) {
+                    if (value.isEmpty) {
+                      return "password is empty ..! ";
+                    }
+                    if (value.length < 8) {
+                      return " Invalid Password ";
+                    } else {
+                      return null;
+                    }
+                  }),
+              SizedBox(height: 12.0),
 
-                FlatButton(
-                    color: util.primaryColor,
-                    onPressed: () async {
-                      if (_formKey.currentState.validate()) {
-                        //CODE FOR SENDING CONFIRMATION, WILL OPEN IN FUTURE
-                        /*sendMail();
+              FlatButton(
+                  color: util.primaryColor,
+                  onPressed: () async {
+                    if (_formKey.currentState.validate()) {
+                      //CODE FOR SENDING CONFIRMATION, WILL OPEN IN FUTURE
+                      /*sendMail();
                         setState(() {
                           return showDialog(
                               context: context,
@@ -225,61 +310,60 @@ class LoginState extends State<Login> {
                               });
                         });*/
 
-                        FocusScopeNode currentFocus = FocusScope.of(context);
+                      FocusScopeNode currentFocus = FocusScope.of(context);
 
-                        if (!currentFocus.hasPrimaryFocus) {
-                          currentFocus.unfocus();
-                        }
-
-                        phoneNumber = '$countrycode$phoneNumber';
-                        print('Email: ${_mailController.text} '
-                            '\n Number: ${phoneNumber} '
-                            '\n Password: ${_passwordNumberController.text}');
-                        if (emailfieldEnabled) {
-                          Map<String, dynamic> response =
-                              await CustomerLoginRequest.loginCustomer(
-                                  _mailController.text.trim(),
-                                  _passwordNumberController.text.trim(),
-                                  'email');
-                          gotoMapScreen(response);
-                        } else if (numberfieldEnabled) {
-                          Map<String, dynamic> response =
-                              await CustomerLoginRequest.loginCustomer(
-                                  phoneNumber,
-                                  _passwordNumberController.text.trim(),
-                                  'phone');
-
-                          gotoMapScreen(response);
-                        }
+                      if (!currentFocus.hasPrimaryFocus) {
+                        currentFocus.unfocus();
                       }
-                    },
-                    child: Text("S U B M I T",
-                        style: GoogleFonts.rakkas(color: Colors.white))),
-                SizedBox(height: 22.0),
-                RichText(
-                  text: TextSpan(
-                      text: 'Don\'t have account?',
-                      style: TextStyle(color: util.primaryColor, fontSize: 20),
-                      children: [
-                        TextSpan(
-                            text: 'Register',
-                            style: TextStyle(
-                              decoration: TextDecoration.underline,
-                              color: Colors.amber,
-                              fontSize: 22,
-                            ),
-                            recognizer: TapGestureRecognizer()
-                              ..onTap = () {
-                                Navigator.pushReplacementNamed(
-                                    context, '/registration');
-                              }),
-                      ]),
-                ),
-              ],
-            ),
+
+                      phoneNumber = '$countrycode$phoneNumber';
+                      print('Email: ${_mailController.text} '
+                          '\n Number: ${phoneNumber} '
+                          '\n Password: ${_passwordNumberController.text}');
+                      if (emailfieldEnabled) {
+                        Map<String, dynamic> response =
+                            await CustomerLoginRequest.loginCustomer(
+                                _mailController.text.trim(),
+                                _passwordNumberController.text.trim(),
+                                'email');
+                        gotoMapScreen(response);
+                      } else if (numberfieldEnabled) {
+                        Map<String, dynamic> response =
+                            await CustomerLoginRequest.loginCustomer(
+                                phoneNumber,
+                                _passwordNumberController.text.trim(),
+                                'phone');
+
+                        gotoMapScreen(response);
+                      }
+                    }
+                  },
+                  child: Text("S U B M I T",
+                      style: GoogleFonts.rakkas(color: Colors.white))),
+              SizedBox(height: 22.0),
+              RichText(
+                text: TextSpan(
+                    text: 'Don\'t have account?',
+                    style: TextStyle(color: util.primaryColor, fontSize: 20),
+                    children: [
+                      TextSpan(
+                          text: 'Register',
+                          style: TextStyle(
+                            decoration: TextDecoration.underline,
+                            color: Colors.amber,
+                            fontSize: 22,
+                          ),
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () {
+                              Navigator.pushReplacementNamed(
+                                  context, '/registration');
+                            }),
+                    ]),
+              ),
+            ],
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
@@ -297,26 +381,29 @@ class LoginState extends State<Login> {
   saveConfigToSharedPref(Map<String, dynamic> response) async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
 
-    sharedPreferences.setString('cEmail', response['data']['cust_email'].toString());
-    sharedPreferences.setString('cPhone', response['data']['cust_phone'].toString());
-    sharedPreferences.setString('cName', response['data']['cust_name'].toString());
-    print("Print value: ${sharedPreferences.getString('cEmail')}");
+    sharedPreferences.setString(
+        'cEmail', response['data']['cust_email'].toString());
+    sharedPreferences.setString(
+        'cPhone', response['data']['cust_phone'].toString());
+    sharedPreferences.setString(
+        'cName', response['data']['cust_name'].toString());
+    /*print("Print value: ${sharedPreferences.getString('cEmail')}");
     print("Print value: ${sharedPreferences.getString('cPhone')}");
-    print("Print value: ${sharedPreferences.getString('cName')}");
+    print("Print value: ${sharedPreferences.getString('cName')}");*/
   }
 
-  getConfigFromSharedPref() async {
+  Future<bool> getConfigFromSharedPref() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     print("Print value: ${sharedPreferences.getString('cEmail')}");
     print("Print value: ${sharedPreferences.getString('cPhone')}");
     print("Print value: ${sharedPreferences.getString('cName')}");
-    if(sharedPreferences.getString('cEmail') != null &&
+    if (sharedPreferences.getString('cEmail') != null &&
         sharedPreferences.getString('cPhone') != null &&
         sharedPreferences.getString('cName') != null) {
-      //print('getting here');
-      Navigator.pushNamed(context, '/mapscreen');
-    }else{
-      //print(' here');
+      //Navigator.pushNamed(context, '/mapscreen');
+      return true;
+    } else {
+      return false;
     }
   }
 

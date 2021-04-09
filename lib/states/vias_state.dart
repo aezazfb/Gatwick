@@ -39,9 +39,9 @@ class ViasState with ChangeNotifier {
   // }
 
 
-  viasDetails(String value, bool flage) async {
+  viasDetails(String value, bool flage, int flag) async {
     Map<String, dynamic> map =
-        await locationDetails.getLocationDetails(value, flage);
+        await LocationDetails.getLocationDetails(value, flage, flag);
     LatLng latLng = LatLng(
         map['Placedetails']['lattitude'], map['Placedetails']['longitude']);
     viasLatLongList.add(latLng);

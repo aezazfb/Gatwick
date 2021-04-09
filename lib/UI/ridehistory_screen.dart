@@ -44,10 +44,10 @@ class _RideHistoryState extends State<RideHistory> {
                       topLeft: Radius.circular(15)),
                 ),
                 tabs: [
-              Tab(text: 'BOOKED'),
-              Tab(text: 'COMPLETED'),
-              Tab(text: 'CANCELLED'),
-            ]),
+                  Tab(text: 'BOOKED'),
+                  Tab(text: 'COMPLETED'),
+                  Tab(text: 'CANCELLED'),
+                ]),
           ),
           body: Builder(
             builder: (context) => TabBarView(children: [
@@ -56,57 +56,83 @@ class _RideHistoryState extends State<RideHistory> {
                   builder: (BuildContext buildContext,
                       AsyncSnapshot<List<BookingModel>> snapshot) {
                     if (snapshot.hasError) {
-                      WidgetsBinding.instance.addPostFrameCallback((_){
-                        ScaffoldMessenger.of(context).showSnackBar(new SnackBar(
+                      WidgetsBinding.instance.addPostFrameCallback((_) {
+                        /*ScaffoldMessenger.of(context).showSnackBar(new SnackBar(
                           content: new Text('Loading Data Error'),
-                        ));
+                        ));*/
+                        getDefaultColumn('booked');
                       });
                       return Text('Got Error');
                     }
                     return snapshot.hasData
-                        ? getListView(rideHistoryState.bookedBookingHistoryList,'booked'
-                        ,editDetails: true, viewDetails: false, review: false)
-                        : getDefaultColumn('booked');
+                        ? getListView(
+                            rideHistoryState.bookedBookingHistoryList, 'booked',
+                            editDetails: true,
+                            viewDetails: false,
+                            review: false)
+                        : displayProgressBar();
                   }),
               FutureBuilder(
                   future: rideHistoryState.getcompletedHistory(),
                   builder: (BuildContext buildContext,
                       AsyncSnapshot<List<BookingModel>> snapshot) {
                     if (snapshot.hasError) {
-                      WidgetsBinding.instance.addPostFrameCallback((_){
+                      WidgetsBinding.instance.addPostFrameCallback((_) {
                         // Add Your Code here.
-                        ScaffoldMessenger.of(context).showSnackBar(new SnackBar(
+                        /*ScaffoldMessenger.of(context).showSnackBar(new SnackBar(
                           content: new Text('Loading Data Error'),
-                        ));
+                        ));*/
+                        getDefaultColumn('completed');
                       });
                       return Text('Got Error');
                     }
                     return snapshot.hasData
-                        ? getListView(rideHistoryState.completedBookingHistoryList,'completed',
-                        editDetails: true, viewDetails: true, review: true)
-                        : getDefaultColumn('completed');
+                        ? getListView(
+                            rideHistoryState.completedBookingHistoryList,
+                            'completed',
+                            editDetails: true,
+                            viewDetails: true,
+                            review: true)
+                        : displayProgressBar();
                   }),
               FutureBuilder(
                   future: rideHistoryState.getcancelledHistory(),
                   builder: (BuildContext buildContext,
                       AsyncSnapshot<List<BookingModel>> snapshot) {
                     if (snapshot.hasError) {
-                      WidgetsBinding.instance.addPostFrameCallback((_){
+                      WidgetsBinding.instance.addPostFrameCallback((_) {
                         // Add Your Code here.
-                        ScaffoldMessenger.of(context).showSnackBar(new SnackBar(
+                        /*ScaffoldMessenger.of(context).showSnackBar(new SnackBar(
                           content: new Text('Loading Data Error'),
-                        ));
+                        ));*/
+                        getDefaultColumn('cancelled');
                       });
                       return Text('Got Error');
                     }
                     return snapshot.hasData
-                        ? getListView(rideHistoryState.cancelledBookingHistoryList,'cancelled',
-                        editDetails: false,viewDetails: true, review: true)
-                        : getDefaultColumn('cancelled');
+                        ? getListView(
+                            rideHistoryState.cancelledBookingHistoryList,
+                            'cancelled',
+                            editDetails: false,
+                            viewDetails: true,
+                            review: true)
+                        : displayProgressBar();
                   }),
             ]),
           )),
     );
+  }
+
+  Widget displayProgressBar() {
+    return Center(
+        child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        CircularProgressIndicator(),
+        SizedBox(height: 10),
+        Text('Please wait...')
+      ],
+    ));
   }
 
   Widget getDefaultColumn(String value) {
@@ -119,8 +145,8 @@ class _RideHistoryState extends State<RideHistory> {
     );
   }
 
-  Widget getListView(List<BookingModel> selectedBookingList,String status
-      ,{bool editDetails, bool viewDetails, bool review}) {
+  Widget getListView(List<BookingModel> selectedBookingList, String status,
+      {bool editDetails, bool viewDetails, bool review}) {
     return ListView.builder(
         itemCount: selectedBookingList.length,
         itemBuilder: (context, index) {
@@ -144,7 +170,10 @@ class _RideHistoryState extends State<RideHistory> {
                         Text(selectedBookingList[index].time),
                         Visibility(
                           visible: viewDetails,
-                          replacement: Container(height: 0,width: 0,),
+                          replacement: Container(
+                            height: 0,
+                            width: 0,
+                          ),
                           child: IconButton(
                             icon: Icon(Icons.article_outlined,
                                 color: Colors.blue.shade700, size: 30.0),
@@ -152,12 +181,16 @@ class _RideHistoryState extends State<RideHistory> {
                         ),
                         Visibility(
                           visible: editDetails,
-                          replacement: Container(height: 0,width: 0,),
+                          replacement: Container(
+                            height: 0,
+                            width: 0,
+                          ),
                           child: IconButton(
                             icon: Icon(Icons.create_outlined,
                                 color: Colors.orange, size: 30.0),
                             onPressed: () {
-                              Navigator.pushNamed(context, '/editbooking',arguments: selectedBookingList[index]);
+                              Navigator.pushNamed(context, '/editbooking',
+                                  arguments: selectedBookingList[index]);
                             },
                           ),
                         ),
@@ -185,7 +218,8 @@ class _RideHistoryState extends State<RideHistory> {
                     ),
                     SizedBox(height: 10),
                     Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 8.0, horizontal: 16.0),
                       child: Row(
                         children: [
                           Visibility(
@@ -228,7 +262,6 @@ class _RideHistoryState extends State<RideHistory> {
                               Text(_track),
                             ],
                           ),
-
                           Text(
                             '$status',
                             style: TextStyle(
@@ -270,7 +303,6 @@ class _RideHistoryState extends State<RideHistory> {
           );
         });
   }
-
 
   Color applicationColor() {
     return Color(0xFF8E24AA);

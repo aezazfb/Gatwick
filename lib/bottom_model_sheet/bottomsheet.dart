@@ -1,7 +1,10 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter_dropdown/flutter_dropdown.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toggle_switch/toggle_switch.dart';
@@ -32,6 +35,7 @@ class BottomModelSheet with ChangeNotifier {
   String rideDate = 'Select Date';
   String rideTime = 'Select time';
   int count = 0;
+  double jobmileage;
 
   SharedPreferences sharedPreferences;
 
@@ -88,11 +92,11 @@ class BottomModelSheet with ChangeNotifier {
                           children: [
                             Icon(Icons.monetization_on_outlined,
                                 size: 30, color: Colors.purple),
-                            Text('10000.00 ',
+                            Text('dummy ',
                                 style: TextStyle(color: Colors.black)),
                             Icon(Icons.alt_route,
                                 size: 30, color: Colors.purple),
-                            Text('$distance miles',
+                            Text('${getJobMileage(distance)} miles',
                                 style: TextStyle(color: Colors.black)),
                             Spacer(),
                             Icon(
@@ -278,13 +282,7 @@ class BottomModelSheet with ChangeNotifier {
 
                                     fillLogcList();
 
-                                    try {
-                                      double jobmileage =
-                                          double.tryParse(distance.toString());
-                                      print('jobmileage: $jobmileage');
-                                    } catch (e) {
-                                      print('Exception Caught: $e');
-                                    }
+
 
                                     BookingModel bookingModel = BookingModel(
                                         from: mapState.sourceController.text
@@ -305,8 +303,7 @@ class BottomModelSheet with ChangeNotifier {
                                         to_outcode: mapState.outcode2,
                                         fare: 2.0,
                                         drvfare: 2.0,
-                                        jobmileage: double.tryParse(
-                                            distance.toString()),
+                                        jobmileage: getJobMileage(distance),
                                         jobref: "",
                                         mstate: "",
                                         timetodespatch: 0.0,
@@ -336,7 +333,7 @@ class BottomModelSheet with ChangeNotifier {
                                         jstate: "unallocated",
                                         leadtime: 0.0,
                                         logd: null,
-                                        numofvia: 0,
+                                        numofvia: viasState.viasList.length,
                                         oldfare: 0.0,
                                         olddrvfare: 0.0,
                                         orderno: "",
@@ -345,7 +342,7 @@ class BottomModelSheet with ChangeNotifier {
                                         pin: "",
                                         callerid: "");
 
-                                    InsertBooking.insertBooking(bookingModel);
+                                    //InsertBooking.insertBooking(bookingModel);
                                     print(bookingModel.toString());
                                     print(
                                         '------------------------------------');
@@ -367,6 +364,31 @@ class BottomModelSheet with ChangeNotifier {
             );
           });
         });
+  }
+
+  //---> Preparing jobmileage Value
+  double getJobMileage(dynamic distance){
+    try {
+      jobmileage = double.tryParse(distance.toString());
+      jobmileage = shortDoubleToApprox(jobmileage, 2);
+      print('jobmileage: $jobmileage');
+      return jobmileage;
+    } catch (e) {
+      print('Exception Caught: $e');
+    }
+    return null;
+  }
+
+  //----> for Rounding long double values to approx, using it for time in above
+  double shortDoubleToApprox(double val, int places){
+    try{
+    double mod = pow(10.0, places);
+    print('${((val * mod).round().toDouble() / mod)}');
+    return ((val * mod).round().toDouble() / mod);
+    }catch(e){
+      print('exception caught on method: $e');
+      return null;
+    }
   }
 
   getConfigFromSharedPref() async {
@@ -448,8 +470,10 @@ class BottomModelSheet with ChangeNotifier {
         maxTime: DateTime(1),
         currentTime: DateTime.now(),
         locale: LocaleType.en, onConfirm: (value) {
-      rideDate = '${value.day}-${value.month}-${value.year}';
-      rideTime = '${value.hour}:${value.minute}';
+          DateFormat dateFormat = DateFormat('dd-MM-yyyy');
+          DateFormat timeFormat = DateFormat('hh:mm');
+      rideDate = '${dateFormat.format(value)}';//'${value.day}-${value.month}-${value.year}';
+      rideTime = '${timeFormat.format(value)}';//'${value.hour}:${value.minute}';
       notifyListeners();
     });
   }

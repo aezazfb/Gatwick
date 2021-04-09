@@ -130,250 +130,262 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     print('device id: $deviceId');
   }
 
+  Future<bool> onBackPressed() async{
+
+    return true;
+  }
+
   @override
   Widget build(BuildContext context) {
     var inputValue;
     String code = randomPIN.toString();
-    return Scaffold(
-      body: ListView(
-        padding: EdgeInsets.all(30.0),
-        children: [
-          Form(
-            key: _formKey,
-            child: Column(
-              children: [
-                Image.asset("assets/images/logo2.webp",
-                    height: 150, width: 150),
-                SizedBox(height: 10),
-                //Text Form field for Name
-                Text("REGISTRATION",
-                    style: GoogleFonts.montserrat(
-                        fontSize: 30.0, color: util.primaryColor)),
-                SizedBox(height: 20),
-                TextFormField(
-                  onSaved: (String value) {
-                    //model.name = value;
-                    name = value;
-                  },
-                  decoration: InputDecoration(
-                    contentPadding: EdgeInsets.all(5.0),
-                    prefixIcon: Icon(Icons.person),
-                    labelText: "Name",
-                    hintText: "Insert Name...",
-                    fillColor: Colors.black26,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                  ),
-                  validator: _validateUserName,
-                ),
-                SizedBox(height: 12.0),
-
-                //Text Form field for Number
-                TextFormField(
+    return WillPopScope(
+      onWillPop: () async{
+        print('True');
+        Navigator.popAndPushNamed(context, '/login');
+        return true;
+      },
+      child: Scaffold(
+        body: ListView(
+          padding: EdgeInsets.all(30.0),
+          children: [
+            Form(
+              key: _formKey,
+              child: Column(
+                children: [
+                  Image.asset("assets/images/logo2.webp",
+                      height: 150, width: 150),
+                  SizedBox(height: 10),
+                  //Text Form field for Name
+                  Text("REGISTRATION",
+                      style: GoogleFonts.montserrat(
+                          fontSize: 30.0, color: util.primaryColor)),
+                  SizedBox(height: 20),
+                  TextFormField(
                     onSaved: (String value) {
-                      //model.number = value;
-                      phoneNumber = value;
+                      //model.name = value;
+                      name = value;
                     },
-                    keyboardType: TextInputType.number,
                     decoration: InputDecoration(
-                        contentPadding: EdgeInsets.all(5.0),
-                        //prefixIcon: Icon(Icons.call),
-                        prefixIcon: CountryCodePicker(
-                            onChanged: (value) {
-                              print('changedvalue $value');
-                              countrycode = value.toString();
-                            },
-                            // Initial selection and favorite can be one of code ('IT') OR dial_code('+39')
-                            initialSelection: 'PK',
-                            favorite: ['+92', 'PK'],
-                            //countryFilter: ['PK', 'GB','US'],
-                            showFlagDialog: true,
-                            //comparator: (a, b) => b.name.compareTo(a.name),
-                            //Get the country information relevant to the initial selection
-                            onInit: (code) {
-                              //print("on init ${code.name} ${code.dialCode}"),
-                              countrycode = code.toString();
-                            }),
-                        labelText: "Number",
-                        hintText: "123 1231231",
-                        fillColor: Colors.black26,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                        )),
-                    validator: (value) {
-                      if (value.isEmpty) {
-                        return "Phone number can't be empty ";
-                      }
-                      if (value.length < 10) {
-                        return "insert a valid number";
-                      }
-                      if (value.length > 10) {
-                        return "insert number without leading 0 and less than 10 digits";
-                      }
-                      {
-                        _formKey.currentState.save();
-                        return null;
-                      }
-                    }),
-                SizedBox(height: 12.0),
-
-                //Text Form field for EMail
-                TextFormField(
-                  controller: _mailController,
-                  onSaved: (String value) {
-                    //model.email = value;
-                    email = value;
-                  },
-                  // controller: mailController,
-                  decoration: InputDecoration(
                       contentPadding: EdgeInsets.all(5.0),
-                      prefixIcon: Icon(Icons.mail),
-                      labelText: "E-mail",
-                      hintText: "Insert your email here",
+                      prefixIcon: Icon(Icons.person),
+                      labelText: "Name",
+                      hintText: "Insert Name...",
                       fillColor: Colors.black26,
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10.0),
-                      )),
-                  validator: _validateEmail,
-                ),
-                SizedBox(height: 12.0),
+                      ),
+                    ),
+                    validator: _validateUserName,
+                  ),
+                  SizedBox(height: 12.0),
 
-                //Text Form field for Mail
-                TextFormField(
+                  //Text Form field for Number
+                  TextFormField(
+                      onSaved: (String value) {
+                        //model.number = value;
+                        phoneNumber = value;
+                      },
+                      keyboardType: TextInputType.number,
+                      decoration: InputDecoration(
+                          contentPadding: EdgeInsets.all(5.0),
+                          //prefixIcon: Icon(Icons.call),
+                          prefixIcon: CountryCodePicker(
+                              onChanged: (value) {
+                                print('changedvalue $value');
+                                countrycode = value.toString();
+                              },
+                              // Initial selection and favorite can be one of code ('IT') OR dial_code('+39')
+                              initialSelection: 'PK',
+                              favorite: ['+92', 'PK'],
+                              //countryFilter: ['PK', 'GB','US'],
+                              showFlagDialog: true,
+                              //comparator: (a, b) => b.name.compareTo(a.name),
+                              //Get the country information relevant to the initial selection
+                              onInit: (code) {
+                                //print("on init ${code.name} ${code.dialCode}"),
+                                countrycode = code.toString();
+                              }),
+                          labelText: "Number",
+                          hintText: "123 1231231",
+                          fillColor: Colors.black26,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                          )),
+                      validator: (value) {
+                        if (value.isEmpty) {
+                          return "Phone number can't be empty ";
+                        }
+                        if (value.length < 10) {
+                          return "insert a valid number";
+                        }
+                        if (value.length > 10) {
+                          return "insert number without leading 0 and less than 10 digits";
+                        }
+                        {
+                          _formKey.currentState.save();
+                          return null;
+                        }
+                      }),
+                  SizedBox(height: 12.0),
+
+                  //Text Form field for EMail
+                  TextFormField(
+                    controller: _mailController,
                     onSaved: (String value) {
-                      //model.password = value;
-                      password = value;
+                      //model.email = value;
+                      email = value;
                     },
-                    obscureText: true,
+                    // controller: mailController,
                     decoration: InputDecoration(
                         contentPadding: EdgeInsets.all(5.0),
-                        prefixIcon: Icon(Icons.person),
-                        labelText: "Password",
-                        hintText: "",
+                        prefixIcon: Icon(Icons.mail),
+                        labelText: "E-mail",
+                        hintText: "Insert your email here",
                         fillColor: Colors.black26,
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10.0),
                         )),
-                    validator: (value) {
-                      if (value.isEmpty) {
-                        return "password is empty ..! ";
-                      }
-                      if (value.length < 8) {
-                        return " Invalid Password ";
-                      } else {
-                        return null;
-                      }
-                    }),
-                SizedBox(height: 12.0),
-
-                TextButton(
-                    //color: util.primaryColor,
-                    style: getTextButtonStyle(),
-                    onPressed: () async {
-                      _formKey.currentState.save();
-                      if (_formKey.currentState.validate()) {
-                        //sendMail();
-                        /*setState(() {
-                          return showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return AlertDialog(
-                                  title: Text("Enter Confirmation code"),
-                                  content: Form(
-                                    child: TextFormField(
-                                      controller: _confirmController,
-                                      validator: (value) {
-                                        if (value.isEmpty) {
-                                          return "Text";
-                                        } else
-                                          return null;
-                                      },
-                                    ),
-                                  ),
-                                  actions: [
-                                    TextButton(
-                                      child: Text('Confirm'),
-                                      onPressed: () {
-                                        setState(() {
-                                          inputValue = _confirmController.text
-                                              .toString();
-                                        });
-                                        if (code == inputValue) {
-                                          Navigator.of(context).push(
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      Profile(model)));
-                                        } else {
-                                          return Toast.show(
-                                              'Code does not match', context,
-                                              duration: Toast.LENGTH_LONG);
-                                        }
-                                      },
-                                    ),
-                                  ],
-                                );
-                              });
-                        });*/
-                        phoneNumber = '$countrycode$phoneNumber';
-                        print('Name: ${name} \n PhoneNumber: $phoneNumber '
-                            '\n Email: $email \n Password: $password');
-
-                        CustomerModel customerModel = CustomerModel(
-                          custEmail: email,
-                          custName: name,
-                          appname: "Divor",
-                          custPhone: phoneNumber,
-                          password: password,
-                          commStartTime: 0,
-                          commMaxValue: 0,
-                          commDownValue: 0,
-                          commEndTime: 0,
-                          commMinValue: 0,
-                          blacklist: false,
-                          source: "",
-                          agentnin: "",
-                          signupDate: DateTime.now().millisecondsSinceEpoch,
-                          fcmToken: generatedToken,
-                          custUid: deviceId,
-                        );
-
-                        bool response =
-                            await CustomerRegistrationRequest.registerCustomer(
-                                customerModel);
-                        if (response) {
-                          Toast.show(
-                              'Registration Successful, Now Login', context,
-                              duration: Toast.LENGTH_LONG);
-                          Navigator.pushNamed(context, '/login');
-                        } else if (response == false) {
-                          Toast.show('Registration Failed', context,
-                              duration: Toast.LENGTH_LONG);
-                        } else {
-                          Toast.show('Registration Error ', context,
-                              duration: Toast.LENGTH_LONG);
-                        }
-                      }
-                    },
-                    child: Text("S U B M I T",
-                        style: GoogleFonts.rakkas(color: Colors.white))),
-
-                /*TextButton(
-                  onPressed: () {
-                    print('Button Pressed');
-                    pushNotification();
-                  },
-                  child: Text('Send Notification'),
-                  style: TextButton.styleFrom(
-                    primary: Colors.white,
-                    backgroundColor: Colors.blue[800],
-                    onSurface: Colors.grey,
+                    validator: _validateEmail,
                   ),
-                ),*/
-              ],
+                  SizedBox(height: 12.0),
+
+                  //Text Form field for Mail
+                  TextFormField(
+                      onSaved: (String value) {
+                        //model.password = value;
+                        password = value;
+                      },
+                      obscureText: true,
+                      decoration: InputDecoration(
+                          contentPadding: EdgeInsets.all(5.0),
+                          prefixIcon: Icon(Icons.person),
+                          labelText: "Password",
+                          hintText: "",
+                          fillColor: Colors.black26,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                          )),
+                      validator: (value) {
+                        if (value.isEmpty) {
+                          return "password is empty ..! ";
+                        }
+                        if (value.length < 8) {
+                          return " Invalid Password ";
+                        } else {
+                          return null;
+                        }
+                      }),
+                  SizedBox(height: 12.0),
+
+                  TextButton(
+                      //color: util.primaryColor,
+                      style: getTextButtonStyle(),
+                      onPressed: () async {
+                        _formKey.currentState.save();
+                        if (_formKey.currentState.validate()) {
+                          //sendMail();
+                          /*setState(() {
+                            return showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: Text("Enter Confirmation code"),
+                                    content: Form(
+                                      child: TextFormField(
+                                        controller: _confirmController,
+                                        validator: (value) {
+                                          if (value.isEmpty) {
+                                            return "Text";
+                                          } else
+                                            return null;
+                                        },
+                                      ),
+                                    ),
+                                    actions: [
+                                      TextButton(
+                                        child: Text('Confirm'),
+                                        onPressed: () {
+                                          setState(() {
+                                            inputValue = _confirmController.text
+                                                .toString();
+                                          });
+                                          if (code == inputValue) {
+                                            Navigator.of(context).push(
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        Profile(model)));
+                                          } else {
+                                            return Toast.show(
+                                                'Code does not match', context,
+                                                duration: Toast.LENGTH_LONG);
+                                          }
+                                        },
+                                      ),
+                                    ],
+                                  );
+                                });
+                          });*/
+                          phoneNumber = '$countrycode$phoneNumber';
+                          print('Name: ${name} \n PhoneNumber: $phoneNumber '
+                              '\n Email: $email \n Password: $password');
+
+                          CustomerModel customerModel = CustomerModel(
+                            custEmail: email,
+                            custName: name,
+                            appname: "Divor",
+                            custPhone: phoneNumber,
+                            password: password,
+                            commStartTime: 0,
+                            commMaxValue: 0,
+                            commDownValue: 0,
+                            commEndTime: 0,
+                            commMinValue: 0,
+                            blacklist: false,
+                            source: "",
+                            agentnin: "",
+                            signupDate: DateTime.now().millisecondsSinceEpoch,
+                            fcmToken: generatedToken,
+                            custUid: deviceId,
+                          );
+
+                          bool response =
+                              await CustomerRegistrationRequest.registerCustomer(
+                                  customerModel);
+                          if (response) {
+                            Toast.show(
+                                'Registration Successful, Now Login', context,
+                                duration: Toast.LENGTH_LONG);
+                            Navigator.pushNamed(context, '/login');
+                          } else if (response == false) {
+                            Toast.show('Registration Failed', context,
+                                duration: Toast.LENGTH_LONG);
+                          } else {
+                            Toast.show('Registration Error ', context,
+                                duration: Toast.LENGTH_LONG);
+                          }
+                        }
+                      },
+                      child: Text("S U B M I T",
+                          style: GoogleFonts.rakkas(color: Colors.white))),
+
+                  /*TextButton(
+                    onPressed: () {
+                      print('Button Pressed');
+                      pushNotification();
+                    },
+                    child: Text('Send Notification'),
+                    style: TextButton.styleFrom(
+                      primary: Colors.white,
+                      backgroundColor: Colors.blue[800],
+                      onSurface: Colors.grey,
+                    ),
+                  ),*/
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -403,6 +415,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   String _validateUserName(String value) {
     return value.trim().isEmpty ? "Name can't be empty" : null;
   }
+
+
 
   //Mailer for sending mail to user
   Future sendMail() async {

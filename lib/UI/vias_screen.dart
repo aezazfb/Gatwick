@@ -14,6 +14,7 @@ class AddVias extends StatefulWidget {
 
 class AddViasState extends State<AddVias> {
   bool flage = false;
+  int flag = -1;
   var heightFactor = 0.0;
   String listTitle = '';
 
@@ -29,6 +30,7 @@ class AddViasState extends State<AddVias> {
         searchButtonIcon: Icon(Icons.location_searching_rounded, size: 30),
         onChanged: (value) {
           flage = false;
+          flag = 7;
           viasState.viaSuggestion(value);
         },
         onBackPressed: () {
@@ -66,6 +68,7 @@ class AddViasState extends State<AddVias> {
                 controller: mapState.sourceController,
                 onChanged: (bool) {
                   flage = true;
+                  flag = 0;
                   heightFactor = 80;
                   mapState.suggestions(bool);
                 },
@@ -124,6 +127,7 @@ class AddViasState extends State<AddVias> {
               child: TextField(
                 onChanged: (bool) {
                   flage = false;
+                  flag = 1;
                   mapState.suggestions(bool);
                   heightFactor = 150;
                 },
@@ -247,14 +251,14 @@ class AddViasState extends State<AddVias> {
                                     mapState.suggestion[index].toString();
                                 mapState.details(
                                     mapState.suggestion[index].toString(),
-                                    flage);
+                                    flage,flag);
                               }
                               if (flage == false) {
                                 mapState.destinationController.text =
                                     mapState.suggestion[index].toString();
                                 mapState.details(
                                     mapState.suggestion[index].toString(),
-                                    flage);
+                                    flage,flag);
                               }
                               mapState.clearfields();
                               mapState.clearSuggestion();
@@ -299,14 +303,14 @@ class AddViasState extends State<AddVias> {
                                     .viasSuggestionList[index]
                                     .toString());
                               } else {
-                                Toast.show('You Can not add more than 7 vias ',
+                                Toast.show('You can not add more than 7 vias ',
                                     context,
                                     duration: Toast.LENGTH_LONG);
                               }
                               viasState.viasDetails(
                                   viasState.viasSuggestionList[index]
                                       .toString(),
-                                  flage);
+                                  flage, flag);
                               setState(() {
                                 viasState.viasSuggestionList.clear();
                               });

@@ -1,14 +1,15 @@
+import 'dart:math';
+
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:zippy_rider/models/places_info_details.dart';
 
-
 class LocationDetails {
-  List<Map<String, dynamic>> params = [];
+  static List<Map<String, dynamic>> params = [];
   Map<String, dynamic> point = {};
   List placesDetails = <Placedetails>[];
 
-  getLocationDetails(String value, bool flage) async {
+  static getLocationDetails(String value, bool flage, int flag) async {
     Map mapResponse;
     var url = 'http://testing.thedivor.com/Home/PlaceInfo?place=$value';
     print('Places info url\n ');
@@ -29,15 +30,33 @@ class LocationDetails {
       "city": map['Placedetails']['city'],
       "longitude": map['Placedetails']['longitude'],
     };
-    if (flage == true || params.length == 0) {
+    /* if (flage == true ) { //|| params.length == 0
+
       params.insert(0, point);
+      print('PrintHere $params');
+    }*/
+    if (flag == 0) {
+      //|| params.length == 0
+      params.insert(0, point);
+      print('PrintHere0 $params');
     }
-    if (flage == true || params.length != 0) {
+    if (flag == 1) {
       params.insert(1, point);
+      print('PrintHere1 $params');
     }
-    if (flage == false) {
+    if (flag == 7) {
+      print('PrintHere7 $params');
       params.add(point);
     }
+    /*if (flage == true || params.length != 0) {
+
+      params.insert(1, point);
+      print('PrintHere1 $params');
+    }*/
+    /*if (flage == false) {
+      params.add(point);
+      print('PrintHere2 $params');
+    }*/
 
     //Distance time Time Test Calculation.
 
@@ -87,7 +106,9 @@ class LocationDetails {
 
 //----> Calculate Time and Distance
   getTimeDistance() async {
+    print("P\n${jsonEncode(params)}");
     print("________\n${params.length}");
+    print("Parameters\n${params.toString()}");
     List list = [];
     final req =
         await http.post('http://testing.thedivor.com/api/API/GetDistance',
@@ -97,10 +118,31 @@ class LocationDetails {
             body: jsonEncode(params));
     if (req.statusCode == 200) {
       Map a = jsonDecode(req.body);
-      print('Distance: ${a['distance']} \n Time: ${a['time']}');
-      list.add(a['distance']);
-      list.add(a['time']);
+      print('Before - Distance: ${a['distance']} \n Time: ${a['time']}');
+
+      try {
+        list.add(a['distance']);
+        list.add(a['time']);
+        //list.add(shortDoubleToApprox(a['time'], 2));
+        /*print(
+            'After - Distance: ${a['distance']} \n Time: ${shortDoubleToApprox(
+                a['time'], 2)}');*/
+      } catch (e) {
+        print("exception caught: $e");
+      }
     }
     return list;
   }
+/*
+  //----> for Rounding long double values to approx, using it for time in above
+  dynamic shortDoubleToApprox(double val, int places){
+    try{
+    double mod = pow(10.0, places);
+    print('${((val * mod).round().toDouble() / mod)}');
+    return ((val * mod).round().toDouble() / mod);
+    }catch(e){
+      print('exception caught on method: $e');
+      return null;
+    }
+  }*/
 }
