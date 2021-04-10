@@ -44,6 +44,7 @@ class AddViasState extends State<AddVias> {
       ),
       body: Stack(
         children: [
+
           //---->Pick Up Text Field
           Positioned(
             top: 10,
@@ -90,7 +91,7 @@ class AddViasState extends State<AddVias> {
                       ),
                       onPressed: () {
                         Marker markers = mapState.marker.firstWhere(
-                            (p) => p.markerId == MarkerId('true'),
+                            (p) => p.markerId == MarkerId('0'),
                             orElse: () => null);
                         mapState.marker.remove(markers);
                         mapState.sourceController.clear();
@@ -105,6 +106,7 @@ class AddViasState extends State<AddVias> {
               ),
             ),
           ),
+
           //---->Drop Off Text Field
           Positioned(
             top: 75,
@@ -153,7 +155,7 @@ class AddViasState extends State<AddVias> {
                       ),
                       onPressed: () {
                         Marker markers = mapState.marker.firstWhere(
-                            (p) => p.markerId == MarkerId('false'),
+                            (p) => p.markerId == MarkerId('1'),
                             orElse: () => null);
                         mapState.marker.remove(markers);
                         mapState.destinationController.clear();
@@ -250,15 +252,13 @@ class AddViasState extends State<AddVias> {
                                 mapState.sourceController.text =
                                     mapState.suggestion[index].toString();
                                 mapState.details(
-                                    mapState.suggestion[index].toString(),
-                                    flage,flag);
+                                    mapState.suggestion[index].toString(),flag);
                               }
                               if (flage == false) {
                                 mapState.destinationController.text =
                                     mapState.suggestion[index].toString();
                                 mapState.details(
-                                    mapState.suggestion[index].toString(),
-                                    flage,flag);
+                                    mapState.suggestion[index].toString(),flag);
                               }
                               mapState.clearfields();
                               mapState.clearSuggestion();
@@ -309,8 +309,7 @@ class AddViasState extends State<AddVias> {
                               }
                               viasState.viasDetails(
                                   viasState.viasSuggestionList[index]
-                                      .toString(),
-                                  flage, flag);
+                                      .toString(), flag);
                               setState(() {
                                 viasState.viasSuggestionList.clear();
                               });
@@ -342,8 +341,10 @@ class AddViasState extends State<AddVias> {
                 onPressed: () {
                   for (int i = 0; i < viasState.viasLatLongList.length; i++) {
                     mapState.addMarker(
-                        viasState.viasLatLongList[i], "Via$i", flage, 90);
+                        viasState.viasLatLongList[i], "Via$i", i+2, 90);
                   }
+                  print('VIAS MARKER: ${mapState.marker}');
+
                   viasState.calculateViasDistancetime(context);
                   print('Vias List: ${viasState.viasList}');
                   print('Vias LatLng List: ${viasState.viasLatLongList}');

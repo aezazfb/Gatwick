@@ -16,7 +16,7 @@ class MapScreen extends StatefulWidget {
 }
 
 class MapScreenState extends State<MapScreen> {
-  bool flage = true;
+  //bool flage = true;
   int flag = -1;
   bool _controllerflag = true;
   var heightFactor = 0.0;
@@ -104,7 +104,7 @@ class MapScreenState extends State<MapScreen> {
                             cursorColor: Colors.black,
                             controller: mapState.sourceController,
                             onChanged: (bool) {
-                              flage = true;
+                              //flage = true;
                               flag = 0;
                               _controllerflag = true;
                               heightFactor = 100;
@@ -129,7 +129,7 @@ class MapScreenState extends State<MapScreen> {
                                   ),
                                   onPressed: () {
                                     Marker markers = mapState.marker.firstWhere(
-                                        (p) => p.markerId == MarkerId('true'),
+                                        (p) => p.markerId == MarkerId('0'),
                                         orElse: () => null);
                                     mapState.marker.remove(markers);
                                     mapState.sourceController.clear();
@@ -168,7 +168,7 @@ class MapScreenState extends State<MapScreen> {
                           ),
                           child: TextField(
                             onChanged: (bool) {
-                              flage = false;
+                              //flage = false;
                               flag = 1;
                               _controllerflag = false;
                               mapState.suggestions(bool);
@@ -196,9 +196,10 @@ class MapScreenState extends State<MapScreen> {
                                   ),
                                   onPressed: () {
                                     Marker markers = mapState.marker.firstWhere(
-                                        (p) => p.markerId == MarkerId('false'),
+                                        (p) => p.markerId == MarkerId('1'),
                                         orElse: () => null);
                                     mapState.marker.remove(markers);
+                                    print('AFTER REMOVE: ${mapState.marker}');
                                     mapState.destinationController.clear();
                                     mapState.clearfields();
                                     mapState.clearSuggestion();
@@ -317,7 +318,7 @@ class MapScreenState extends State<MapScreen> {
                                             mapState.suggestion[index].toString();
                                         mapState.details(
                                             mapState.suggestion[index].toString(),
-                                            flage,flag);
+                                            flag);
                                       }
                                       if (_controllerflag == false) {
                                         print('false selected');
@@ -325,15 +326,16 @@ class MapScreenState extends State<MapScreen> {
                                             mapState.suggestion[index].toString();
                                         print(
                                             'selected value: ${mapState.destinationController.text}');
-                                        print('flag value: $flage');
-
                                         mapState.details(
-                                            mapState.suggestion[index].toString(),
-                                            flage,flag);
+                                            mapState.suggestion[index].toString(), flag);
                                       }
-                                      mapState.suggestion.clear();
+
+                                      //mapState.suggestion.clear();
                                       mapState.clearfields();
+
+                                      print('SUGGESTION: ${mapState.suggestion}');
                                       mapState.clearSuggestion();
+                                      print('SUGGESTION: ${mapState.suggestion}');
                                     },
                                   ),
                                 );

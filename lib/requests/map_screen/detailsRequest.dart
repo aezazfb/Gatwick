@@ -9,7 +9,7 @@ class LocationDetails {
   Map<String, dynamic> point = {};
   List placesDetails = <Placedetails>[];
 
-  static getLocationDetails(String value, bool flage, int flag) async {
+  static getLocationDetails(String value, int flag) async {//, bool flage
     Map mapResponse;
     var url = 'http://testing.thedivor.com/Home/PlaceInfo?place=$value';
     print('Places info url\n ');
@@ -123,26 +123,11 @@ class LocationDetails {
       try {
         list.add(a['distance']);
         list.add(a['time']);
-        //list.add(shortDoubleToApprox(a['time'], 2));
-        /*print(
-            'After - Distance: ${a['distance']} \n Time: ${shortDoubleToApprox(
-                a['time'], 2)}');*/
+
       } catch (e) {
         print("exception caught: $e");
       }
     }
     return list;
   }
-/*
-  //----> for Rounding long double values to approx, using it for time in above
-  dynamic shortDoubleToApprox(double val, int places){
-    try{
-    double mod = pow(10.0, places);
-    print('${((val * mod).round().toDouble() / mod)}');
-    return ((val * mod).round().toDouble() / mod);
-    }catch(e){
-      print('exception caught on method: $e');
-      return null;
-    }
-  }*/
 }

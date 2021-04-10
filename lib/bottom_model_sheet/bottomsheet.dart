@@ -36,6 +36,7 @@ class BottomModelSheet with ChangeNotifier {
   String rideTime = 'Select time';
   int count = 0;
   double jobmileage;
+  String time;
 
   SharedPreferences sharedPreferences;
 
@@ -46,6 +47,7 @@ class BottomModelSheet with ChangeNotifier {
     final viasState = Provider.of<ViasState>(context, listen: false);
 
     getConfigFromSharedPref();
+    //getConvertedTime(time);
     /*
     origin,destination,o_outcode,d_outcode,o_postcode,d_postcode
     this.origin = origin;
@@ -104,7 +106,7 @@ class BottomModelSheet with ChangeNotifier {
                               size: 30,
                               color: Colors.purple,
                             ),
-                            Text('$time',
+                            Text('${getConvertedTime(time)}',//
                                 style: TextStyle(color: Colors.black)),
                             Spacer(),
                             //Icon(Icons.clean_hands_outlined,size: 40),
@@ -313,9 +315,8 @@ class BottomModelSheet with ChangeNotifier {
                                         changed: false,
                                         account: "CARD",
                                         accuser: "",
-                                        bookedby: "CustomerOnline",
-                                        comment:
-                                            "passenger = 1,checkin = 0,cabin = 0",
+                                        bookedby: util.bookedBy,
+                                        comment:"",
                                         creditcard: "tayyab.slash@gmail.com",
                                         cstate: "booked",
                                         despatchtime: 0.0,
@@ -374,12 +375,29 @@ class BottomModelSheet with ChangeNotifier {
       print('jobmileage: $jobmileage');
       return jobmileage;
     } catch (e) {
-      print('Exception Caught: $e');
+      print('Exception Caught On JobMileage: $e');
     }
     return null;
   }
 
-  //----> for Rounding long double values to approx, using it for time in above
+  //---> Preparing time Value casting to double for display on UI
+  String getConvertedTime(dynamic time){
+    try {
+      double t;
+      String value = time.toString();
+      var splitvalue = value.split(" ");
+      print('timevalue: $splitvalue');
+      t = double.tryParse(splitvalue[0].toString());
+      t = shortDoubleToApprox(t, 2);
+      print('time: ${t}');
+      return '$t ${splitvalue[1].toString()}';
+    } catch (e) {
+      print('Exception Caught on Converting Time: $e');
+    }
+    return null;
+  }
+
+  //----> for Rounding long double values to approx, using it for distance and time in above
   double shortDoubleToApprox(double val, int places){
     try{
     double mod = pow(10.0, places);

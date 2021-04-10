@@ -131,10 +131,10 @@ class MapState with ChangeNotifier {
   }
 
   //----->GET LAT LANG FROM ADDRESS
-  details(String value, bool flage,int flag) async {
+  details(String value, int flag) async {//bool flage
     print("Selected Location Name: $value");
     Map<String, dynamic> map =
-        await LocationDetails.getLocationDetails(value, flage, flag);
+        await LocationDetails.getLocationDetails(value, flag);//flage
     LatLng latLng = LatLng(
         map['Placedetails']['lattitude'], map['Placedetails']['longitude']);
     CameraPosition cameraPosition = new CameraPosition(
@@ -143,7 +143,7 @@ class MapState with ChangeNotifier {
     await mapControllerr
         .animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
 
-    if (flage == true) {
+    if (flag == 0) {
       latLangList.insert(0, latLng);
       l1 = latLangList[0];
 
@@ -153,7 +153,7 @@ class MapState with ChangeNotifier {
       outcode1 = map['Placedetails']['outcode'];
       postcode1 = map['Placedetails']['postcode'];
     }
-    if (flage == false) {
+    if (flag == 1) {
       latLangList.insert(latLangList.length, latLng);
       l2 = latLangList[latLangList.length - 1];
 
@@ -164,21 +164,22 @@ class MapState with ChangeNotifier {
       postcode2 = map['Placedetails']['postcode'];
     }
     print("_________________________________________________");
-    addMarker(latLng, value, flage, originHue);
+    addMarker(latLng, value, flag, originHue);
     notifyListeners();
   }
 
 //----> ADD MARKER ON MAP
-  addMarker(LatLng position, String _title, bool flage, double hue) async {
+  addMarker(LatLng position, String _title, int flag, double hue) async {
     _markers.add(Marker(
       visible: true,
-      markerId: MarkerId("$flage"),
+      markerId: MarkerId("$flag"),
       position: LatLng(position.latitude, position.longitude),
       icon: BitmapDescriptor.defaultMarkerWithHue(hue),
       infoWindow: InfoWindow(
         title: _title,
       ),
     ));
+    print('MARKERS: $_markers');
     notifyListeners();
   }
 
@@ -288,7 +289,7 @@ class MapState with ChangeNotifier {
                 child: Text("ORIGIN"),
                 onPressed: () async {
                   sourceController.text = name;
-                  addMarker(_centerPoints, name, true, originHue);
+                  addMarker(_centerPoints, name, 0, originHue);
                   l1 = LatLng(_centerPoints.latitude, _centerPoints.longitude);
                   // addCircle(centerPoints);
                   Navigator.pop(context);
@@ -298,7 +299,7 @@ class MapState with ChangeNotifier {
                 child: Text("DESTINATION"),
                 onPressed: () {
                   destinationController.text = name;
-                  addMarker(_centerPoints, name, false, originHue);
+                  addMarker(_centerPoints, name, 1, originHue);
                   l2 = LatLng(_centerPoints.latitude, _centerPoints.longitude);
                   Navigator.pop(context);
                 },
