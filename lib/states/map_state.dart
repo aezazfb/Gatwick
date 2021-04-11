@@ -25,6 +25,7 @@ class MapState with ChangeNotifier {
   LatLng l2 = LatLng(0.0000, 0.0000);
   String outcode1,outcode2,postcode1,postcode2;
   GoogleMapController mapControllerr;
+  Set<Marker> _wholeMarkersList = Set();
 
   bool locationServiceActive = true;
   Set<Marker> _markers = Set();
@@ -170,9 +171,15 @@ class MapState with ChangeNotifier {
 
 //----> ADD MARKER ON MAP
   addMarker(LatLng position, String _title, int flag, double hue) async {
+    var value;
+    if(flag ==7){
+      value = _title.trim();
+    }else{
+      value = flag;
+    }
     _markers.add(Marker(
       visible: true,
-      markerId: MarkerId("$flag"),
+      markerId: MarkerId("$value"),//$flag
       position: LatLng(position.latitude, position.longitude),
       icon: BitmapDescriptor.defaultMarkerWithHue(hue),
       infoWindow: InfoWindow(

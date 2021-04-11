@@ -570,4 +570,10 @@ class MapScreenState extends State<MapScreen> {
       ),
     );
   }
+
+  /*gettinglatlngbounds(){
+    LatLngBounds(
+
+    )
+  }*/
 }
