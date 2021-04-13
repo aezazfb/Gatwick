@@ -12,6 +12,7 @@ import 'package:zippy_rider/states/flight_state.dart';
 import 'package:zippy_rider/states/map_state.dart';
 import 'package:zippy_rider/states/ridehistory_state.dart';
 import 'package:zippy_rider/states/vias_state.dart';
+import 'package:zippy_rider/tempFCMCheck.dart';
 import 'UI/map_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/services.dart';
@@ -51,7 +52,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: util.primaryColor,
       ),
-      initialRoute: '/login',
+      initialRoute: '/',
       routes: {
         '/': (context) => MapScreen(),
         '/profile': (context) => Profile(model),
@@ -62,6 +63,7 @@ class MyApp extends StatelessWidget {
         '/bookinghistory': (context) => RideHistory(),
         '/editbooking': (context) => EditBooking(),
         '/registration': (context) => RegistrationScreen(),
+        '/fcmcheck' : (context) => FcmCheck(),
       },
     );
   }

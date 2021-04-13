@@ -1,22 +1,18 @@
-import 'dart:convert';
 import 'dart:math';
 
-import 'package:basic_utils/basic_utils.dart';
 import 'package:country_code_picker/country_code_picker.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:http/http.dart';
 import 'package:mailer/mailer.dart' as Message;
 import 'package:mailer/mailer.dart';
 import 'package:mailer/smtp_server.dart';
 import 'package:platform_device_id/platform_device_id.dart';
 import 'package:toast/toast.dart';
+import 'package:zippy_rider/base_class.dart';
 import 'package:zippy_rider/models/login_model.dart';
 import 'package:zippy_rider/models/CustomerModel.dart';
 import 'package:zippy_rider/requests/registration_screen/customer_registration_request.dart';
 import 'package:zippy_rider/utils/util.dart' as util;
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 class RegistrationScreen extends StatefulWidget {
   @override
@@ -40,99 +36,20 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   int randomPIN = Random().nextInt(10009);
   String name, phoneNumber, email, password, countrycode, deviceId;
 
-  FirebaseMessaging messaging = FirebaseMessaging.instance;
-  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-      FlutterLocalNotificationsPlugin();
-  String generatedToken;
-  String serverKey =
-      "AAAAYERewgI:APA91bFx4JRXZQgAeyNrFiB80hc8rLi_-s0WrElxOhMqbBdd_FYa2ZOlT0nodo6614rvbUZTn73Y9LqPFj-TYMGG5_rXER5Nk0BN9nkKajLWHFhqKvYnY1njEcLK6qn_ivxlFF4gBl9t";
 
-  getToken() {
-    messaging.getToken().then((value) {
-      assert(value != null);
-      generatedToken = value;
-      print('TOKEN: $generatedToken');
-    });
-  }
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     getDeviceUUID();
-    getToken();
-    FirebaseMessaging.instance.getInitialMessage().then((message) => {
-          if (message != null) {print("printed Initial Message: $message")}
-        });
-    var initializationSettingsAndroid =
-        AndroidInitializationSettings('@mipmap/ic_launcher');
-    var initSettings =
-        InitializationSettings(android: initializationSettingsAndroid);
-
-    flutterLocalNotificationsPlugin.initialize(initSettings);
-
-    FirebaseMessaging.onMessage.listen((event) {
-      AndroidNotification androidNotification = event.notification.android;
-      if (androidNotification != null) {
-        showNotification(event.notification.body);
-      }
-    });
-
-    FirebaseMessaging.onMessageOpenedApp.listen((event) {
-      AndroidNotification androidNotification = event.notification.android;
-      if (androidNotification != null) {
-        showNotification(event.notification.body);
-      }
-    });
-  }
-
-  showNotification(String message) async {
-    var android = AndroidNotificationDetails(
-        'channelId', 'channelName', 'channelDescription',
-        priority: Priority.high, importance: Importance.max);
-    var platform = NotificationDetails(android: android);
-    await flutterLocalNotificationsPlugin.show(
-        0, '$message', 'FCM Body', platform,
-        payload: 'This is the payload');
-  }
-
-  Future<void> pushNotification() async {
-    Map<String, String> headers = {
-      "content-type": "application/json",
-      "Authorization": "key=$serverKey",
-    };
-    if (generatedToken == null) {
-      print('Unable to send FCM message, no token exists.');
-      return null;
-    }
-    try {
-      HttpUtils.postForJson('https://fcm.googleapis.com/fcm/send',
-          body: constructFCMPayLoad(generatedToken), headers: headers);
-    } catch (e) {
-      print(e);
-    }
-  }
-
-  String constructFCMPayLoad(String generatedToken) {
-    return jsonEncode({
-      "to": "$generatedToken",
-      "token": "$generatedToken",
-      "data": {"via": "FlutterFire Cloud Messaging!!!"},
-      "notification": {
-        "title": "Hello FlutterFCM",
-        "body": "This notification is sent by fcm"
-      }
-    });
+    BaseClass baseClass;
+    baseClass.getToken();
   }
 
   getDeviceUUID() async {
     deviceId = await PlatformDeviceId.getDeviceId;
     print('device id: $deviceId');
-  }
-
-  Future<bool> onBackPressed() async{
-
-    return true;
   }
 
   @override
@@ -345,7 +262,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                             source: "",
                             agentnin: "",
                             signupDate: DateTime.now().millisecondsSinceEpoch,
-                            fcmToken: generatedToken,
+                            fcmToken: BaseClass.generatedToken,
                             custUid: deviceId,
                           );
 

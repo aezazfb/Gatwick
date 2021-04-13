@@ -1,33 +1,41 @@
 {
   "project_info": {
-    "project_number": "413463921154",
-    "project_id": "flutter-zippyrider",
-    "storage_bucket": "flutter-zippyrider.appspot.com"
+    "project_number": "976501712124",
+    "project_id": "zippyriderflutter",
+    "storage_bucket": "zippyriderflutter.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:413463921154:android:2bb39438f843f278e91d1b",
+        "mobilesdk_app_id": "1:976501712124:android:74af3f521faf2123d82379",
         "android_client_info": {
           "package_name": "com.example.zippy_rider"
         }
       },
       "oauth_client": [
         {
-          "client_id": "413463921154-pp9lshu4rlc7m10f4cqhjv2rkfblaaju.apps.googleusercontent.com",
+          "client_id": "976501712124-mt98o4npiv1ictnpjt7evm5cq1i4bpeb.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.zippy_rider",
+            "certificate_hash": "966393356e66aca0069f9cf40a5e5c2e2b85c5ec"
+          }
+        },
+        {
+          "client_id": "976501712124-jagr0vhufkpklji5o0rn7udp68n9kgte.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDonyJGWszFLl2iafRo0m6TtJH7WWOFfqM"
+          "current_key": "AIzaSyC8kdfwohBYKgXif7Srv1y3WKjM6wpZW1E"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "413463921154-pp9lshu4rlc7m10f4cqhjv2rkfblaaju.apps.googleusercontent.com",
+              "client_id": "976501712124-jagr0vhufkpklji5o0rn7udp68n9kgte.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
