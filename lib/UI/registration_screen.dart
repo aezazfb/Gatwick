@@ -14,6 +14,7 @@ import 'package:zippy_rider/models/CustomerModel.dart';
 import 'package:zippy_rider/requests/registration_screen/customer_registration_request.dart';
 import 'package:zippy_rider/utils/util.dart' as util;
 
+
 class RegistrationScreen extends StatefulWidget {
   @override
   _RegistrationScreenState createState() => _RegistrationScreenState();
@@ -26,7 +27,7 @@ class RegistrationScreen extends StatefulWidget {
   }
 }*/
 
-class _RegistrationScreenState extends State<RegistrationScreen> {
+class _RegistrationScreenState extends State<RegistrationScreen> with BaseClass{
   final _formKey = GlobalKey<FormState>();
   Model model = Model();
   TextEditingController _mailController = new TextEditingController();
@@ -43,8 +44,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     // TODO: implement initState
     super.initState();
     getDeviceUUID();
-    BaseClass baseClass;
-    baseClass.getToken();
+    getToken();
+
   }
 
   getDeviceUUID() async {
@@ -56,6 +57,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   Widget build(BuildContext context) {
     var inputValue;
     String code = randomPIN.toString();
+
     return WillPopScope(
       onWillPop: () async{
         print('True');

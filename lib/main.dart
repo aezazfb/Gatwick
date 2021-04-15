@@ -52,7 +52,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: util.primaryColor,
       ),
-      initialRoute: '/',
+      initialRoute: '/mapscreen',
       routes: {
         '/': (context) => MapScreen(),
         '/profile': (context) => Profile(model),

@@ -1,9 +1,15 @@
+import 'dart:io';
+
 import 'package:flutter/widgets.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:geolocator/geolocator.dart';
-import 'package:geocoder/geocoder.dart';
+import 'package:geolocator/geolocator.dart' as GeoLocatorPackage;
+import 'package:geocoder/geocoder.dart' as GeocoderPackage;
+import 'package:location/location.dart';
+
+//import 'package:permission_handler/permission_handler.dart' as PermissionHandler;
+//import 'package:location_permissions/location_permissions.dart' as lpPackage;
 import 'package:share/share.dart';
 import 'package:zippy_rider/UI/map_screen.dart';
 import 'package:zippy_rider/UI/vias_screen.dart';
@@ -23,11 +29,15 @@ class MapState with ChangeNotifier {
   TimeOfDay userSelectedTime = TimeOfDay.now();
   LatLng l1 = LatLng(0.0000, 0.0000);
   LatLng l2 = LatLng(0.0000, 0.0000);
-  String outcode1,outcode2,postcode1,postcode2;
+  String outcode1, outcode2, postcode1, postcode2;
   GoogleMapController mapControllerr;
   Set<Marker> _wholeMarkersList = Set();
 
   bool locationServiceActive = true;
+  Location location = new Location();
+  bool _serviceEnabled;
+
+
   Set<Marker> _markers = Set();
   Set<Circle> _circles = Set<Circle>();
   Set<Polyline> polyLine = Set();
@@ -35,7 +45,7 @@ class MapState with ChangeNotifier {
   PolylinePoints polylinePoints;
   List suggestion = [];
   List<LatLng> latLangList = [];
-  Position position;
+  GeoLocatorPackage.Position position;
   List dummyList = [];
   TextEditingController sourceController = TextEditingController();
   TextEditingController destinationController = TextEditingController();
@@ -74,7 +84,8 @@ class MapState with ChangeNotifier {
 
   MapState() {
     checkConnectivity();
-    _getUserLocation();
+    enableLocationService();
+    //_getUserLocation();
     _loadingInitialPosition();
     notifyListeners();
   }
@@ -85,16 +96,41 @@ class MapState with ChangeNotifier {
     notifyListeners();
   }
 
+  //----> enable location service to handle initial position
+  enableLocationService() async {
+    try {
+      _serviceEnabled =
+          await GeoLocatorPackage.Geolocator.isLocationServiceEnabled();
+      if (!_serviceEnabled) {
+        _serviceEnabled = await location.requestService();
+        if (!_serviceEnabled) {
+          initialPositions = LatLng(0.000000, 0.000000);
+          notifyListeners();
+        } else {
+          _getUserLocation();
+        }
+      } else {
+        _getUserLocation();
+      }
+    } catch (e) {
+      print('Exception caught: $e');
+    }
+  }
+
   //----> get Users Initial location
   _getUserLocation() async {
-    position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high);
+    position = await GeoLocatorPackage.Geolocator.getCurrentPosition(
+        desiredAccuracy: GeoLocatorPackage.LocationAccuracy.high);
+    print('position: $position');
+
     initialPositions = LatLng(position.latitude, position.longitude);
+    print('initialposition: $initialPositions');
+
     l1 = LatLng(position.latitude, position.longitude);
-    Coordinates latLng =
-        Coordinates(initialPosition.latitude, initialPosition.longitude);
-    var addresslocation =
-        await Geocoder.local.findAddressesFromCoordinates(latLng);
+    GeocoderPackage.Coordinates latLng = GeocoderPackage.Coordinates(
+        initialPosition.latitude, initialPosition.longitude);
+    var addresslocation = await GeocoderPackage.Geocoder.local
+        .findAddressesFromCoordinates(latLng);
     var first = addresslocation.first;
     if (first.addressLine.isNotEmpty) {
       sourceController.text = first.addressLine;
@@ -106,13 +142,19 @@ class MapState with ChangeNotifier {
 
 //----> GET USERS CURRENT LOCATION
   currentLocation() async {
-    Position position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high);
-    CameraPosition cameraPosition = new CameraPosition(
-        target: LatLng(position.latitude, position.longitude), zoom: 17);
-    mapController.animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
-    LatLng latLng = LatLng(position.latitude, position.longitude);
-    fetchAddressFromCoordinates(latLng);
+    try {
+      GeoLocatorPackage.Position position =
+          await GeoLocatorPackage.Geolocator.getCurrentPosition(
+              desiredAccuracy: GeoLocatorPackage.LocationAccuracy.high);
+      CameraPosition cameraPosition = new CameraPosition(
+          target: LatLng(position.latitude, position.longitude), zoom: 17);
+      mapController
+          .animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
+      LatLng latLng = LatLng(position.latitude, position.longitude);
+      fetchAddressFromCoordinates(latLng);
+    } catch (e) {
+      print('Caught Exception: $e');
+    }
   }
 
 //----> SET USERS INITIAL LOCATION
@@ -132,10 +174,11 @@ class MapState with ChangeNotifier {
   }
 
   //----->GET LAT LANG FROM ADDRESS
-  details(String value, int flag) async {//bool flage
+  details(String value, int flag) async {
+    //bool flage
     print("Selected Location Name: $value");
     Map<String, dynamic> map =
-        await LocationDetails.getLocationDetails(value, flag);//flage
+        await LocationDetails.getLocationDetails(value, flag); //flage
     LatLng latLng = LatLng(
         map['Placedetails']['lattitude'], map['Placedetails']['longitude']);
     CameraPosition cameraPosition = new CameraPosition(
@@ -172,14 +215,15 @@ class MapState with ChangeNotifier {
 //----> ADD MARKER ON MAP
   addMarker(LatLng position, String _title, int flag, double hue) async {
     var value;
-    if(flag ==7){
+    if (flag == 7) {
       value = _title.trim();
-    }else{
+    } else {
       value = flag;
     }
     _markers.add(Marker(
       visible: true,
-      markerId: MarkerId("$value"),//$flag
+      markerId: MarkerId("$value"),
+      //$flag
       position: LatLng(position.latitude, position.longitude),
       icon: BitmapDescriptor.defaultMarkerWithHue(hue),
       infoWindow: InfoWindow(
@@ -240,10 +284,12 @@ class MapState with ChangeNotifier {
 
 //----> BOTTOM MODEL SHEET
   settingModelBottomSheet(context) async {
-    if (sourceController.text.toString().isNotEmpty && destinationController.text.toString().isNotEmpty) {
+    if (sourceController.text.toString().isNotEmpty &&
+        destinationController.text.toString().isNotEmpty) {
       //calculateDistanceTime.calculateDistanceTime(l1, l2);
       List list = await locationDetails.getTimeDistance();
-      bottomModelSheet.settingModelBottomSheet(context, '${list[0]}', '${list[1]}');
+      bottomModelSheet.settingModelBottomSheet(
+          context, '${list[0]}', '${list[1]}');
       //sourceController.text.toString(),destinationController.text.toString(),outcode1,outcode2,postcode1,postcode2
       print('Time Distance $list');
     } else {
@@ -260,12 +306,13 @@ class MapState with ChangeNotifier {
 
 //----> FETCH ADDRESSES FROM COORDINATES
   fetchAddressFromCoordinates(LatLng latLng) async {
-    Coordinates coordinates =
-        new Coordinates(latLng.latitude, latLng.longitude);
-    var locationName =
-        await Geocoder.local.findAddressesFromCoordinates(coordinates);
+    GeocoderPackage.Coordinates coordinates =
+        new GeocoderPackage.Coordinates(latLng.latitude, latLng.longitude);
+    var locationName = await GeocoderPackage.Geocoder.local
+        .findAddressesFromCoordinates(coordinates);
     var first = locationName.first;
-    print('total stuff: $first \n ${first.postalCode}\n${first.locality}\n${first.subLocality}\n${first.thoroughfare}'
+    print(
+        'total stuff: $first \n ${first.postalCode}\n${first.locality}\n${first.subLocality}\n${first.thoroughfare}'
         '\n\n\n\n\n');
     _name = first.addressLine;
     notifyListeners();

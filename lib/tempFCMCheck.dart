@@ -6,13 +6,12 @@ import 'package:zippy_rider/base_class.dart';
 import 'package:zippy_rider/utils/util.dart' as util;
 
 class FcmCheck extends StatelessWidget with BaseClass{
-  //BaseClass baseClass = new BaseClass();
-  FcmCheck fcmCheck = FcmCheck();
+
   @override
   Widget build(BuildContext context) {
+    getToken();
+    listenMessages();
 
-    fcmCheck.getToken();
-    fcmCheck.listenMessages();
     return SafeArea(
       child: Scaffold(
         body: Center(
@@ -20,7 +19,7 @@ class FcmCheck extends StatelessWidget with BaseClass{
             child: TextButton(
               style: getTextButtonStyle(),
               onPressed: (){
-                fcmCheck.pushNotification();
+                pushNotification();
               },
               child: Text("PUSH MESSAGE",
                   style: GoogleFonts.rakkas(color: Colors.white)),

@@ -118,6 +118,9 @@ class BottomModelSheet with ChangeNotifier {
                               ],
                               hint: Text('Cash',
                                   style: TextStyle(color: Colors.black)),
+                              onChanged: (value){
+                                print('ChangedValue: $value');
+                              },
                             ),
                           ],
                         ),
