@@ -4,6 +4,8 @@ import 'package:basic_utils/basic_utils.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:zippy_rider/models/CfgCustAppModel.dart';
+import 'package:zippy_rider/requests/map_screen/cfgCustApp_request.dart';
 
 import 'package:zippy_rider/utils/util.dart' as util;
 
@@ -13,6 +15,7 @@ mixin BaseClass{
   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
   FlutterLocalNotificationsPlugin();
   static String generatedToken;
+  CfgCustAppModel cfgCustAppModel;
   String serverKey =
       "AAAAYERewgI:APA91bFx4JRXZQgAeyNrFiB80hc8rLi_-s0WrElxOhMqbBdd_FYa2ZOlT0nodo6614rvbUZTn73Y9LqPFj-TYMGG5_rXER5Nk0BN9nkKajLWHFhqKvYnY1njEcLK6qn_ivxlFF4gBl9t";
 
@@ -23,6 +26,10 @@ mixin BaseClass{
       generatedToken = value;
       print('TOKEN: $generatedToken');
     });
+  }
+
+  setCfgCustAppModel() async {
+    cfgCustAppModel = await CfgCustAppRequest.getCgfCustApp('CYP');
   }
 
   listenMessages(){
@@ -50,8 +57,6 @@ mixin BaseClass{
       }
     });
   }
-
-
 
   showNotification(String message) async {
     var android = AndroidNotificationDetails(

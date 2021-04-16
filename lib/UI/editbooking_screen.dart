@@ -3,26 +3,12 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:zippy_rider/models/BookingModel.dart';
+import 'package:zippy_rider/models/cars_type_model.dart';
 import 'package:zippy_rider/states/ridehistory_state.dart';
 
 class EditBooking extends StatefulWidget {
   @override
   _EditBookingState createState() => _EditBookingState();
-}
-
-class CarsType {
-  String _carName, _imagePath;
-  int _passengers, _suitcases;
-
-  CarsType(this._carName, this._imagePath, this._passengers, this._suitcases);
-
-  get suitcases => _suitcases;
-
-  int get passengers => _passengers;
-
-  get imagePath => _imagePath;
-
-  String get carName => _carName;
 }
 
 class _EditBookingState extends State<EditBooking> {
@@ -400,7 +386,7 @@ class _EditBookingState extends State<EditBooking> {
                               child: RotatedBox(
                                 quarterTurns: -1,
                                 child: Text(
-                                  '${carsTypeList[_selectedCar]._carName}',
+                                  '${carsTypeList[_selectedCar].carName}',
                                   style: TextStyle(
                                       fontSize: 10,
                                       color: Colors.black,
@@ -409,7 +395,7 @@ class _EditBookingState extends State<EditBooking> {
                               ),
                             ),
                             Image.asset(
-                              '${carsTypeList[_selectedCar]._imagePath}',
+                              '${carsTypeList[_selectedCar].imagePath}',
                               width: 90,
                               height: 70,
                             ),
@@ -419,7 +405,7 @@ class _EditBookingState extends State<EditBooking> {
                               child: Column(
                                 children: [
                                   Text(
-                                      '${carsTypeList[_selectedCar]._passengers}'),
+                                      '${carsTypeList[_selectedCar].passengers}'),
                                   Text('Passengers')
                                 ],
                               ),
@@ -429,7 +415,7 @@ class _EditBookingState extends State<EditBooking> {
                               child: Column(
                                 children: [
                                   Text(
-                                      '${carsTypeList[_selectedCar]._suitcases}'),
+                                      '${carsTypeList[_selectedCar].suitcases}'),
                                   Text('Suitcases')
                                 ],
                               ),

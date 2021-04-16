@@ -3,29 +3,32 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter_dropdown/flutter_dropdown.dart';
-import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 import 'package:toast/toast.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+import 'package:zippy_rider/base_class.dart';
 import 'package:zippy_rider/models/BookingModel.dart';
+import 'package:zippy_rider/models/cars_type_model.dart';
 import 'package:zippy_rider/requests/bottom_sheet/vehicle_details.dart';
-import 'package:zippy_rider/requests/map_screen/insertBooking.dart';
 import 'package:zippy_rider/states/map_state.dart';
 import 'package:zippy_rider/states/vias_state.dart';
 import 'package:zippy_rider/utils/util.dart' as util;
 
-class BottomModelSheet with ChangeNotifier {
+class BottomModelSheet with ChangeNotifier, BaseClass{
   DateTime pickedDate = DateTime.now();
   int _initialLabel = 1;
   TextEditingController _flightController = TextEditingController();
   TextEditingController _commenttController = TextEditingController();
 
-  VehicleDetails _vehicleDetails = VehicleDetails();
+  //VehicleDetails _vehicleDetails = VehicleDetails();
+
   List carDetails = [];
   List cars = [];
+  List<CarsType> carsTypeList = [];
+
   List<Fromtovia> fromToViaList = [];
   List<List<dynamic>> logc = [];
 
@@ -37,30 +40,21 @@ class BottomModelSheet with ChangeNotifier {
   int count = 0;
   double jobmileage;
   String time;
+  String selectedVehicle;
 
   SharedPreferences sharedPreferences;
-
-  //String origin, destination, origin_outcode, dest_outcode,origin_postcode, dest_postcode;
 
   settingModelBottomSheet(context, distance, time) async {
     final mapState = Provider.of<MapState>(context, listen: false);
     final viasState = Provider.of<ViasState>(context, listen: false);
 
     getConfigFromSharedPref();
-    //getConvertedTime(time);
-    /*
-    origin,destination,o_outcode,d_outcode,o_postcode,d_postcode
-    this.origin = origin;
-    this.destination = destination;
-    this.origin_outcode = o_outcode;
-    this.dest_outcode = d_outcode;
-    this.origin_postcode = o_postcode;
-    this.dest_postcode = d_postcode;*/
 
-    carDetails = await _vehicleDetails.getVehicleDetails(3);
-    cars = carDetails[0]['carstype'];
+    //carDetails = await _vehicleDetails.getVehicleDetails(3);
+    //cars = carDetails[0]['carstype'];
+    fillCarsListFromFetchedData();
+
     showModalBottomSheet(
-        //backgroundColor: Colors.tealAccent,
         enableDrag: true,
         context: context,
         builder: (BuildContext context) {
@@ -106,7 +100,7 @@ class BottomModelSheet with ChangeNotifier {
                               size: 30,
                               color: Colors.purple,
                             ),
-                            Text('${getConvertedTime(time)}',//
+                            Text('${getConvertedTime(time)}', //
                                 style: TextStyle(color: Colors.black)),
                             Spacer(),
                             //Icon(Icons.clean_hands_outlined,size: 40),
@@ -118,129 +112,225 @@ class BottomModelSheet with ChangeNotifier {
                               ],
                               hint: Text('Cash',
                                   style: TextStyle(color: Colors.black)),
-                              onChanged: (value){
+                              onChanged: (value) {
                                 print('ChangedValue: $value');
                               },
                             ),
                           ],
                         ),
                       ),
-                      SizedBox(
-                          height: 70.0,
-                          //levation: 0.0,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            //crossAxisAlignment: CrossAxisAlignment.stretch,
-                            children: [
-                              SizedBox(width: 15),
-                              RotatedBox(
-                                  quarterTurns: 3,
-                                  child: Text(
-                                    '${cars[count]['carname']}',
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.w700,
-                                      fontSize: 10,
-                                    ),
-                                  )),
-                              Icon(Icons.local_taxi_outlined,
-                                  size: 40, color: Colors.black),
-                              Spacer(),
-                              RichText(
-                                  text: TextSpan(
-                                      text: '${cars[count]['carcapacity']}\n',
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                      ),
-                                      children: <TextSpan>[
-                                        TextSpan(
-                                            text: ('Passangers'),
-                                            style:
-                                                TextStyle(color: Colors.black))
-                                      ]),
-                                  textAlign: TextAlign.center),
-                              Spacer(),
-                              RichText(
-                                  text: TextSpan(
-                                      text:
-                                          '${cars[count]['lugagecapacity']}\n',
-                                      style: TextStyle(color: Colors.black),
-                                      children: <TextSpan>[
-                                        TextSpan(
-                                            text: ('Suitcases'),
-                                            style:
-                                                TextStyle(color: Colors.black))
-                                      ]),
-                                  textAlign: TextAlign.center),
-                              SizedBox(width: 15),
-                            ],
-                          )),
-                      Swiper(
-                        itemWidth: 140,
-                        itemHeight: 130,
-                        itemCount: 5,
-                        // outer: true,
-                        layout: SwiperLayout.CUSTOM,
-                        customLayoutOption: new CustomLayoutOption(
-                                startIndex: -1, stateCount: 3)
-                            .addTranslate([
-                          new Offset(-140.0, 30.0),
-                          new Offset(0.0, 20.0),
-                          new Offset(140.0, 30.0)
-                        ]).addOpacity([1.0, 1.0, 1.0]),
-                        scrollDirection: Axis.horizontal,
-                        onIndexChanged: (index) {
-                          setState(() {
-                            count = index;
-                          });
-                        },
-                        itemBuilder: (BuildContext context, index) {
-                          return Card(
-                              elevation: 20.0,
-                              shadowColor: Colors.transparent,
-                              color: Colors.grey[300],
-                              child: InkWell(
-                                  child: Stack(
+
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Container(
+                              margin: const EdgeInsets.all(8.0),
+                              padding: const EdgeInsets.all(3.0),
+                              decoration: BoxDecoration(color: Colors.white),
+                              //Color(0xFFEBEBEB)
+                              child: Row(
                                 children: [
-                                  Icon(
-                                    Icons.local_taxi_rounded,
-                                    size: 45,
-                                    color: Colors.purple,
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 8.0),
+                                    child: RotatedBox(
+                                      quarterTurns: -1,
+                                      child: Text(
+                                        '${carsTypeList[count].carName}',
+                                        style: TextStyle(
+                                            fontSize: 10,
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ),
                                   ),
-                                  Positioned(
-                                    top: 50,
-                                    left: 10.0,
-                                    child: Row(
+                                  Image.asset(
+                                    '${carsTypeList[count].imagePath}',
+                                    width: 90,
+                                    height: 70,
+                                  ),
+                                  Spacer(),
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Column(
                                       children: [
-                                        Text(
-                                          "${cars[index]['carname']}",
-                                          style: TextStyle(
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.w600,
-                                              fontSize: 12),
-                                        ),
+                                        Text('${carsTypeList[count].passengers}'),
+                                        Text('Passengers')
                                       ],
                                     ),
                                   ),
-                                  Positioned(
-                                      top: 65.0,
-                                      left: 10,
-                                      child: Text(
-                                          "Passengers: ${cars[index]['carcapacity']}",
-                                          style: TextStyle(
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.w400))),
-                                  Positioned(
-                                      top: 80.0,
-                                      left: 10,
-                                      child: Text(
-                                          "Suitcase: ${cars[index]['lugagecapacity']}",
-                                          style: TextStyle(
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.w400))),
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Column(
+                                      children: [
+                                        Text(
+                                            '${carsTypeList[count].suitcases}'),
+                                        Text('Suitcases')
+                                      ],
+                                    ),
+                                  ),
                                 ],
-                              )));
-                        },
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          Container(
+                            color: Color(0xFFEBEBEB),
+                            height: 120,
+                            width: 400,
+                            child: PageView(
+                              controller: PageController(
+                                  initialPage: 0, viewportFraction: 0.4),
+                              onPageChanged: (int a) {
+                                print("I am at $a");
+                                setState(() {
+                                  //_selectedCar = a;
+                                  count = a;
+                                });
+                              },
+                              children: [
+                                Transform.scale(
+                                    scale: count == 0 ? 1 : 0.9, //
+                                    child: Card(
+                                      elevation: 6,
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(20)),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          Visibility(
+                                            visible: count == 0 ? true : false,
+                                            child: SizedBox(
+                                              width: 40,
+                                              child: VerticalDivider(
+                                                thickness: 4,
+                                                color: applicationColor(),
+                                                indent: 10,
+                                                endIndent: 10,
+                                              ),
+                                            ),
+                                          ),
+                                          selectedCarCard(0)
+                                        ],
+                                      ),
+                                    )),
+                                Transform.scale(
+                                    scale: count == 1 ? 1 : 0.9, //
+                                    child: Card(
+                                      elevation: 6,
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(20)),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          Visibility(
+                                            visible: count == 1 ? true : false,
+                                            child: SizedBox(
+                                              width: 40,
+                                              child: VerticalDivider(
+                                                thickness: 4,
+                                                color: applicationColor(),
+                                                indent: 10,
+                                                endIndent: 10,
+                                              ),
+                                            ),
+                                          ),
+                                          selectedCarCard(1)
+                                        ],
+                                      ),
+                                    )),
+                                Transform.scale(
+                                    scale: count == 2 ? 1 : 0.9, //
+                                    child: Card(
+                                      elevation: 6,
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(20)),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          Visibility(
+                                            visible: count == 2 ? true : false,
+                                            child: SizedBox(
+                                              width: 40,
+                                              child: VerticalDivider(
+                                                thickness: 4,
+                                                color: applicationColor(),
+                                                indent: 10,
+                                                endIndent: 10,
+                                              ),
+                                            ),
+                                          ),
+                                          selectedCarCard(2)
+                                        ],
+                                      ),
+                                    )),
+                                Transform.scale(
+                                    scale: count == 3 ? 1 : 0.9, //
+                                    child: Card(
+                                      elevation: 6,
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(20)),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          Visibility(
+                                            visible: count == 3 ? true : false,
+                                            child: SizedBox(
+                                              width: 40,
+                                              child: VerticalDivider(
+                                                thickness: 4,
+                                                color: applicationColor(),
+                                                indent: 10,
+                                                endIndent: 10,
+                                              ),
+                                            ),
+                                          ),
+                                          selectedCarCard(3)
+                                        ],
+                                      ),
+                                    )),
+                                Transform.scale(
+                                    scale: count == 4 ? 1 : 0.9, //
+                                    child: Card(
+                                      elevation: 6,
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(20)),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          Visibility(
+                                            visible: count == 4 ? true : false,
+                                            child: SizedBox(
+                                              width: 40,
+                                              child: VerticalDivider(
+                                                thickness: 4,
+                                                color: applicationColor(),
+                                                indent: 10,
+                                                endIndent: 10,
+                                              ),
+                                            ),
+                                          ),
+                                          selectedCarCard(4)
+                                        ],
+                                      ),
+                                    )),
+                              ],
+                            ),
+                          )
+                        ],
                       ),
                       Card(
                           elevation: 0.0,
@@ -268,9 +358,6 @@ class BottomModelSheet with ChangeNotifier {
                                       });
                                     });
 
-                                    print(carDetails);
-                                    print('__________________________\n');
-                                    print(cars[0]['carname']);
                                   }),
                               FlatButton(
                                   minWidth:
@@ -287,8 +374,6 @@ class BottomModelSheet with ChangeNotifier {
 
                                     fillLogcList();
 
-
-
                                     BookingModel bookingModel = BookingModel(
                                         from: mapState.sourceController.text
                                             .toString(),
@@ -297,9 +382,16 @@ class BottomModelSheet with ChangeNotifier {
                                         fromtovia: fromToViaList,
                                         logc: logc,
                                         office: util.office,
-                                        telephone: sharedPreferences.getString('cPhone').toString(),
-                                        userid: sharedPreferences.getString('cEmail').toString(),//"tayyab.slash@gmail.com",
-                                        custname: sharedPreferences.getString('cName').toString(),
+                                        telephone: sharedPreferences
+                                            .getString('cPhone')
+                                            .toString(),
+                                        userid: sharedPreferences
+                                            .getString('cEmail')
+                                            .toString(),
+                                        //"tayyab.slash@gmail.com",
+                                        custname: sharedPreferences
+                                            .getString('cName')
+                                            .toString(),
                                         time: rideTime,
                                         date: rideDate,
                                         to: mapState.destinationController.text
@@ -319,7 +411,7 @@ class BottomModelSheet with ChangeNotifier {
                                         account: "CARD",
                                         accuser: "",
                                         bookedby: util.bookedBy,
-                                        comment:"",
+                                        comment: "",
                                         creditcard: "tayyab.slash@gmail.com",
                                         cstate: "booked",
                                         despatchtime: 0.0,
@@ -370,8 +462,72 @@ class BottomModelSheet with ChangeNotifier {
         });
   }
 
+  fillCarsListFromFetchedData() {
+    print('cfg ${cfgCustAppModel.carstype.length}');
+    for (int i = 0; i < cfgCustAppModel.carstype.length; i++) {
+      CarsType carsType;
+      if (i == 0) {
+        carsType = new CarsType(
+          //cars[0]['carname'],
+          cfgCustAppModel.carstype[0].carname,
+          "assets/carsimages/saloonimage.png",
+          cfgCustAppModel.carstype[0].carcapacity,
+          cfgCustAppModel.carstype[0].lugagecapacity,
+        );
+      } else if (i == 1) {
+        carsType = new CarsType(
+          cfgCustAppModel.carstype[1].carname,
+          "assets/carsimages/saloonimage.png",
+          cfgCustAppModel.carstype[1].carcapacity,
+            cfgCustAppModel.carstype[1].lugagecapacity
+        );
+      } else if (i == 2) {
+        carsType = new CarsType(
+          cfgCustAppModel.carstype[2].carname,
+          "assets/carsimages/saloonimage.png",
+          cfgCustAppModel.carstype[2].carcapacity,
+          cfgCustAppModel.carstype[2].lugagecapacity,
+        );
+      } else if (i == 3) {
+        carsType = new CarsType(
+          cfgCustAppModel.carstype[3].carname,
+          "assets/carsimages/saloonimage.png",
+          cfgCustAppModel.carstype[3].carcapacity,
+          cfgCustAppModel.carstype[3].lugagecapacity,
+        );
+      } else if (i == 4) {
+        carsType = new CarsType(
+          cfgCustAppModel.carstype[4].carname,
+          "assets/carsimages/saloonimage.png",
+          cfgCustAppModel.carstype[4].carcapacity,
+          cfgCustAppModel.carstype[4].lugagecapacity,
+        );
+      }
+      carsTypeList.add(carsType);
+    }
+    print("CARTYPELIST: $carsTypeList");
+  }
+
+  Widget selectedCarCard(int calledFunction) {
+    return Column(
+      children: [
+        Image.asset(
+          '${carsTypeList[calledFunction].imagePath}',
+          width: 90,
+          height: 50,
+        ),
+        Text(
+          '${carsTypeList[calledFunction].carName}',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+        Text('${carsTypeList[calledFunction].passengers} Passengers '),
+        Text('${carsTypeList[calledFunction].suitcases} Suitcases '),
+      ],
+    );
+  }
+
   //---> Preparing jobmileage Value
-  double getJobMileage(dynamic distance){
+  double getJobMileage(dynamic distance) {
     try {
       jobmileage = double.tryParse(distance.toString());
       jobmileage = shortDoubleToApprox(jobmileage, 2);
@@ -384,7 +540,7 @@ class BottomModelSheet with ChangeNotifier {
   }
 
   //---> Preparing time Value casting to double for display on UI
-  String getConvertedTime(dynamic time){
+  String getConvertedTime(dynamic time) {
     try {
       double t;
       String value = time.toString();
@@ -401,19 +557,19 @@ class BottomModelSheet with ChangeNotifier {
   }
 
   //----> for Rounding long double values to approx, using it for distance and time in above
-  double shortDoubleToApprox(double val, int places){
-    try{
-    double mod = pow(10.0, places);
-    print('${((val * mod).round().toDouble() / mod)}');
-    return ((val * mod).round().toDouble() / mod);
-    }catch(e){
+  double shortDoubleToApprox(double val, int places) {
+    try {
+      double mod = pow(10.0, places);
+      print('${((val * mod).round().toDouble() / mod)}');
+      return ((val * mod).round().toDouble() / mod);
+    } catch (e) {
       print('exception caught on method: $e');
       return null;
     }
   }
 
   getConfigFromSharedPref() async {
-   sharedPreferences = await SharedPreferences.getInstance();
+    sharedPreferences = await SharedPreferences.getInstance();
     print("Print value: ${sharedPreferences.getString('cEmail')}");
     print("Print value: ${sharedPreferences.getString('cPhone')}");
   }
@@ -491,10 +647,12 @@ class BottomModelSheet with ChangeNotifier {
         maxTime: DateTime(1),
         currentTime: DateTime.now(),
         locale: LocaleType.en, onConfirm: (value) {
-          DateFormat dateFormat = DateFormat('dd-MM-yyyy');
-          DateFormat timeFormat = DateFormat('hh:mm');
-      rideDate = '${dateFormat.format(value)}';//'${value.day}-${value.month}-${value.year}';
-      rideTime = '${timeFormat.format(value)}';//'${value.hour}:${value.minute}';
+      DateFormat dateFormat = DateFormat('dd-MM-yyyy');
+      DateFormat timeFormat = DateFormat('hh:mm');
+      rideDate =
+          '${dateFormat.format(value)}'; //'${value.day}-${value.month}-${value.year}';
+      rideTime =
+          '${timeFormat.format(value)}'; //'${value.hour}:${value.minute}';
       notifyListeners();
     });
   }
@@ -621,5 +779,10 @@ class BottomModelSheet with ChangeNotifier {
         );
       },
     );
+  }
+
+  //----> Default Application Color
+  Color applicationColor() {
+    return Color(0xFF8E24AA);
   }
 }

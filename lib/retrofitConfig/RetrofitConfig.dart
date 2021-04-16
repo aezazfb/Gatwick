@@ -18,7 +18,7 @@ abstract class RetrofitConfig {
 
   //Configuration Customer at the start of the app - office(CYP)
   @GET("/api/API/CfgCustApp")
-  Future<List<CfgCustAppModel>> getCgfCustApp(@Query('office') String office);
+  Future<List<CfgCustAppModel>> getCfgCustApp(@Query('office') String office);
 
   @POST("/api/API/InsertBooking")
   Future<String> insertBooking(@Body() BookingModel bookingModel);

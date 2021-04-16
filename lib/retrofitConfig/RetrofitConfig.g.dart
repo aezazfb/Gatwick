@@ -37,7 +37,7 @@ class _RetrofitConfig implements RetrofitConfig {
   }
 
   @override
-  Future<List<CfgCustAppModel>> getCgfCustApp(office) async {
+  Future<List<CfgCustAppModel>> getCfgCustApp(office) async {
     ArgumentError.checkNotNull(office, 'office');
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{r'office': office};

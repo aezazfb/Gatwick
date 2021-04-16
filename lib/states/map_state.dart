@@ -13,6 +13,7 @@ import 'package:location/location.dart';
 import 'package:share/share.dart';
 import 'package:zippy_rider/UI/map_screen.dart';
 import 'package:zippy_rider/UI/vias_screen.dart';
+import 'package:zippy_rider/base_class.dart';
 import 'package:zippy_rider/requests/map_screen/polyline_request.dart';
 import 'package:zippy_rider/requests/map_screen/suggestionRequest.dart';
 import 'package:flutter/material.dart';
@@ -22,7 +23,7 @@ import 'package:connectivity/connectivity.dart';
 import 'package:maps_curved_line/maps_curved_line.dart';
 import 'package:zippy_rider/bottom_model_sheet/bottomsheet.dart';
 
-class MapState with ChangeNotifier {
+class MapState with ChangeNotifier,BaseClass {
   static LatLng initialPositions;
   static LatLng _centerPoints;
   DateTime userSelectedDate = DateTime.now();
@@ -87,7 +88,14 @@ class MapState with ChangeNotifier {
     enableLocationService();
     //_getUserLocation();
     _loadingInitialPosition();
+    callcfgCustAppMethod();
     notifyListeners();
+  }
+
+  callcfgCustAppMethod() async {
+    await setCfgCustAppModel();
+    print('cfg1: ${cfgCustAppModel.phoneNumber}');
+    print('cfg1: ${cfgCustAppModel.carstype.length}');
   }
 
   //----> Creating onMapCreated for our Map
