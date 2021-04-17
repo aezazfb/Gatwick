@@ -23,7 +23,7 @@ import 'package:connectivity/connectivity.dart';
 import 'package:maps_curved_line/maps_curved_line.dart';
 import 'package:zippy_rider/bottom_model_sheet/bottomsheet.dart';
 
-class MapState with ChangeNotifier,BaseClass {
+class MapState extends BaseClass with ChangeNotifier {
   static LatLng initialPositions;
   static LatLng _centerPoints;
   DateTime userSelectedDate = DateTime.now();
@@ -94,8 +94,6 @@ class MapState with ChangeNotifier,BaseClass {
 
   callcfgCustAppMethod() async {
     await setCfgCustAppModel();
-    print('cfg1: ${cfgCustAppModel.phoneNumber}');
-    print('cfg1: ${cfgCustAppModel.carstype.length}');
   }
 
   //----> Creating onMapCreated for our Map

@@ -94,6 +94,12 @@
 @import shared_preferences;
 #endif
 
+#if __has_include(<stripe_payment/StripePaymentPlugin.h>)
+#import <stripe_payment/StripePaymentPlugin.h>
+#else
+@import stripe_payment;
+#endif
+
 @implementation GeneratedPluginRegistrant
 
 + (void)registerWithRegistry:(NSObject<FlutterPluginRegistry>*)registry {
@@ -112,6 +118,7 @@
   [PlatformDeviceIdPlugin registerWithRegistrar:[registry registrarForPlugin:@"PlatformDeviceIdPlugin"]];
   [FLTSharePlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTSharePlugin"]];
   [FLTSharedPreferencesPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTSharedPreferencesPlugin"]];
+  [StripePaymentPlugin registerWithRegistrar:[registry registrarForPlugin:@"StripePaymentPlugin"]];
 }
 
 @end

@@ -18,6 +18,9 @@ class AddViasState extends State<AddVias> {
   var heightFactor = 0.0;
   String listTitle = '';
 
+  doesDataExist(){
+    //print('CFG: ${}')
+  }
   @override
   Widget build(BuildContext context) {
     final mapState = Provider.of<MapState>(context);
@@ -189,8 +192,9 @@ class AddViasState extends State<AddVias> {
                     color: util.primaryColor,
                   ),
                   onPressed: () {
-                    mapState.swapFields();
-                    viasState.clearFields();
+                    doesDataExist();
+                    /*mapState.swapFields();
+                    viasState.clearFields();*/
                   }),
             ),
 

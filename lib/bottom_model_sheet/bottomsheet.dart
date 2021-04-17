@@ -12,12 +12,13 @@ import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:zippy_rider/base_class.dart';
 import 'package:zippy_rider/models/BookingModel.dart';
 import 'package:zippy_rider/models/cars_type_model.dart';
+import 'package:zippy_rider/payment_gateways/stripe-payment-service.dart';
 import 'package:zippy_rider/requests/bottom_sheet/vehicle_details.dart';
 import 'package:zippy_rider/states/map_state.dart';
 import 'package:zippy_rider/states/vias_state.dart';
 import 'package:zippy_rider/utils/util.dart' as util;
 
-class BottomModelSheet with ChangeNotifier, BaseClass{
+class BottomModelSheet extends BaseClass with ChangeNotifier {
   DateTime pickedDate = DateTime.now();
   int _initialLabel = 1;
   TextEditingController _flightController = TextEditingController();
@@ -32,7 +33,7 @@ class BottomModelSheet with ChangeNotifier, BaseClass{
   List<Fromtovia> fromToViaList = [];
   List<List<dynamic>> logc = [];
 
-  String vechile = 'Saloon ';
+  String selectedVehicleSymbol = 'S';
   int suitCase = 0;
   int passengers = 0;
   String rideDate = 'Select Date';
@@ -41,7 +42,7 @@ class BottomModelSheet with ChangeNotifier, BaseClass{
   double jobmileage;
   String time;
   String selectedVehicle;
-
+  bool cardFlag;
   SharedPreferences sharedPreferences;
 
   settingModelBottomSheet(context, distance, time) async {
@@ -49,9 +50,10 @@ class BottomModelSheet with ChangeNotifier, BaseClass{
     final viasState = Provider.of<ViasState>(context, listen: false);
 
     getConfigFromSharedPref();
-
+    StripeService.init();
     //carDetails = await _vehicleDetails.getVehicleDetails(3);
     //cars = carDetails[0]['carstype'];
+
     fillCarsListFromFetchedData();
 
     showModalBottomSheet(
@@ -114,12 +116,16 @@ class BottomModelSheet with ChangeNotifier, BaseClass{
                                   style: TextStyle(color: Colors.black)),
                               onChanged: (value) {
                                 print('ChangedValue: $value');
+                                setState(() {
+                                  value == 'Card'
+                                      ? cardFlag = true
+                                      : cardFlag = false;
+                                });
                               },
                             ),
                           ],
                         ),
                       ),
-
                       Row(
                         children: [
                           Expanded(
@@ -129,32 +135,39 @@ class BottomModelSheet with ChangeNotifier, BaseClass{
                               decoration: BoxDecoration(color: Colors.white),
                               //Color(0xFFEBEBEB)
                               child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 8.0),
-                                    child: RotatedBox(
-                                      quarterTurns: -1,
-                                      child: Text(
-                                        '${carsTypeList[count].carName}',
-                                        style: TextStyle(
-                                            fontSize: 10,
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.bold),
+                                  Row(
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 8.0),
+                                        child: RotatedBox(
+                                          quarterTurns: -1,
+                                          child: Text(
+                                            '${carsTypeList[count].carName}',
+                                            style: TextStyle(
+                                                fontSize: 10,
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                        ),
                                       ),
-                                    ),
+                                      Image.asset(
+                                        '${carsTypeList[count].imagePath}',
+                                        width: 90,
+                                        height: 70,
+                                      ),
+                                    ],
                                   ),
-                                  Image.asset(
-                                    '${carsTypeList[count].imagePath}',
-                                    width: 90,
-                                    height: 70,
-                                  ),
-                                  Spacer(),
+                                  //Spacer(),
                                   Padding(
                                     padding: const EdgeInsets.all(8.0),
                                     child: Column(
                                       children: [
-                                        Text('${carsTypeList[count].passengers}'),
+                                        Text(
+                                            '${carsTypeList[count].passengers}'),
                                         Text('Passengers')
                                       ],
                                     ),
@@ -189,6 +202,7 @@ class BottomModelSheet with ChangeNotifier, BaseClass{
                                 setState(() {
                                   //_selectedCar = a;
                                   count = a;
+                                  selectedCarSymbol(a);
                                 });
                               },
                               children: [
@@ -215,7 +229,7 @@ class BottomModelSheet with ChangeNotifier, BaseClass{
                                               ),
                                             ),
                                           ),
-                                          selectedCarCard(0)
+                                          carReusableWidget(0)
                                         ],
                                       ),
                                     )),
@@ -242,7 +256,7 @@ class BottomModelSheet with ChangeNotifier, BaseClass{
                                               ),
                                             ),
                                           ),
-                                          selectedCarCard(1)
+                                          carReusableWidget(1)
                                         ],
                                       ),
                                     )),
@@ -269,7 +283,7 @@ class BottomModelSheet with ChangeNotifier, BaseClass{
                                               ),
                                             ),
                                           ),
-                                          selectedCarCard(2)
+                                          carReusableWidget(2)
                                         ],
                                       ),
                                     )),
@@ -296,7 +310,7 @@ class BottomModelSheet with ChangeNotifier, BaseClass{
                                               ),
                                             ),
                                           ),
-                                          selectedCarCard(3)
+                                          carReusableWidget(3)
                                         ],
                                       ),
                                     )),
@@ -323,7 +337,7 @@ class BottomModelSheet with ChangeNotifier, BaseClass{
                                               ),
                                             ),
                                           ),
-                                          selectedCarCard(4)
+                                          carReusableWidget(4)
                                         ],
                                       ),
                                     )),
@@ -357,92 +371,53 @@ class BottomModelSheet with ChangeNotifier, BaseClass{
                                             '${value.hour}:${value.minute}';
                                       });
                                     });
-
                                   }),
                               FlatButton(
                                   minWidth:
                                       MediaQuery.of(context).size.width - 120,
                                   height: 40,
                                   color: Colors.purple,
-                                  child: Text('Confirm',
+                                  child: Text(
+                                      '${cardFlag == true ? 'Confirm Booking with Card' : 'Confirm Booking'}',
                                       style: TextStyle(
                                         color: Colors.white,
                                         fontWeight: FontWeight.w700,
                                       )),
-                                  onPressed: () {
-                                    fillFromToViaList(viasState, mapState);
+                                  onPressed: () async {
+                                    if (cardFlag == true) {
+                                      var response =
+                                          await StripeService.payWithCard(
+                                              amount: '25000', currency: 'USD');
 
-                                    fillLogcList();
+                                      if (response.success == true) {
+                                        Navigator.pop(context);
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(SnackBar(
+                                          content: Text(response.message),
+                                          duration:
+                                              new Duration(milliseconds: 1200),
+                                        ));
 
-                                    BookingModel bookingModel = BookingModel(
-                                        from: mapState.sourceController.text
-                                            .toString(),
-                                        fromInfo: "",
-                                        from_outcode: mapState.outcode1,
-                                        fromtovia: fromToViaList,
-                                        logc: logc,
-                                        office: util.office,
-                                        telephone: sharedPreferences
-                                            .getString('cPhone')
-                                            .toString(),
-                                        userid: sharedPreferences
-                                            .getString('cEmail')
-                                            .toString(),
-                                        //"tayyab.slash@gmail.com",
-                                        custname: sharedPreferences
-                                            .getString('cName')
-                                            .toString(),
-                                        time: rideTime,
-                                        date: rideDate,
-                                        to: mapState.destinationController.text
-                                            .toString(),
-                                        toInfo: "",
-                                        to_outcode: mapState.outcode2,
-                                        fare: 2.0,
-                                        drvfare: 2.0,
-                                        jobmileage: getJobMileage(distance),
-                                        jobref: "",
-                                        mstate: "",
-                                        timetodespatch: 0.0,
-                                        datentime: DateTime.now()
-                                            .millisecondsSinceEpoch
-                                            .toDouble(),
-                                        changed: false,
-                                        account: "CARD",
-                                        accuser: "",
-                                        bookedby: util.bookedBy,
-                                        comment: "",
-                                        creditcard: "tayyab.slash@gmail.com",
-                                        cstate: "booked",
-                                        despatchtime: 0.0,
-                                        driverrate: "CASH",
-                                        drvrcallsign: "",
-                                        drvreqdname: "",
-                                        drvrname: "",
-                                        drvrreqcallsign: "",
-                                        dstate: "",
-                                        flag: 1,
-                                        flightno: "",
-                                        hold: false,
-                                        isdirty: false,
-                                        jobtype: "normal",
-                                        jstate: "unallocated",
-                                        leadtime: 0.0,
-                                        logd: null,
-                                        numofvia: viasState.viasList.length,
-                                        oldfare: 0.0,
-                                        olddrvfare: 0.0,
-                                        orderno: "",
-                                        tag: "1",
-                                        vehicletype: "S",
-                                        pin: "",
-                                        callerid: "");
-
-                                    //InsertBooking.insertBooking(bookingModel);
-                                    print(bookingModel.toString());
-                                    print(
-                                        '------------------------------------');
-                                    print(bookingModel.toJson());
+                                        fillFromToViaList(viasState, mapState);
+                                        fillLogcList();
+                                        fillBookingModelAndInsert(
+                                            mapState, viasState, distance);
+                                      } else if (response.success == false) {
+                                        Toast.show('Booking with Card Failed, Try Again', context,
+                                            duration: Toast.LENGTH_LONG);
+                                        /*ScaffoldMessenger.of(context)
+                                            .showSnackBar(SnackBar(
+                                          content: Text(response.message),
+                                          duration:
+                                              new Duration(milliseconds: 1200),
+                                        ));*/
+                                      }
+                                    } else if (cardFlag == false) {
+                                      fillFromToViaList(viasState, mapState);
+                                      fillLogcList();
+                                      fillBookingModelAndInsert(
+                                          mapState, viasState, distance);
+                                    }
                                   }),
                               IconButton(
                                   icon: Icon(Icons.add),
@@ -462,45 +437,120 @@ class BottomModelSheet with ChangeNotifier, BaseClass{
         });
   }
 
+  fillBookingModelAndInsert(
+      MapState mapState, ViasState viasState, dynamic distance) {
+    BookingModel bookingModel = BookingModel(
+        from: mapState.sourceController.text.toString(),
+        fromInfo: "",
+        from_outcode: mapState.outcode1,
+        fromtovia: fromToViaList,
+        logc: logc,
+        office: util.office,
+        telephone: sharedPreferences.getString('cPhone').toString(),
+        userid: sharedPreferences.getString('cEmail').toString(),
+        //"tayyab.slash@gmail.com",
+        custname: sharedPreferences.getString('cName').toString(),
+        time: rideTime,
+        date: rideDate,
+        to: mapState.destinationController.text.toString(),
+        toInfo: "",
+        to_outcode: mapState.outcode2,
+        fare: 2.0,
+        drvfare: 2.0,
+        jobmileage: getJobMileage(distance),
+        jobref: "",
+        mstate: "",
+        timetodespatch: 0.0,
+        datentime: DateTime.now().millisecondsSinceEpoch.toDouble(),
+        changed: false,
+        account: "CARD",
+        accuser: "",
+        bookedby: util.bookedBy,
+        comment: "",
+        creditcard: "tayyab.slash@gmail.com",
+        cstate: "booked",
+        despatchtime: 0.0,
+        driverrate: "CASH",
+        drvrcallsign: "",
+        drvreqdname: "",
+        drvrname: "",
+        drvrreqcallsign: "",
+        dstate: "",
+        flag: 1,
+        flightno: "",
+        hold: false,
+        isdirty: false,
+        jobtype: "normal",
+        jstate: "unallocated",
+        leadtime: 0.0,
+        logd: null,
+        numofvia: viasState.viasList.length,
+        oldfare: 0.0,
+        olddrvfare: 0.0,
+        orderno: "",
+        tag: "1",
+        vehicletype: "S",
+        pin: "",
+        callerid: "");
+
+    //InsertBooking.insertBooking(bookingModel);
+    print(bookingModel.toString());
+    print('------------------------------------');
+    print(bookingModel.toJson());
+  }
+
+  selectedCarSymbol(int value) {
+    if (carsTypeList[value].carName == 'Saloon') {
+      selectedVehicleSymbol = 'S';
+    } else if (carsTypeList[value].carName == 'Estate') {
+      selectedVehicleSymbol = 'E';
+    } else if (carsTypeList[value].carName == 'MPV') {
+      selectedVehicleSymbol = '6';
+    } else if (carsTypeList[value].carName == 'Executive') {
+      selectedVehicleSymbol = 'X';
+    } else if (carsTypeList[value].carName == '8 Passenger') {
+      selectedVehicleSymbol = '8';
+    }
+  }
+
+  //---> To display carstype list on bottom sheet,
   fillCarsListFromFetchedData() {
-    print('cfg ${cfgCustAppModel.carstype.length}');
-    for (int i = 0; i < cfgCustAppModel.carstype.length; i++) {
-      CarsType carsType;
+    print('cfghere ${BaseClass.cfgCustAppModel.carstype.length}');
+    CarsType carsType;
+    for (int i = 0; i < BaseClass.cfgCustAppModel.carstype.length; i++) {
       if (i == 0) {
         carsType = new CarsType(
-          //cars[0]['carname'],
-          cfgCustAppModel.carstype[0].carname,
+          BaseClass.cfgCustAppModel.carstype[0].carname,
           "assets/carsimages/saloonimage.png",
-          cfgCustAppModel.carstype[0].carcapacity,
-          cfgCustAppModel.carstype[0].lugagecapacity,
+          BaseClass.cfgCustAppModel.carstype[0].carcapacity,
+          BaseClass.cfgCustAppModel.carstype[0].lugagecapacity,
         );
       } else if (i == 1) {
         carsType = new CarsType(
-          cfgCustAppModel.carstype[1].carname,
-          "assets/carsimages/saloonimage.png",
-          cfgCustAppModel.carstype[1].carcapacity,
-            cfgCustAppModel.carstype[1].lugagecapacity
-        );
+            BaseClass.cfgCustAppModel.carstype[1].carname,
+            "assets/carsimages/estateimage.png",
+            BaseClass.cfgCustAppModel.carstype[1].carcapacity,
+            BaseClass.cfgCustAppModel.carstype[1].lugagecapacity);
       } else if (i == 2) {
         carsType = new CarsType(
-          cfgCustAppModel.carstype[2].carname,
-          "assets/carsimages/saloonimage.png",
-          cfgCustAppModel.carstype[2].carcapacity,
-          cfgCustAppModel.carstype[2].lugagecapacity,
+          BaseClass.cfgCustAppModel.carstype[2].carname,
+          "assets/carsimages/mpvimage.png",
+          BaseClass.cfgCustAppModel.carstype[2].carcapacity,
+          BaseClass.cfgCustAppModel.carstype[2].lugagecapacity,
         );
       } else if (i == 3) {
         carsType = new CarsType(
-          cfgCustAppModel.carstype[3].carname,
+          BaseClass.cfgCustAppModel.carstype[3].carname,
           "assets/carsimages/saloonimage.png",
-          cfgCustAppModel.carstype[3].carcapacity,
-          cfgCustAppModel.carstype[3].lugagecapacity,
+          BaseClass.cfgCustAppModel.carstype[3].carcapacity,
+          BaseClass.cfgCustAppModel.carstype[3].lugagecapacity,
         );
       } else if (i == 4) {
         carsType = new CarsType(
-          cfgCustAppModel.carstype[4].carname,
-          "assets/carsimages/saloonimage.png",
-          cfgCustAppModel.carstype[4].carcapacity,
-          cfgCustAppModel.carstype[4].lugagecapacity,
+          BaseClass.cfgCustAppModel.carstype[4].carname,
+          "assets/carsimages/eightpassenger.png",
+          BaseClass.cfgCustAppModel.carstype[4].carcapacity,
+          BaseClass.cfgCustAppModel.carstype[4].lugagecapacity,
         );
       }
       carsTypeList.add(carsType);
@@ -508,7 +558,7 @@ class BottomModelSheet with ChangeNotifier, BaseClass{
     print("CARTYPELIST: $carsTypeList");
   }
 
-  Widget selectedCarCard(int calledFunction) {
+  Widget carReusableWidget(int calledFunction) {
     return Column(
       children: [
         Image.asset(
@@ -545,10 +595,10 @@ class BottomModelSheet with ChangeNotifier, BaseClass{
       double t;
       String value = time.toString();
       var splitvalue = value.split(" ");
-      print('timevalue: $splitvalue');
+      //print('timevalue: $splitvalue');
       t = double.tryParse(splitvalue[0].toString());
       t = shortDoubleToApprox(t, 2);
-      print('time: ${t}');
+      //print('time: ${t}');
       return '$t ${splitvalue[1].toString()}';
     } catch (e) {
       print('Exception Caught on Converting Time: $e');
