@@ -302,7 +302,7 @@ class MapScreenState extends State<MapScreen> {
                 right: 17,
                 top: heightFactor,
                 child: LimitedBox(
-                  maxHeight: mapState.suggestion.length * 50.0,
+                  maxHeight: mapState.suggestion.length * 50.0,//,200.0
                   child: Container(
                     child: ListView.builder(
                       itemCount: mapState.suggestion.length,
@@ -465,14 +465,14 @@ class MapScreenState extends State<MapScreen> {
                     SizedBox(width: 4.0),
                     RichText(
                         text: TextSpan(
-                            text: ('Mussdiq\n'),
+                            text: ('${MapState.userName}\n'),
                             style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 18,
                                 fontWeight: FontWeight.w600),
                             children: [
                               TextSpan(
-                                  text: 'mussdiq.slashglobal@gmail.com',
+                                  text: '${MapState.userEmail}',
                                   style: TextStyle(
                                       color: Colors.white,
                                       fontSize: 14,
@@ -567,6 +567,10 @@ class MapScreenState extends State<MapScreen> {
                   leading: Icon(Icons.logout, color: util.primaryColor),
                   title: Text('Logout'),
                   onTap: () async {
+
+                    mapState.clearAll();
+                    viasState.clearAll();
+
                     SharedPreferences sharedPreferences =
                     await SharedPreferences.getInstance();
                     sharedPreferences.remove('cEmail');

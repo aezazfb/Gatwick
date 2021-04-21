@@ -173,7 +173,7 @@ class _EditBookingState extends State<EditBooking> {
                                           title: Text('${tempList[index]}'),
                                         );
                                       },
-                                      itemCount: tempList.length,
+                                      itemCount: selectedBookingModel.fromtovia.length -2//tempList.length,
                                     ),
                                   ),
                                 ],

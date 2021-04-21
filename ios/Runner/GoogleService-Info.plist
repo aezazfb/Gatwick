@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>976501712124-focegk1goulurtme2devm9lo1vacik1d.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.976501712124-focegk1goulurtme2devm9lo1vacik1d</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>976501712124-mt98o4npiv1ictnpjt7evm5cq1i4bpeb.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyCxJ884OZYgauzXEmx4zhE6DmzECer9L8I</string>
+	<key>GCM_SENDER_ID</key>
+	<string>976501712124</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.zippyRider</string>
+	<key>PROJECT_ID</key>
+	<string>zippyriderflutter</string>
+	<key>STORAGE_BUCKET</key>
+	<string>zippyriderflutter.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:976501712124:ios:76a57557cadbeafed82379</string>
+</dict>
+</plist>

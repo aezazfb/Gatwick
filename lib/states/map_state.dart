@@ -11,6 +11,7 @@ import 'package:location/location.dart';
 //import 'package:permission_handler/permission_handler.dart' as PermissionHandler;
 //import 'package:location_permissions/location_permissions.dart' as lpPackage;
 import 'package:share/share.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zippy_rider/UI/map_screen.dart';
 import 'package:zippy_rider/UI/vias_screen.dart';
 import 'package:zippy_rider/base_class.dart';
@@ -37,7 +38,6 @@ class MapState extends BaseClass with ChangeNotifier {
   bool locationServiceActive = true;
   Location location = new Location();
   bool _serviceEnabled;
-
 
   Set<Marker> _markers = Set();
   Set<Circle> _circles = Set<Circle>();
@@ -78,6 +78,7 @@ class MapState extends BaseClass with ChangeNotifier {
   String time;
   String _name = '';
   double originHue = 70.0;
+  static String userName, userEmail, userPhone;
 
   bool cardVisibility = true;
   bool stackElementsVisibility = true;
@@ -89,9 +90,11 @@ class MapState extends BaseClass with ChangeNotifier {
     //_getUserLocation();
     _loadingInitialPosition();
     callcfgCustAppMethod();
+    getConfigFromSharedPref();
     notifyListeners();
   }
 
+  //----> setting config of customer at start of app
   callcfgCustAppMethod() async {
     await setCfgCustAppModel();
   }
@@ -100,6 +103,36 @@ class MapState extends BaseClass with ChangeNotifier {
   void onCreate(GoogleMapController controller) {
     mapControllerr = controller;
     notifyListeners();
+  }
+
+  clearAll() {
+    sourceController.clear();
+    destinationController.clear();
+    latLangList.clear();
+    outcode1 ='';
+    outcode2 ='';
+    postcode1 ='';
+    postcode2 ='';
+    polyCoordinates.clear();
+    marker.clear();
+    userName = '';
+    userEmail = '';
+    userPhone = '';
+  }
+
+  void getConfigFromSharedPref() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    print("Print value: ${sharedPreferences.getString('cEmail')}");
+    print("Print value: ${sharedPreferences.getString('cPhone')}");
+    print("Print value: ${sharedPreferences.getString('cName')}");
+    if (sharedPreferences.getString('cEmail') != null &&
+        sharedPreferences.getString('cPhone') != null &&
+        sharedPreferences.getString('cName') != null) {
+      //Navigator.pushNamed(context, '/mapscreen');
+      userName = sharedPreferences.getString('cName');
+      userEmail = sharedPreferences.getString('cEmail');
+      userPhone = sharedPreferences.getString('cPhone');
+    }
   }
 
   //----> enable location service to handle initial position

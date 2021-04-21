@@ -2,6 +2,7 @@
 import 'package:dio/dio.dart';
 import 'package:zippy_rider/models/BookingModel.dart';
 import 'package:zippy_rider/retrofitConfig/RetrofitConfig.dart';
+import 'package:zippy_rider/states/map_state.dart';
 
 class BookingHistoryRequest{
 
@@ -12,11 +13,12 @@ class BookingHistoryRequest{
     final client = RetrofitConfig(dio);
 
     try {
-      String email = "tayyab.slash@gmail.com";
+      String email = "${MapState.userEmail.trim()}";
+      print('PrintingEmail: $email');
       final response = await client.getBookingDetails(email);
       print("------------------------------------------------------------------------");
 
-      //print("this is response: $response");
+      print("this is response: $response");
       return response;
     } catch (E) {
       print("Exception is caught: $E");

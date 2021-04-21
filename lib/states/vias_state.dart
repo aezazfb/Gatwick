@@ -8,7 +8,6 @@ import 'package:zippy_rider/requests/vias_screen/decode_vias_polyline.dart';
 
 class ViasState with ChangeNotifier {
   List<LatLng> viasLatLongList = [];
-  List timeDisList = [];
   List viasList = [];
   List<LatLng> viasPolyLinePoints = [];
   Set<Marker> _markers = Set();
@@ -101,5 +100,17 @@ class ViasState with ChangeNotifier {
   clearFields() {
     polyLine.first.points.clear();
     notifyListeners();
+  }
+
+  //For Logout
+  clearAll(){
+    viasList.clear();
+    viasPostCodeList.clear();
+    viasLatLongList.clear();
+    viasOutCodeList.clear();
+    viasSuggestionList.clear();
+    viasPolyLinePoints.clear();
+    _markers.clear();
+    polyLine.clear();
   }
 }

@@ -18,9 +18,6 @@ class AddViasState extends State<AddVias> {
   var heightFactor = 0.0;
   String listTitle = '';
 
-  doesDataExist(){
-    //print('CFG: ${}')
-  }
   @override
   Widget build(BuildContext context) {
     final mapState = Provider.of<MapState>(context);
@@ -34,7 +31,9 @@ class AddViasState extends State<AddVias> {
         appBar: AppBarTextField(
           title: Text('Add Vias'),
           centerTitle: false,
-          leading: new Container(),
+          leading: IconButton(icon: Icon(Icons.arrow_back), onPressed: () {
+            Navigator.pop(context);
+          },),
           searchContainerColor: Colors.white,
           searchButtonIcon: Icon(Icons.location_searching_rounded, size: 30),
           onChanged: (value) {
@@ -192,9 +191,8 @@ class AddViasState extends State<AddVias> {
                     color: util.primaryColor,
                   ),
                   onPressed: () {
-                    doesDataExist();
-                    /*mapState.swapFields();
-                    viasState.clearFields();*/
+                    mapState.swapFields();
+                    viasState.clearFields();
                   }),
             ),
 
@@ -248,6 +246,7 @@ class AddViasState extends State<AddVias> {
                   maxHeight: mapState.suggestion.length * 50.0,
                   child: Container(
                     child: ListView.builder(
+                      shrinkWrap: true,
                       itemCount: mapState.suggestion.length,
                       padding: EdgeInsets.all(0.0),
                       itemBuilder: (context, index) {
@@ -298,6 +297,7 @@ class AddViasState extends State<AddVias> {
                   maxHeight: viasState.viasSuggestionList.length * 50.0,
                   child: Container(
                     child: ListView.builder(
+                      shrinkWrap: true,
                       itemCount: viasState.viasSuggestionList.length,
                       padding: EdgeInsets.all(0.0),
                       itemBuilder: (context, index) {

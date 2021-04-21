@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:zippy_rider/models/BookingModel.dart';
 import 'package:zippy_rider/requests/bookinghistory_request.dart';
+import 'package:zippy_rider/states/map_state.dart';
 import 'package:zippy_rider/states/ridehistory_state.dart';
 
 import 'package:zippy_rider/utils/util.dart' as util;
@@ -64,13 +65,17 @@ class _RideHistoryState extends State<RideHistory> {
                       });
                       return Text('Got Error');
                     }
-                    return snapshot.hasData
-                        ? getListView(
-                            rideHistoryState.bookedBookingHistoryList, 'booked',
-                            editDetails: true,
-                            viewDetails: false,
-                            review: false)
-                        : displayProgressBar();
+                    if(snapshot.hasData && snapshot.data != null){
+                      return getListView(
+                          rideHistoryState.bookedBookingHistoryList, 'booked',
+                          editDetails: true,
+                          viewDetails: false,
+                          review: false);
+                    }else if(snapshot.data == null){
+                      return getDefaultColumn('booked');
+                    }else{
+                     return displayProgressBar();
+                    }
                   }),
               FutureBuilder(
                   future: rideHistoryState.getcompletedHistory(),
@@ -86,14 +91,19 @@ class _RideHistoryState extends State<RideHistory> {
                       });
                       return Text('Got Error');
                     }
-                    return snapshot.hasData
-                        ? getListView(
-                            rideHistoryState.completedBookingHistoryList,
-                            'completed',
-                            editDetails: true,
-                            viewDetails: true,
-                            review: true)
-                        : displayProgressBar();
+                    if(snapshot.hasData && snapshot.data != null){
+                      return getListView(
+                          rideHistoryState.completedBookingHistoryList,
+                          'completed',
+                          editDetails: true,
+                          viewDetails: true,
+                          review: true);
+                    }else if(snapshot.data == null){
+                      return getDefaultColumn('completed');
+                    }else{
+                      return displayProgressBar();
+                    }
+
                   }),
               FutureBuilder(
                   future: rideHistoryState.getcancelledHistory(),
@@ -109,14 +119,18 @@ class _RideHistoryState extends State<RideHistory> {
                       });
                       return Text('Got Error');
                     }
-                    return snapshot.hasData
-                        ? getListView(
-                            rideHistoryState.cancelledBookingHistoryList,
-                            'cancelled',
-                            editDetails: false,
-                            viewDetails: true,
-                            review: true)
-                        : displayProgressBar();
+                    if(snapshot.hasData && snapshot.data != null){
+                      return getListView(
+                          rideHistoryState.cancelledBookingHistoryList,
+                          'cancelled',
+                          editDetails: false,
+                          viewDetails: true,
+                          review: true);
+                    }else if(snapshot.data == null){
+                      return getDefaultColumn('cancelled');
+                    }else{
+                      return displayProgressBar();
+                    }
                   }),
             ]),
           )),
@@ -203,7 +217,7 @@ class _RideHistoryState extends State<RideHistory> {
                             width: 40,
                             child: Icon(Icons.my_location_sharp,
                                 color: Colors.red)),
-                        Text(selectedBookingList[index].from)
+                        Flexible(child: Text(selectedBookingList[index].from))
                       ],
                     ),
                     SizedBox(height: 10),
@@ -213,7 +227,7 @@ class _RideHistoryState extends State<RideHistory> {
                             width: 40,
                             child: Icon(Icons.location_on_outlined,
                                 color: Colors.red)),
-                        Text(selectedBookingList[index].to)
+                        Flexible(child:Text(selectedBookingList[index].to))
                       ],
                     ),
                     SizedBox(height: 10),

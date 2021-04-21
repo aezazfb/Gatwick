@@ -14,6 +14,7 @@ import 'package:zippy_rider/models/BookingModel.dart';
 import 'package:zippy_rider/models/cars_type_model.dart';
 import 'package:zippy_rider/payment_gateways/stripe-payment-service.dart';
 import 'package:zippy_rider/requests/bottom_sheet/vehicle_details.dart';
+import 'package:zippy_rider/requests/map_screen/insertBooking.dart';
 import 'package:zippy_rider/states/map_state.dart';
 import 'package:zippy_rider/states/vias_state.dart';
 import 'package:zippy_rider/utils/util.dart' as util;
@@ -42,14 +43,12 @@ class BottomModelSheet extends BaseClass with ChangeNotifier {
   double jobmileage;
   String time;
   String selectedVehicle;
-  bool cardFlag;
-  SharedPreferences sharedPreferences;
+  bool cardFlag = false;
 
   settingModelBottomSheet(context, distance, time) async {
     final mapState = Provider.of<MapState>(context, listen: false);
     final viasState = Provider.of<ViasState>(context, listen: false);
 
-    getConfigFromSharedPref();
     StripeService.init();
     //carDetails = await _vehicleDetails.getVehicleDetails(3);
     //cars = carDetails[0]['carstype'];
@@ -203,6 +202,7 @@ class BottomModelSheet extends BaseClass with ChangeNotifier {
                                   //_selectedCar = a;
                                   count = a;
                                   selectedCarSymbol(a);
+                                  print('SelectedSymbol: $selectedVehicleSymbol');
                                 });
                               },
                               children: [
@@ -384,6 +384,7 @@ class BottomModelSheet extends BaseClass with ChangeNotifier {
                                         fontWeight: FontWeight.w700,
                                       )),
                                   onPressed: () async {
+                                    print("clickedhere");
                                     if (cardFlag == true) {
                                       var response =
                                           await StripeService.payWithCard(
@@ -402,21 +403,18 @@ class BottomModelSheet extends BaseClass with ChangeNotifier {
                                         fillLogcList();
                                         fillBookingModelAndInsert(
                                             mapState, viasState, distance);
+                                        Navigator.pop(context);
                                       } else if (response.success == false) {
                                         Toast.show('Booking with Card Failed, Try Again', context,
                                             duration: Toast.LENGTH_LONG);
-                                        /*ScaffoldMessenger.of(context)
-                                            .showSnackBar(SnackBar(
-                                          content: Text(response.message),
-                                          duration:
-                                              new Duration(milliseconds: 1200),
-                                        ));*/
                                       }
                                     } else if (cardFlag == false) {
+                                      print("clickedhere");
                                       fillFromToViaList(viasState, mapState);
                                       fillLogcList();
                                       fillBookingModelAndInsert(
                                           mapState, viasState, distance);
+                                      Navigator.pop(context);
                                     }
                                   }),
                               IconButton(
@@ -446,10 +444,10 @@ class BottomModelSheet extends BaseClass with ChangeNotifier {
         fromtovia: fromToViaList,
         logc: logc,
         office: util.office,
-        telephone: sharedPreferences.getString('cPhone').toString(),
-        userid: sharedPreferences.getString('cEmail').toString(),
+        telephone: MapState.userPhone,
+        userid: MapState.userPhone,
         //"tayyab.slash@gmail.com",
-        custname: sharedPreferences.getString('cName').toString(),
+        custname: MapState.userName,
         time: rideTime,
         date: rideDate,
         to: mapState.destinationController.text.toString(),
@@ -463,11 +461,11 @@ class BottomModelSheet extends BaseClass with ChangeNotifier {
         timetodespatch: 0.0,
         datentime: DateTime.now().millisecondsSinceEpoch.toDouble(),
         changed: false,
-        account: "CARD",
+        account: cardFlag == true? 'CARD': 'CASH',
         accuser: "",
         bookedby: util.bookedBy,
         comment: "",
-        creditcard: "tayyab.slash@gmail.com",
+        creditcard: MapState.userEmail,
         cstate: "booked",
         despatchtime: 0.0,
         driverrate: "CASH",
@@ -489,14 +487,15 @@ class BottomModelSheet extends BaseClass with ChangeNotifier {
         olddrvfare: 0.0,
         orderno: "",
         tag: "1",
-        vehicletype: "S",
+        vehicletype: selectedVehicleSymbol,
         pin: "",
         callerid: "");
 
-    //InsertBooking.insertBooking(bookingModel);
+    InsertBooking.insertBooking(bookingModel);
     print(bookingModel.toString());
     print('------------------------------------');
     print(bookingModel.toJson());
+
   }
 
   selectedCarSymbol(int value) {
@@ -618,11 +617,7 @@ class BottomModelSheet extends BaseClass with ChangeNotifier {
     }
   }
 
-  getConfigFromSharedPref() async {
-    sharedPreferences = await SharedPreferences.getInstance();
-    print("Print value: ${sharedPreferences.getString('cEmail')}");
-    print("Print value: ${sharedPreferences.getString('cPhone')}");
-  }
+
 
   fillLogcList() {
     List<dynamic> listofLogc = [];

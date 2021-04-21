@@ -71,12 +71,24 @@
       <excludeFolder url="file://$MODULE_DIR$/ios/.symlinks/plugins/google_maps_flutter/example/.dart_tool" />
       <excludeFolder url="file://$MODULE_DIR$/ios/.symlinks/plugins/google_maps_flutter/example/.pub" />
       <excludeFolder url="file://$MODULE_DIR$/ios/.symlinks/plugins/google_maps_flutter/example/build" />
+      <excludeFolder url="file://$MODULE_DIR$/ios/.symlinks/plugins/location/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/ios/.symlinks/plugins/location/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/ios/.symlinks/plugins/location/build" />
+      <excludeFolder url="file://$MODULE_DIR$/ios/.symlinks/plugins/location/example/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/ios/.symlinks/plugins/location/example/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/ios/.symlinks/plugins/location/example/build" />
       <excludeFolder url="file://$MODULE_DIR$/ios/.symlinks/plugins/path_provider/.dart_tool" />
       <excludeFolder url="file://$MODULE_DIR$/ios/.symlinks/plugins/path_provider/.pub" />
       <excludeFolder url="file://$MODULE_DIR$/ios/.symlinks/plugins/path_provider/build" />
       <excludeFolder url="file://$MODULE_DIR$/ios/.symlinks/plugins/path_provider/example/.dart_tool" />
       <excludeFolder url="file://$MODULE_DIR$/ios/.symlinks/plugins/path_provider/example/.pub" />
       <excludeFolder url="file://$MODULE_DIR$/ios/.symlinks/plugins/path_provider/example/build" />
+      <excludeFolder url="file://$MODULE_DIR$/ios/.symlinks/plugins/permission_handler/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/ios/.symlinks/plugins/permission_handler/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/ios/.symlinks/plugins/permission_handler/build" />
+      <excludeFolder url="file://$MODULE_DIR$/ios/.symlinks/plugins/permission_handler/example/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/ios/.symlinks/plugins/permission_handler/example/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/ios/.symlinks/plugins/permission_handler/example/build" />
       <excludeFolder url="file://$MODULE_DIR$/ios/.symlinks/plugins/platform_device_id/.dart_tool" />
       <excludeFolder url="file://$MODULE_DIR$/ios/.symlinks/plugins/platform_device_id/.pub" />
       <excludeFolder url="file://$MODULE_DIR$/ios/.symlinks/plugins/platform_device_id/build" />
@@ -95,6 +107,12 @@
       <excludeFolder url="file://$MODULE_DIR$/ios/.symlinks/plugins/shared_preferences/example/.dart_tool" />
       <excludeFolder url="file://$MODULE_DIR$/ios/.symlinks/plugins/shared_preferences/example/.pub" />
       <excludeFolder url="file://$MODULE_DIR$/ios/.symlinks/plugins/shared_preferences/example/build" />
+      <excludeFolder url="file://$MODULE_DIR$/ios/.symlinks/plugins/stripe_payment/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/ios/.symlinks/plugins/stripe_payment/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/ios/.symlinks/plugins/stripe_payment/build" />
+      <excludeFolder url="file://$MODULE_DIR$/ios/.symlinks/plugins/stripe_payment/example/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/ios/.symlinks/plugins/stripe_payment/example/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/ios/.symlinks/plugins/stripe_payment/example/build" />
     </content>
     <orderEntry type="jdk" jdkName="Android API 30 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />

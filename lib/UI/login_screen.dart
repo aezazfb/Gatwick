@@ -73,9 +73,6 @@ class LoginState extends State<Login> {
               FutureBuilder(
                   future: future, //getConfigFromSharedPref(),
                   builder: (context, AsyncSnapshot<bool> snapshot) {
-                    print('snapshot 0: ${snapshot.hasData}');
-                    print('snapshot 00: ${snapshot.hasError}');
-                    print('snapshot 000: ${snapshot.data}');
 
                     if (snapshot.connectionState == ConnectionState.done) {
                       if (snapshot.data == false) {
