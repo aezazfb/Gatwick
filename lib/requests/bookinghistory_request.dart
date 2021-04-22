@@ -18,7 +18,7 @@ class BookingHistoryRequest{
       final response = await client.getBookingDetails(email);
       print("------------------------------------------------------------------------");
 
-      print("this is response: $response");
+      //print("this is response: $response");
       return response;
     } catch (E) {
       print("Exception is caught: $E");

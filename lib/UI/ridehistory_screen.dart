@@ -19,6 +19,10 @@ class _RideHistoryState extends State<RideHistory> {
   @override
   Widget build(BuildContext context) {
     final rideHistoryState = Provider.of<RideHistoryState>(context);
+    rideHistoryState.bookedBookingHistoryList.clear();
+    rideHistoryState.completedBookingHistoryList.clear();
+    rideHistoryState.cancelledBookingHistoryList.clear();
+    rideHistoryState.bookingList.clear();
     return DefaultTabController(
       length: 3,
       child: Scaffold(
@@ -56,6 +60,11 @@ class _RideHistoryState extends State<RideHistory> {
                   future: rideHistoryState.getbookedHistory(),
                   builder: (BuildContext buildContext,
                       AsyncSnapshot<List<BookingModel>> snapshot) {
+                    print('ss: ${snapshot.hasData}');
+                    print('ss: ${snapshot.hasError}');
+                    print('ss: ${snapshot.data}');
+                    //print('ss: ${snapshot.data.length}');
+
                     if (snapshot.hasError) {
                       WidgetsBinding.instance.addPostFrameCallback((_) {
                         /*ScaffoldMessenger.of(context).showSnackBar(new SnackBar(
@@ -72,6 +81,7 @@ class _RideHistoryState extends State<RideHistory> {
                           viewDetails: false,
                           review: false);
                     }else if(snapshot.data == null){
+                      print('GotNull::');
                       return getDefaultColumn('booked');
                     }else{
                      return displayProgressBar();

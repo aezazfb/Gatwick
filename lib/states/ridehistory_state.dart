@@ -11,7 +11,7 @@ class PaymentType {
 
 class RideHistoryState extends ChangeNotifier {
 
-  List<BookingModel> bookingList;
+  List<BookingModel> bookingList = [];
   List<BookingModel> bookedBookingHistoryList = [];
   List<BookingModel> cancelledBookingHistoryList= [];
   List<BookingModel> completedBookingHistoryList= [];
@@ -49,7 +49,8 @@ class RideHistoryState extends ChangeNotifier {
 
     if (bookingList.length == 0) {
       print('got here');
-      return null;
+      return [];
+      //return null;
     } else {
       bookingList.forEach((bookingmodel) {
 
@@ -65,6 +66,9 @@ class RideHistoryState extends ChangeNotifier {
 
         }
       });
+      if(bookedBookingHistoryList.length == 0){
+        return null;
+      }
       return bookedBookingHistoryList;
     }
 
@@ -81,6 +85,9 @@ class RideHistoryState extends ChangeNotifier {
           completedBookingHistoryList.add(bookingmodel);
         }
       });
+      if(completedBookingHistoryList.length == 0){
+        return null;
+      }
       return completedBookingHistoryList;
     }
 
@@ -97,6 +104,9 @@ class RideHistoryState extends ChangeNotifier {
           cancelledBookingHistoryList.add(bookingmodel);
         }
       });
+      if(cancelledBookingHistoryList.length == 0){
+        return null;
+      }
       return cancelledBookingHistoryList;
     }
   }

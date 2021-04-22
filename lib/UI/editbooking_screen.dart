@@ -12,8 +12,8 @@ class EditBooking extends StatefulWidget {
 }
 
 class _EditBookingState extends State<EditBooking> {
-
   List<String> tempList = List<String>.generate(100, (index) => "Item $index");
+  List<Fromtovia> fromToViaList = [];
 
   static List<CarsType> carsTypeList = [
     CarsType(
@@ -48,7 +48,6 @@ class _EditBookingState extends State<EditBooking> {
     ),
   ];
 
-
   int selectedCar() {
     if (selectedBookingModel.vehicletype == 'S')
       return 0;
@@ -58,24 +57,48 @@ class _EditBookingState extends State<EditBooking> {
       return 2;
     else if (selectedBookingModel.vehicletype == 'X')
       return 3;
-    else if (selectedBookingModel.vehicletype == '8')
-      return 4;
+    else if (selectedBookingModel.vehicletype == '8') return 4;
     return -1;
   }
 
+  fillFromToViaList() {
+    print('GotHere');
+    for (int i = 2; i < selectedBookingModel.fromtovia.length; i++) {
+      if (selectedBookingModel.fromtovia[i].info != null &&
+          selectedBookingModel.fromtovia[i].postcode != null &&
+          selectedBookingModel.fromtovia[i].address != null) {
+        fromToViaList.add(selectedBookingModel.fromtovia[i]);
+      }
+    }
+    print('List: $fromToViaList');
+  }
+
+  List<Widget> getViaListWidgets() {
+    List<Widget> listWidget = []; //List<Widget>();
+
+    for (int i = 0; i < fromToViaList.length; i++) {
+      listWidget.add(
+        ListTile(
+          title: Text('${fromToViaList[i].address}'),
+        ),
+      );
+    }
+    return listWidget;
+  }
 
   CarsType selectedCarsType = carsTypeList[0];
   bool display_cars = true;
   bool change_icon = true;
-  int _selectedCar=0;
+  int _selectedCar = 0;
   BookingModel selectedBookingModel;
-
   List<PaymentType> paymentTypeList = RideHistoryState.paymentTypeList;
+
   @override
   Widget build(BuildContext context) {
     selectedBookingModel = ModalRoute.of(context).settings.arguments;
-    PaymentType selectedPaymentType = Provider.of<RideHistoryState>(context).returnPaymentType();
-
+    PaymentType selectedPaymentType =
+        Provider.of<RideHistoryState>(context).returnPaymentType();
+    fillFromToViaList();
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -139,8 +162,7 @@ class _EditBookingState extends State<EditBooking> {
                             children: <Widget>[
                               SizedBox(
                                   width: 220,
-                                  child: Text(
-                                      '${selectedBookingModel.from}')),
+                                  child: Text('${selectedBookingModel.from}')),
                               Padding(
                                 padding: const EdgeInsets.only(top: 10),
                                 child: Row(
@@ -160,22 +182,22 @@ class _EditBookingState extends State<EditBooking> {
                                   ],
                                 ),
                               ),
-                              Row(
+                              Row(//height: 200,width: 250,
                                 children: [
-                                  SizedBox(
-                                    width: 280,
-                                    height: 220,
-                                    child: ListView.builder(
+                                  ListView.builder(
                                       scrollDirection: Axis.vertical,
                                       shrinkWrap: true,
                                       itemBuilder: (context, index) {
                                         return ListTile(
-                                          title: Text('${tempList[index]}'),
+                                          title: Text(
+                                              '${fromToViaList[index].address}'),
                                         );
                                       },
-                                      itemCount: selectedBookingModel.fromtovia.length -2//tempList.length,
-                                    ),
-                                  ),
+                                      itemCount: fromToViaList.length
+                                      //tempList.length,
+                                      //children: getViaListWidgets()),
+                                      //fromToViaList.length * 50.0,
+                                      ),
                                 ],
                               ),
                             ],
@@ -190,6 +212,7 @@ class _EditBookingState extends State<EditBooking> {
                             child:
                                 Icon(Icons.circle, color: applicationColor())),
                         Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
                               'Your Destination',
@@ -360,7 +383,9 @@ class _EditBookingState extends State<EditBooking> {
                                   );
                                 }).toList(),
                                 onChanged: (PaymentType newvalue) {
-                                  Provider.of<RideHistoryState>(context,listen: false).changedValue(newvalue);
+                                  Provider.of<RideHistoryState>(context,
+                                          listen: false)
+                                      .changedValue(newvalue);
                                 },
                               ),
                             ],
@@ -457,7 +482,8 @@ class _EditBookingState extends State<EditBooking> {
                         width: 400,
                         child: PageView(
                           controller: PageController(
-                              initialPage: selectedCar(), viewportFraction: 0.4),
+                              initialPage: selectedCar(),
+                              viewportFraction: 0.4),
                           onPageChanged: (int a) {
                             print("I am at $a");
                             setState(() {
@@ -742,8 +768,6 @@ class _EditBookingState extends State<EditBooking> {
       ),
     );
   }
-
-
 
   Widget selectedCarCard(int calledFunction) {
     return Column(
