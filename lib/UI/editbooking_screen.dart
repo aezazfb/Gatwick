@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
@@ -12,8 +13,9 @@ class EditBooking extends StatefulWidget {
 }
 
 class _EditBookingState extends State<EditBooking> {
-  List<String> tempList = List<String>.generate(100, (index) => "Item $index");
+
   List<Fromtovia> fromToViaList = [];
+  PageController pageController;
 
   static List<CarsType> carsTypeList = [
     CarsType(
@@ -48,32 +50,41 @@ class _EditBookingState extends State<EditBooking> {
     ),
   ];
 
-  int selectedCar() {
+  selectedCar() {
+    int value;
     if (selectedBookingModel.vehicletype == 'S')
-      return 0;
+      value = 0;
     else if (selectedBookingModel.vehicletype == 'E')
-      return 1;
+      value = 1;
     else if (selectedBookingModel.vehicletype == '6')
-      return 2;
+      value = 2;
     else if (selectedBookingModel.vehicletype == 'X')
-      return 3;
-    else if (selectedBookingModel.vehicletype == '8') return 4;
-    return -1;
+      value = 3;
+    else if (selectedBookingModel.vehicletype == '8')
+      value = 4;
+
+    
+    setState(() {
+      _selectedCar = value;
+      print('value:$value');
+    });
   }
 
   fillFromToViaList() {
-    print('GotHere');
+    fromToViaList.clear();
+
     for (int i = 2; i < selectedBookingModel.fromtovia.length; i++) {
       if (selectedBookingModel.fromtovia[i].info != null &&
           selectedBookingModel.fromtovia[i].postcode != null &&
           selectedBookingModel.fromtovia[i].address != null) {
-        fromToViaList.add(selectedBookingModel.fromtovia[i]);
+        setState(() {
+          fromToViaList.add(selectedBookingModel.fromtovia[i]);
+        });
       }
     }
-    print('List: $fromToViaList');
   }
 
-  List<Widget> getViaListWidgets() {
+  /*List<Widget> getViaListWidgets() {
     List<Widget> listWidget = []; //List<Widget>();
 
     for (int i = 0; i < fromToViaList.length; i++) {
@@ -84,21 +95,43 @@ class _EditBookingState extends State<EditBooking> {
       );
     }
     return listWidget;
-  }
+  }*/
 
   CarsType selectedCarsType = carsTypeList[0];
-  bool display_cars = true;
-  bool change_icon = true;
+  bool displayCars = true;
+  bool changeIcon = true;
   int _selectedCar = 0;
   BookingModel selectedBookingModel;
   List<PaymentType> paymentTypeList = RideHistoryState.paymentTypeList;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      fillFromToViaList();
+      selectedCar();
+      pageController = PageController(
+          initialPage: 2,//_selectedCar,//,selectedCar()
+          viewportFraction: 0.4);
+      pageController.jumpToPage(2);
+    });
+  }
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    pageController.dispose();
+    super.dispose();
 
+  }
   @override
   Widget build(BuildContext context) {
-    selectedBookingModel = ModalRoute.of(context).settings.arguments;
+    selectedBookingModel = ModalRoute
+        .of(context)
+        .settings
+        .arguments;
     PaymentType selectedPaymentType =
-        Provider.of<RideHistoryState>(context).returnPaymentType();
-    fillFromToViaList();
+    Provider.of<RideHistoryState>(context).returnPaymentType();
+
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -182,22 +215,28 @@ class _EditBookingState extends State<EditBooking> {
                                   ],
                                 ),
                               ),
-                              Row(//height: 200,width: 250,
+                              Column(
+                                mainAxisSize: MainAxisSize.min,
                                 children: [
-                                  ListView.builder(
-                                      scrollDirection: Axis.vertical,
-                                      shrinkWrap: true,
-                                      itemBuilder: (context, index) {
-                                        return ListTile(
-                                          title: Text(
-                                              '${fromToViaList[index].address}'),
-                                        );
-                                      },
-                                      itemCount: fromToViaList.length
+                                  SizedBox(
+                                    width: 250,
+                                    height: fromToViaList.length * 50.0,
+                                    child: ListView.builder(
+                                        shrinkWrap: true,
+                                        scrollDirection: Axis.vertical,
+                                        itemBuilder: (context, index) {
+                                          return ListTile(
+                                            title: Text(
+                                                '${fromToViaList[index]
+                                                    .address}'),
+                                          );
+                                        },
+                                        itemCount: fromToViaList.length
                                       //tempList.length,
                                       //children: getViaListWidgets()),
                                       //fromToViaList.length * 50.0,
-                                      ),
+                                    ),
+                                  ),
                                 ],
                               ),
                             ],
@@ -210,7 +249,7 @@ class _EditBookingState extends State<EditBooking> {
                         SizedBox(
                             width: 40,
                             child:
-                                Icon(Icons.circle, color: applicationColor())),
+                            Icon(Icons.circle, color: applicationColor())),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -320,7 +359,7 @@ class _EditBookingState extends State<EditBooking> {
                             children: [
                               Padding(
                                 padding:
-                                    const EdgeInsets.symmetric(horizontal: 8.0),
+                                const EdgeInsets.symmetric(horizontal: 8.0),
                                 child: Icon(
                                   Icons.euro,
                                   color: Colors.blue.shade900,
@@ -336,7 +375,7 @@ class _EditBookingState extends State<EditBooking> {
                               ),
                               Padding(
                                 padding:
-                                    const EdgeInsets.symmetric(horizontal: 8.0),
+                                const EdgeInsets.symmetric(horizontal: 8.0),
                                 child: Icon(
                                   Icons.location_pin,
                                   color: Colors.blue.shade900,
@@ -384,7 +423,7 @@ class _EditBookingState extends State<EditBooking> {
                                 }).toList(),
                                 onChanged: (PaymentType newvalue) {
                                   Provider.of<RideHistoryState>(context,
-                                          listen: false)
+                                      listen: false)
                                       .changedValue(newvalue);
                                 },
                               ),
@@ -407,7 +446,7 @@ class _EditBookingState extends State<EditBooking> {
                           children: [
                             Padding(
                               padding:
-                                  const EdgeInsets.symmetric(horizontal: 8.0),
+                              const EdgeInsets.symmetric(horizontal: 8.0),
                               child: RotatedBox(
                                 quarterTurns: -1,
                                 child: Text(
@@ -430,7 +469,8 @@ class _EditBookingState extends State<EditBooking> {
                               child: Column(
                                 children: [
                                   Text(
-                                      '${carsTypeList[_selectedCar].passengers}'),
+                                      '${carsTypeList[_selectedCar]
+                                          .passengers}'),
                                   Text('Passengers')
                                 ],
                               ),
@@ -440,7 +480,8 @@ class _EditBookingState extends State<EditBooking> {
                               child: Column(
                                 children: [
                                   Text(
-                                      '${carsTypeList[_selectedCar].suitcases}'),
+                                      '${carsTypeList[_selectedCar]
+                                          .suitcases}'),
                                   Text('Suitcases')
                                 ],
                               ),
@@ -450,18 +491,18 @@ class _EditBookingState extends State<EditBooking> {
                                   horizontal: 10, vertical: 8),
                               child: IconButton(
                                 icon: Icon(
-                                    change_icon == true
+                                    changeIcon == true
                                         ? Icons.arrow_drop_down
                                         : Icons.arrow_drop_up,
                                     size: 30),
                                 onPressed: () {
                                   setState(() {
-                                    display_cars == true
-                                        ? display_cars = false
-                                        : display_cars = true;
-                                    change_icon == true
-                                        ? change_icon = false
-                                        : change_icon = true;
+                                    displayCars == true
+                                        ? displayCars = false
+                                        : displayCars = true;
+                                    changeIcon == true
+                                        ? changeIcon = false
+                                        : changeIcon = true;
                                   });
                                 },
                               ),
@@ -473,7 +514,7 @@ class _EditBookingState extends State<EditBooking> {
                   ],
                 ),
                 Visibility(
-                  visible: display_cars,
+                  visible: displayCars,
                   child: Row(
                     children: [
                       Container(
@@ -481,9 +522,7 @@ class _EditBookingState extends State<EditBooking> {
                         height: 120,
                         width: 400,
                         child: PageView(
-                          controller: PageController(
-                              initialPage: selectedCar(),
-                              viewportFraction: 0.4),
+                          controller: pageController,
                           onPageChanged: (int a) {
                             print("I am at $a");
                             setState(() {
@@ -499,11 +538,11 @@ class _EditBookingState extends State<EditBooking> {
                                       borderRadius: BorderRadius.circular(20)),
                                   child: Row(
                                     mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
+                                    MainAxisAlignment.spaceEvenly,
                                     children: [
                                       Visibility(
                                         visible:
-                                            _selectedCar == 0 ? true : false,
+                                        _selectedCar == 0 ? true : false,
                                         child: SizedBox(
                                           width: 40,
                                           child: VerticalDivider(
@@ -526,11 +565,11 @@ class _EditBookingState extends State<EditBooking> {
                                       borderRadius: BorderRadius.circular(20)),
                                   child: Row(
                                     mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
+                                    MainAxisAlignment.spaceEvenly,
                                     children: [
                                       Visibility(
                                         visible:
-                                            _selectedCar == 1 ? true : false,
+                                        _selectedCar == 1 ? true : false,
                                         child: SizedBox(
                                           width: 40,
                                           child: VerticalDivider(
@@ -553,11 +592,11 @@ class _EditBookingState extends State<EditBooking> {
                                       borderRadius: BorderRadius.circular(20)),
                                   child: Row(
                                     mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
+                                    MainAxisAlignment.spaceEvenly,
                                     children: [
                                       Visibility(
                                         visible:
-                                            _selectedCar == 2 ? true : false,
+                                        _selectedCar == 2 ? true : false,
                                         child: SizedBox(
                                           width: 40,
                                           child: VerticalDivider(
@@ -580,11 +619,11 @@ class _EditBookingState extends State<EditBooking> {
                                       borderRadius: BorderRadius.circular(20)),
                                   child: Row(
                                     mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
+                                    MainAxisAlignment.spaceEvenly,
                                     children: [
                                       Visibility(
                                         visible:
-                                            _selectedCar == 3 ? true : false,
+                                        _selectedCar == 3 ? true : false,
                                         child: SizedBox(
                                           width: 40,
                                           child: VerticalDivider(
@@ -607,11 +646,11 @@ class _EditBookingState extends State<EditBooking> {
                                       borderRadius: BorderRadius.circular(20)),
                                   child: Row(
                                     mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
+                                    MainAxisAlignment.spaceEvenly,
                                     children: [
                                       Visibility(
                                         visible:
-                                            _selectedCar == 4 ? true : false,
+                                        _selectedCar == 4 ? true : false,
                                         child: SizedBox(
                                           width: 40,
                                           child: VerticalDivider(
@@ -748,17 +787,17 @@ class _EditBookingState extends State<EditBooking> {
                   children: [
                     Expanded(
                         child: ElevatedButton(
-                      style: ButtonStyle(
-                        backgroundColor:
+                          style: ButtonStyle(
+                            backgroundColor:
                             MaterialStateProperty.all<Color>(Colors.black),
-                      ),
-                      child: Text(
-                        'Update',
-                        style: TextStyle(
-                          color: Colors.white,
-                        ),
-                      ),
-                    )),
+                          ),
+                          child: Text(
+                            'Update',
+                            style: TextStyle(
+                              color: Colors.white,
+                            ),
+                          ),
+                        )),
                   ],
                 )
               ],
