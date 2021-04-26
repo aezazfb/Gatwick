@@ -5,6 +5,7 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:zippy_rider/models/BookingModel.dart';
 import 'package:zippy_rider/models/cars_type_model.dart';
+import 'package:zippy_rider/states/edit_booking_state.dart';
 import 'package:zippy_rider/states/ridehistory_state.dart';
 
 class EditBooking extends StatefulWidget {
@@ -15,60 +16,6 @@ class EditBooking extends StatefulWidget {
 class _EditBookingState extends State<EditBooking> {
 
   List<Fromtovia> fromToViaList = [];
-  PageController pageController;
-
-  static List<CarsType> carsTypeList = [
-    CarsType(
-      'Saloon',
-      "assets/carsimages/saloonimage.png",
-      4,
-      2,
-    ),
-    CarsType(
-      'Estate',
-      "assets/carsimages/estateimage.png",
-      4,
-      3,
-    ),
-    CarsType(
-      'MPV',
-      "assets/carsimages/mpvimage.png",
-      6,
-      3,
-    ),
-    CarsType(
-      'Executive',
-      "assets/carsimages/saloonimage.png",
-      4,
-      2,
-    ),
-    CarsType(
-      '8 Passenger',
-      "assets/carsimages/eightpassenger.png",
-      8,
-      4,
-    ),
-  ];
-
-  selectedCar() {
-    int value;
-    if (selectedBookingModel.vehicletype == 'S')
-      value = 0;
-    else if (selectedBookingModel.vehicletype == 'E')
-      value = 1;
-    else if (selectedBookingModel.vehicletype == '6')
-      value = 2;
-    else if (selectedBookingModel.vehicletype == 'X')
-      value = 3;
-    else if (selectedBookingModel.vehicletype == '8')
-      value = 4;
-
-    
-    setState(() {
-      _selectedCar = value;
-      print('value:$value');
-    });
-  }
 
   fillFromToViaList() {
     fromToViaList.clear();
@@ -97,40 +44,34 @@ class _EditBookingState extends State<EditBooking> {
     return listWidget;
   }*/
 
-  CarsType selectedCarsType = carsTypeList[0];
-  bool displayCars = true;
-  bool changeIcon = true;
+  //CarsType selectedCarsType = carsTypeList[0];
+
   int _selectedCar = 0;
   BookingModel selectedBookingModel;
   List<PaymentType> paymentTypeList = RideHistoryState.paymentTypeList;
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       fillFromToViaList();
-      selectedCar();
-      pageController = PageController(
-          initialPage: 2,//_selectedCar,//,selectedCar()
-          viewportFraction: 0.4);
-      pageController.jumpToPage(2);
     });
   }
-  @override
-  void dispose() {
-    // TODO: implement dispose
-    pageController.dispose();
-    super.dispose();
 
-  }
+
   @override
   Widget build(BuildContext context) {
+    final editBookingState = Provider.of<EditBookingState>(context);
     selectedBookingModel = ModalRoute
         .of(context)
         .settings
         .arguments;
     PaymentType selectedPaymentType =
     Provider.of<RideHistoryState>(context).returnPaymentType();
+    _selectedCar = editBookingState.selectedCar(selectedBookingModel);
+    print('initial: $_selectedCar');
+
 
     return Scaffold(
       body: SafeArea(
@@ -148,7 +89,7 @@ class _EditBookingState extends State<EditBooking> {
                         Text(
                           "Journey Details",
                           style: TextStyle(
-                              color: applicationColor(),
+                              color: editBookingState.applicationColor(),
                               fontSize: 25,
                               fontWeight: FontWeight.bold),
                         ),
@@ -167,13 +108,13 @@ class _EditBookingState extends State<EditBooking> {
                             width: 40,
                             child: Icon(
                               Icons.radio_button_off_sharp,
-                              color: applicationColor(),
+                              color: editBookingState.applicationColor(),
                               size: 20,
                             )),
                         Text(
                           'Your Pickup',
                           style: TextStyle(
-                              color: applicationColor(),
+                              color: editBookingState.applicationColor(),
                               fontWeight: FontWeight.bold,
                               fontSize: 10),
                         ),
@@ -187,7 +128,7 @@ class _EditBookingState extends State<EditBooking> {
                           SizedBox(
                             width: 40,
                             child: VerticalDivider(
-                                thickness: 4, color: applicationColor()),
+                                thickness: 4, color: editBookingState.applicationColor()),
                           ),
 
                           Column(
@@ -249,14 +190,14 @@ class _EditBookingState extends State<EditBooking> {
                         SizedBox(
                             width: 40,
                             child:
-                            Icon(Icons.circle, color: applicationColor())),
+                            Icon(Icons.circle, color: editBookingState.applicationColor())),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
                               'Your Destination',
                               style: TextStyle(
-                                  color: applicationColor(),
+                                  color: editBookingState.applicationColor(),
                                   fontWeight: FontWeight.bold,
                                   fontSize: 10),
                             ),
@@ -277,15 +218,15 @@ class _EditBookingState extends State<EditBooking> {
                         decoration: BoxDecoration(
                             border: Border(
                                 top: BorderSide(
-                                    width: 2, color: applicationColor()),
+                                    width: 2, color: editBookingState.applicationColor()),
                                 bottom: BorderSide(
-                                    width: 2, color: applicationColor())),
+                                    width: 2, color: editBookingState.applicationColor())),
                             color: Color(0xFFEBEBEB)),
                         child: Text(
                           "Date And Time",
                           style: TextStyle(
                               fontSize: 25,
-                              color: applicationColor(),
+                              color: editBookingState.applicationColor(),
                               fontWeight: FontWeight.bold),
                         ),
                       ),
@@ -303,7 +244,7 @@ class _EditBookingState extends State<EditBooking> {
                         child: Text(
                           '${selectedBookingModel.date}',
                           style: TextStyle(
-                              fontSize: 15, color: applicationColor()),
+                              fontSize: 15, color: editBookingState.applicationColor()),
                           textAlign: TextAlign.center,
                         ),
                       ),
@@ -316,7 +257,7 @@ class _EditBookingState extends State<EditBooking> {
                         child: Text(
                           '${selectedBookingModel.time}',
                           style: TextStyle(
-                              fontSize: 15, color: applicationColor()),
+                              fontSize: 15, color: editBookingState.applicationColor()),
                           textAlign: TextAlign.center,
                         ),
                       ),
@@ -332,15 +273,15 @@ class _EditBookingState extends State<EditBooking> {
                         decoration: BoxDecoration(
                             border: Border(
                                 top: BorderSide(
-                                    width: 2, color: applicationColor()),
+                                    width: 2, color: editBookingState.applicationColor()),
                                 bottom: BorderSide(
-                                    width: 2, color: applicationColor())),
+                                    width: 2, color: editBookingState.applicationColor())),
                             color: Color(0xFFEBEBEB)),
                         child: Text(
                           "Vehicle Detail",
                           style: TextStyle(
                               fontSize: 25,
-                              color: applicationColor(),
+                              color: editBookingState.applicationColor(),
                               fontWeight: FontWeight.bold),
                         ),
                       ),
@@ -450,7 +391,7 @@ class _EditBookingState extends State<EditBooking> {
                               child: RotatedBox(
                                 quarterTurns: -1,
                                 child: Text(
-                                  '${carsTypeList[_selectedCar].carName}',
+                                  '${editBookingState.carsTypeList[_selectedCar].carName}',
                                   style: TextStyle(
                                       fontSize: 10,
                                       color: Colors.black,
@@ -459,7 +400,7 @@ class _EditBookingState extends State<EditBooking> {
                               ),
                             ),
                             Image.asset(
-                              '${carsTypeList[_selectedCar].imagePath}',
+                              '${editBookingState.carsTypeList[_selectedCar].imagePath}',
                               width: 90,
                               height: 70,
                             ),
@@ -469,7 +410,7 @@ class _EditBookingState extends State<EditBooking> {
                               child: Column(
                                 children: [
                                   Text(
-                                      '${carsTypeList[_selectedCar]
+                                      '${editBookingState.carsTypeList[_selectedCar]
                                           .passengers}'),
                                   Text('Passengers')
                                 ],
@@ -480,7 +421,7 @@ class _EditBookingState extends State<EditBooking> {
                               child: Column(
                                 children: [
                                   Text(
-                                      '${carsTypeList[_selectedCar]
+                                      '${editBookingState.carsTypeList[_selectedCar]
                                           .suitcases}'),
                                   Text('Suitcases')
                                 ],
@@ -491,19 +432,20 @@ class _EditBookingState extends State<EditBooking> {
                                   horizontal: 10, vertical: 8),
                               child: IconButton(
                                 icon: Icon(
-                                    changeIcon == true
+                                    editBookingState.changeIcon == true
                                         ? Icons.arrow_drop_down
                                         : Icons.arrow_drop_up,
                                     size: 30),
                                 onPressed: () {
-                                  setState(() {
+                                  editBookingState.setCarsTypeVisibility();
+                                 /* setState(() {
                                     displayCars == true
                                         ? displayCars = false
                                         : displayCars = true;
                                     changeIcon == true
                                         ? changeIcon = false
                                         : changeIcon = true;
-                                  });
+                                  });*/
                                 },
                               ),
                             )
@@ -514,7 +456,7 @@ class _EditBookingState extends State<EditBooking> {
                   ],
                 ),
                 Visibility(
-                  visible: displayCars,
+                  visible: editBookingState.displayCars,
                   child: Row(
                     children: [
                       Container(
@@ -522,7 +464,9 @@ class _EditBookingState extends State<EditBooking> {
                         height: 120,
                         width: 400,
                         child: PageView(
-                          controller: pageController,
+                          controller:PageController(
+                              initialPage: _selectedCar,
+                              viewportFraction: 0.4),
                           onPageChanged: (int a) {
                             print("I am at $a");
                             setState(() {
@@ -547,13 +491,13 @@ class _EditBookingState extends State<EditBooking> {
                                           width: 40,
                                           child: VerticalDivider(
                                             thickness: 4,
-                                            color: applicationColor(),
+                                            color: editBookingState.applicationColor(),
                                             indent: 10,
                                             endIndent: 10,
                                           ),
                                         ),
                                       ),
-                                      selectedCarCard(0)
+                                      selectedCarCard(0,editBookingState)
                                     ],
                                   ),
                                 )),
@@ -574,13 +518,13 @@ class _EditBookingState extends State<EditBooking> {
                                           width: 40,
                                           child: VerticalDivider(
                                             thickness: 4,
-                                            color: applicationColor(),
+                                            color: editBookingState.applicationColor(),
                                             indent: 10,
                                             endIndent: 10,
                                           ),
                                         ),
                                       ),
-                                      selectedCarCard(1)
+                                      selectedCarCard(1,editBookingState)
                                     ],
                                   ),
                                 )),
@@ -601,13 +545,13 @@ class _EditBookingState extends State<EditBooking> {
                                           width: 40,
                                           child: VerticalDivider(
                                             thickness: 4,
-                                            color: applicationColor(),
+                                            color: editBookingState.applicationColor(),
                                             indent: 10,
                                             endIndent: 10,
                                           ),
                                         ),
                                       ),
-                                      selectedCarCard(2)
+                                      selectedCarCard(2,editBookingState)
                                     ],
                                   ),
                                 )),
@@ -628,13 +572,13 @@ class _EditBookingState extends State<EditBooking> {
                                           width: 40,
                                           child: VerticalDivider(
                                             thickness: 4,
-                                            color: applicationColor(),
+                                            color: editBookingState.applicationColor(),
                                             indent: 10,
                                             endIndent: 10,
                                           ),
                                         ),
                                       ),
-                                      selectedCarCard(3)
+                                      selectedCarCard(3,editBookingState)
                                     ],
                                   ),
                                 )),
@@ -655,13 +599,13 @@ class _EditBookingState extends State<EditBooking> {
                                           width: 40,
                                           child: VerticalDivider(
                                             thickness: 4,
-                                            color: applicationColor(),
+                                            color: editBookingState.applicationColor(),
                                             indent: 10,
                                             endIndent: 10,
                                           ),
                                         ),
                                       ),
-                                      selectedCarCard(4)
+                                      selectedCarCard(4,editBookingState)
                                     ],
                                   ),
                                 )),
@@ -673,19 +617,19 @@ class _EditBookingState extends State<EditBooking> {
                               return Column(
                                 children: [
                                   Image.asset(
-                                    '${carsTypeList[index].imagePath}',
+                                    '${editBookingState.carsTypeList[index].imagePath}',
                                     width: 90,
                                     height: 50,
                                   ),
-                                  Text('${carsTypeList[index].carName}'),
+                                  Text('${editBookingState.carsTypeList[index].carName}'),
                                   Text(
-                                      '${carsTypeList[index].passengers} Passengers '),
+                                      '${editBookingState.carsTypeList[index].passengers} Passengers '),
                                   Text(
-                                      '${carsTypeList[index].suitcases} Suitcases '),
+                                      '${editBookingState.carsTypeList[index].suitcases} Suitcases '),
                                 ],
                               );
                             },
-                            itemCount: carsTypeList.length,
+                            itemCount: editBookingState.carsTypeList.length,
                             viewportFraction: 0.8,
                             scale: 0.9,
                           )*/
@@ -695,12 +639,12 @@ class _EditBookingState extends State<EditBooking> {
                             Column(
                               children: [
                                 Image.asset(
-                                  '${carsTypeList[0].imagePath}',width: 90,height: 50,
+                                  '${editBookingState.carsTypeList[0].imagePath}',width: 90,height: 50,
                                 ),
-                                Text('${carsTypeList[0].carName}'),
+                                Text('${editBookingState.carsTypeList[0].carName}'),
                                 Text(
-                                    '${carsTypeList[0].passengers} Passengers '),
-                                Text('${carsTypeList[0].suitcases} Suitcases '),
+                                    '${editBookingState.carsTypeList[0].passengers} Passengers '),
+                                Text('${editBookingState.carsTypeList[0].suitcases} Suitcases '),
                               ],
                             )
                           ],
@@ -718,9 +662,9 @@ class _EditBookingState extends State<EditBooking> {
                         decoration: BoxDecoration(
                             border: Border(
                                 top: BorderSide(
-                                    width: 2, color: applicationColor()),
+                                    width: 2, color: editBookingState.applicationColor()),
                                 bottom: BorderSide(
-                                    width: 2, color: applicationColor())),
+                                    width: 2, color: editBookingState.applicationColor())),
                             color: Color(0xFFEBEBEB)),
                         child: Row(
                           children: [
@@ -728,7 +672,7 @@ class _EditBookingState extends State<EditBooking> {
                               "Additional Information",
                               style: TextStyle(
                                   fontSize: 25,
-                                  color: applicationColor(),
+                                  color: editBookingState.applicationColor(),
                                   fontWeight: FontWeight.bold),
                             ),
                             Spacer(),
@@ -751,15 +695,15 @@ class _EditBookingState extends State<EditBooking> {
                         decoration: BoxDecoration(
                             border: Border(
                                 top: BorderSide(
-                                    width: 2, color: applicationColor()),
+                                    width: 2, color: editBookingState.applicationColor()),
                                 bottom: BorderSide(
-                                    width: 2, color: applicationColor())),
+                                    width: 2, color: editBookingState.applicationColor())),
                             color: Color(0xFFEBEBEB)),
                         child: Text(
                           "Payment",
                           style: TextStyle(
                               fontSize: 25,
-                              color: applicationColor(),
+                              color: editBookingState.applicationColor(),
                               fontWeight: FontWeight.bold),
                         ),
                       ),
@@ -775,7 +719,7 @@ class _EditBookingState extends State<EditBooking> {
                           "Cash",
                           style: TextStyle(
                             fontSize: 25,
-                            color: applicationColor(),
+                            color: editBookingState.applicationColor(),
                           ),
                         ),
                       ),
@@ -808,25 +752,23 @@ class _EditBookingState extends State<EditBooking> {
     );
   }
 
-  Widget selectedCarCard(int calledFunction) {
+  Widget selectedCarCard(int calledFunction, EditBookingState editBookingState) {
     return Column(
       children: [
         Image.asset(
-          '${carsTypeList[calledFunction].imagePath}',
+          '${editBookingState.carsTypeList[calledFunction].imagePath}',
           width: 90,
           height: 50,
         ),
         Text(
-          '${carsTypeList[calledFunction].carName}',
+          '${editBookingState.carsTypeList[calledFunction].carName}',
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
-        Text('${carsTypeList[calledFunction].passengers} Passengers '),
-        Text('${carsTypeList[calledFunction].suitcases} Suitcases '),
+        Text('${editBookingState.carsTypeList[calledFunction].passengers} Passengers '),
+        Text('${editBookingState.carsTypeList[calledFunction].suitcases} Suitcases '),
       ],
     );
   }
 
-  Color applicationColor() {
-    return Color(0xFF8E24AA);
-  }
+  
 }

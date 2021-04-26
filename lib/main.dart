@@ -8,6 +8,7 @@ import 'package:zippy_rider/UI/flights_screen.dart';
 import 'package:zippy_rider/UI/login_screen.dart';
 import 'package:zippy_rider/UI/profile_screen.dart';
 import 'package:zippy_rider/models/login_model.dart';
+import 'package:zippy_rider/states/edit_booking_state.dart';
 import 'package:zippy_rider/states/flight_state.dart';
 import 'package:zippy_rider/states/map_state.dart';
 import 'package:zippy_rider/states/ridehistory_state.dart';
@@ -37,6 +38,7 @@ void main() async {
       ChangeNotifierProvider.value(value: FlightState()),
       ChangeNotifierProvider.value(value: ViasState()),
       ChangeNotifierProvider.value(value: RideHistoryState()),
+      ChangeNotifierProvider.value(value: EditBookingState()),
       //ChangeNotifierProvider.value(value: BottomModelSheet()),
     ],
   ));

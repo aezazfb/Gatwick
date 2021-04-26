@@ -102,6 +102,7 @@ class MapState extends BaseClass with ChangeNotifier {
   //----> Creating onMapCreated for our Map
   void onCreate(GoogleMapController controller) {
     mapControllerr = controller;
+
     notifyListeners();
   }
 
@@ -187,8 +188,7 @@ class MapState extends BaseClass with ChangeNotifier {
               desiredAccuracy: GeoLocatorPackage.LocationAccuracy.high);
       CameraPosition cameraPosition = new CameraPosition(
           target: LatLng(position.latitude, position.longitude), zoom: 17);
-      mapController
-          .animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
+      mapController.animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
       LatLng latLng = LatLng(position.latitude, position.longitude);
       fetchAddressFromCoordinates(latLng);
     } catch (e) {
@@ -222,7 +222,7 @@ class MapState extends BaseClass with ChangeNotifier {
         map['Placedetails']['lattitude'], map['Placedetails']['longitude']);
     CameraPosition cameraPosition = new CameraPosition(
         target: LatLng(latLng.latitude, latLng.longitude), zoom: 14);
-    //print(cameraPosition);
+    print("cameraPosition: $cameraPosition");
     await mapControllerr
         .animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
 
