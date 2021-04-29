@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/widgets.dart';
@@ -189,6 +190,7 @@ class MapState extends BaseClass with ChangeNotifier {
       CameraPosition cameraPosition = new CameraPosition(
           target: LatLng(position.latitude, position.longitude), zoom: 17);
       mapController.animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
+
       LatLng latLng = LatLng(position.latitude, position.longitude);
       fetchAddressFromCoordinates(latLng);
     } catch (e) {
@@ -246,7 +248,7 @@ class MapState extends BaseClass with ChangeNotifier {
       outcode2 = map['Placedetails']['outcode'];
       postcode2 = map['Placedetails']['postcode'];
     }
-    print("_________________________________________________");
+    print("____________________________________________________");
     addMarker(latLng, value, flag, originHue);
     notifyListeners();
   }

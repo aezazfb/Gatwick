@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
+import 'package:toast/toast.dart';
+import 'package:toggle_switch/toggle_switch.dart';
 import 'package:zippy_rider/models/BookingModel.dart';
 import 'package:zippy_rider/models/cars_type_model.dart';
 import 'package:zippy_rider/states/edit_booking_state.dart';
@@ -30,25 +32,13 @@ class _EditBookingState extends State<EditBooking> {
       }
     }
   }
-
-  /*List<Widget> getViaListWidgets() {
-    List<Widget> listWidget = []; //List<Widget>();
-
-    for (int i = 0; i < fromToViaList.length; i++) {
-      listWidget.add(
-        ListTile(
-          title: Text('${fromToViaList[i].address}'),
-        ),
-      );
-    }
-    return listWidget;
-  }*/
-
-  //CarsType selectedCarsType = carsTypeList[0];
-
   int _selectedCar = 0;
   BookingModel selectedBookingModel;
   List<PaymentType> paymentTypeList = RideHistoryState.paymentTypeList;
+
+  int _initialLabel = 1;
+  TextEditingController _flightController = TextEditingController();
+  TextEditingController _commenttController = TextEditingController();
 
   @override
   void initState() {
@@ -167,15 +157,13 @@ class _EditBookingState extends State<EditBooking> {
                                         scrollDirection: Axis.vertical,
                                         itemBuilder: (context, index) {
                                           return ListTile(
+                                            dense: true,
                                             title: Text(
                                                 '${fromToViaList[index]
                                                     .address}'),
                                           );
                                         },
                                         itemCount: fromToViaList.length
-                                      //tempList.length,
-                                      //children: getViaListWidgets()),
-                                      //fromToViaList.length * 50.0,
                                     ),
                                   ),
                                 ],
@@ -213,7 +201,7 @@ class _EditBookingState extends State<EditBooking> {
                   children: [
                     Expanded(
                       child: Container(
-                        margin: const EdgeInsets.all(8.0),
+                        margin: EdgeInsets.fromLTRB(8.0, 5.0, 8.0, 1.0),
                         padding: const EdgeInsets.all(3.0),
                         decoration: BoxDecoration(
                             border: Border(
@@ -238,8 +226,8 @@ class _EditBookingState extends State<EditBooking> {
                   children: [
                     Expanded(
                       child: Container(
-                        margin: const EdgeInsets.all(8.0),
-                        padding: const EdgeInsets.all(3.0),
+                        margin: const EdgeInsets.fromLTRB(15.0, 2.0, 15.0, 2.0),
+                        padding: const EdgeInsets.all(5.0),
                         decoration: BoxDecoration(color: Color(0xFFEBEBEB)),
                         child: Text(
                           '${selectedBookingModel.date}',
@@ -251,8 +239,8 @@ class _EditBookingState extends State<EditBooking> {
                     ),
                     Expanded(
                       child: Container(
-                        margin: const EdgeInsets.all(8.0),
-                        padding: const EdgeInsets.all(3.0),
+                        margin: const EdgeInsets.fromLTRB(15.0, 2.0, 15.0, 2.0),
+                        padding: const EdgeInsets.all(5.0),
                         decoration: BoxDecoration(color: Color(0xFFEBEBEB)),
                         child: Text(
                           '${selectedBookingModel.time}',
@@ -268,7 +256,7 @@ class _EditBookingState extends State<EditBooking> {
                   children: [
                     Expanded(
                       child: Container(
-                        margin: const EdgeInsets.all(8.0),
+                        margin: EdgeInsets.fromLTRB(8.0, 1.0, 8.0, 3.0),
                         padding: const EdgeInsets.all(3.0),
                         decoration: BoxDecoration(
                             border: Border(
@@ -438,14 +426,6 @@ class _EditBookingState extends State<EditBooking> {
                                     size: 30),
                                 onPressed: () {
                                   editBookingState.setCarsTypeVisibility();
-                                 /* setState(() {
-                                    displayCars == true
-                                        ? displayCars = false
-                                        : displayCars = true;
-                                    changeIcon == true
-                                        ? changeIcon = false
-                                        : changeIcon = true;
-                                  });*/
                                 },
                               ),
                             )
@@ -611,44 +591,6 @@ class _EditBookingState extends State<EditBooking> {
                                 )),
                           ],
                         ),
-                        /*Swiper(
-                            itemBuilder:
-                                (BuildContext buildContext, int index) {
-                              return Column(
-                                children: [
-                                  Image.asset(
-                                    '${editBookingState.carsTypeList[index].imagePath}',
-                                    width: 90,
-                                    height: 50,
-                                  ),
-                                  Text('${editBookingState.carsTypeList[index].carName}'),
-                                  Text(
-                                      '${editBookingState.carsTypeList[index].passengers} Passengers '),
-                                  Text(
-                                      '${editBookingState.carsTypeList[index].suitcases} Suitcases '),
-                                ],
-                              );
-                            },
-                            itemCount: editBookingState.carsTypeList.length,
-                            viewportFraction: 0.8,
-                            scale: 0.9,
-                          )*/
-                        /*ListView(
-                          scrollDirection: Axis.vertical,
-                          children: [
-                            Column(
-                              children: [
-                                Image.asset(
-                                  '${editBookingState.carsTypeList[0].imagePath}',width: 90,height: 50,
-                                ),
-                                Text('${editBookingState.carsTypeList[0].carName}'),
-                                Text(
-                                    '${editBookingState.carsTypeList[0].passengers} Passengers '),
-                                Text('${editBookingState.carsTypeList[0].suitcases} Suitcases '),
-                              ],
-                            )
-                          ],
-                        ),*/
                       )
                     ],
                   ),
@@ -676,9 +618,11 @@ class _EditBookingState extends State<EditBooking> {
                                   fontWeight: FontWeight.bold),
                             ),
                             Spacer(),
-                            Icon(
-                              Icons.arrow_right,
-                              size: 40,
+                            IconButton(
+                              icon: Icon(Icons.arrow_right, size: 40),
+                              onPressed: (){
+                                dialogShow(context);
+                              }
                             )
                           ],
                         ),
@@ -752,6 +696,8 @@ class _EditBookingState extends State<EditBooking> {
     );
   }
 
+
+//---->Repeated CarWidget Function.
   Widget selectedCarCard(int calledFunction, EditBookingState editBookingState) {
     return Column(
       children: [
@@ -770,5 +716,129 @@ class _EditBookingState extends State<EditBooking> {
     );
   }
 
+
+//---->Additional Information Dialog.
+  dialogShow(context) async {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          scrollable: true,
+          shape:
+          RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
+          insetPadding: EdgeInsets.all(10.0),
+          titlePadding: EdgeInsets.all(0.0),
+          titleTextStyle: TextStyle(
+              color: Colors.white, fontSize: 20, fontWeight: FontWeight.w600),
+          title: Container(
+            width: MediaQuery.of(context).size.width - 40,
+            padding: EdgeInsets.only(left: 10, bottom: 20, top: 10),
+            child: Text(' Additional Information '),
+            decoration: BoxDecoration(
+              color: Colors.purple,
+              borderRadius: BorderRadius.only(
+                  topRight: Radius.circular(15),
+                  topLeft: Radius.circular(15.0)),
+            ),
+          ),
+          content: Container(
+            width: MediaQuery.of(context).size.width - 40,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text('Child Seat'),
+                    ToggleSwitch(
+                      minWidth: 50.0,
+                      cornerRadius: 10.0,
+                      activeBgColor: Colors.purple,
+                      activeFgColor: Colors.white,
+                      inactiveBgColor: Colors.grey,
+                      labels: ['YES', 'NO'],
+                      initialLabelIndex: _initialLabel,
+                      // icons: [Icons.check, Icons.clear_rounded],
+                      onToggle: (index) {
+                        print('switched to: $index');
+                        if (index == 0) {
+                          _initialLabel = index;
+                          Toast.show('Child seat Selected', context,
+                              duration: Toast.LENGTH_LONG);
+                        }
+                        if (index == 1) {
+                          _initialLabel = index;
+                          Toast.show('Child seat not selected', context,
+                              duration: Toast.LENGTH_LONG);
+                        }
+                      },
+                    ),
+                  ],
+                ),
+                SizedBox(height: 10),
+                ListTile(
+                  leading: Icon(
+                    Icons.flight,
+                    color: Colors.purple,
+                  ),
+                  title: TextFormField(
+                    controller: _flightController,
+                    maxLines: 1,
+                    keyboardType: TextInputType.number,
+                    textInputAction: TextInputAction.go,
+                    minLines: null,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      hintText: 'Flight Number',
+                    ),
+                  ),
+                ),
+                SizedBox(height: 10),
+                ListTile(
+                  leading: Icon(
+                    Icons.comment,
+                    color: Colors.purple,
+                  ),
+                  title: TextFormField(
+                    controller: _commenttController,
+                    maxLines: 4,
+                    keyboardType: TextInputType.multiline,
+                    minLines: null,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      hintText: 'Add Comment',
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          actions: [
+            FlatButton(
+                color: Colors.purple,
+                onPressed: () {
+                  _flightController = new TextEditingController(
+                      text: _flightController.text.toString());
+                  _commenttController = TextEditingController(
+                      text: _commenttController.text.toString());
+                  Navigator.pop(context);
+                },
+                child: Text('DONE')),
+            FlatButton(
+                color: Colors.purple,
+                onPressed: () {
+                  _initialLabel = 1;
+                  Navigator.pop(context);
+                },
+                child: Text('CANCEL'))
+          ],
+        );
+      },
+    );
+  }
   
 }
