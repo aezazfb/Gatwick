@@ -21,16 +21,20 @@ class MapScreenState extends State<MapScreen> {
   bool _controllerflag = true;
   var heightFactor = 0.0;
   Set<Polyline> _polylines;
+  var mapState;
+
 
   @override
   Widget build(BuildContext context) {
-    final mapState = Provider.of<MapState>(context);
+    mapState = Provider.of<MapState>(context);
+
     final viasState = Provider.of<ViasState>(context);
     return WillPopScope(
       onWillPop: () async {
         return false;
       },
       child: Scaffold(
+
         //check MapState() that starts initialPosition
         body: mapState.initialPosition == null
             ? Container(
@@ -56,7 +60,7 @@ class MapScreenState extends State<MapScreen> {
             ))
             : Stack(
           children: [
-            
+
             GoogleMap(
               tiltGesturesEnabled: true,
               mapType: MapType.normal,
@@ -75,6 +79,7 @@ class MapScreenState extends State<MapScreen> {
               onCameraMoveStarted: () {
                 mapState.checkConnectivity();
                 mapState.stackElementsVisibility = false;
+
               },
               onCameraIdle: () {
                 mapState
@@ -591,6 +596,7 @@ class MapScreenState extends State<MapScreen> {
       ),
     );
   }
+
 
 /*gettinglatlngbounds(){
     LatLngBounds(

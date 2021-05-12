@@ -220,6 +220,11 @@ class AddViasState extends State<AddVias> {
                                 color: Colors.red),
                             onPressed: () {
                               setState(() {
+                                Marker markers = mapState.marker.firstWhere(
+                                        (p) => p.markerId == MarkerId(viasState.viasList[index]),
+                                    orElse: () => null);
+                                mapState.marker.remove(markers);
+
                                 viasState.viasList.removeAt(index);
                                 viasState.viasPostCodeList.removeAt(index);
                                 viasState.viasOutCodeList.removeAt(index);

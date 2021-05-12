@@ -5,7 +5,6 @@ import 'package:flutter/painting.dart';
 import 'package:flutter_dropdown/flutter_dropdown.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 import 'package:toast/toast.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
@@ -13,7 +12,6 @@ import 'package:zippy_rider/base_class.dart';
 import 'package:zippy_rider/models/BookingModel.dart';
 import 'package:zippy_rider/models/cars_type_model.dart';
 import 'package:zippy_rider/payment_gateways/stripe-payment-service.dart';
-import 'package:zippy_rider/requests/bottom_sheet/vehicle_details.dart';
 import 'package:zippy_rider/requests/map_screen/insertBooking.dart';
 import 'package:zippy_rider/states/map_state.dart';
 import 'package:zippy_rider/states/vias_state.dart';
@@ -89,7 +87,7 @@ class BottomModelSheet extends BaseClass with ChangeNotifier {
                           children: [
                             Icon(Icons.monetization_on_outlined,
                                 size: 30, color: Colors.purple),
-                            Text('dummy ',
+                            Text('dummy',
                                 style: TextStyle(color: Colors.black)),
                             Icon(Icons.alt_route,
                                 size: 30, color: Colors.purple),

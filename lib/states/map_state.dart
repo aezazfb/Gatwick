@@ -34,6 +34,8 @@ class MapState extends BaseClass with ChangeNotifier {
   LatLng l2 = LatLng(0.0000, 0.0000);
   String outcode1, outcode2, postcode1, postcode2;
   GoogleMapController mapControllerr;
+
+
   Set<Marker> _wholeMarkersList = Set();
 
   bool locationServiceActive = true;
@@ -94,6 +96,7 @@ class MapState extends BaseClass with ChangeNotifier {
     getConfigFromSharedPref();
     notifyListeners();
   }
+
 
   //----> setting config of customer at start of app
   callcfgCustAppMethod() async {
