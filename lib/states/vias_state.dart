@@ -5,6 +5,7 @@ import 'package:zippy_rider/bottom_model_sheet/bottomsheet.dart';
 import 'package:zippy_rider/requests/map_screen/detailsRequest.dart';
 import 'package:zippy_rider/requests/map_screen/suggestionRequest.dart';
 import 'package:zippy_rider/requests/vias_screen/decode_vias_polyline.dart';
+import 'package:zippy_rider/utils/util.dart' as util;
 
 class ViasState with ChangeNotifier {
   List<LatLng> viasLatLongList = [];
@@ -90,7 +91,7 @@ class ViasState with ChangeNotifier {
         visible: true,
         points: viasPolyLinePoints,
         width: 5,
-        color: Colors.purple,
+        color: util.primaryColor,
       ),
     );
     print("polyline length ${polyLine.length}");

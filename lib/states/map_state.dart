@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'dart:io';
-
+import 'package:zippy_rider/utils/util.dart' as util;
 import 'package:flutter/widgets.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:flutter/cupertino.dart';
@@ -85,6 +85,7 @@ class MapState extends BaseClass with ChangeNotifier {
 
   bool cardVisibility = true;
   bool stackElementsVisibility = true;
+  bool viasVb = false;
   bool showAppBar = false;
 
   MapState() {
@@ -114,15 +115,16 @@ class MapState extends BaseClass with ChangeNotifier {
     sourceController.clear();
     destinationController.clear();
     latLangList.clear();
-    outcode1 ='';
-    outcode2 ='';
-    postcode1 ='';
-    postcode2 ='';
+    outcode1 = '';
+    outcode2 = '';
+    postcode1 = '';
+    postcode2 = '';
     polyCoordinates.clear();
     marker.clear();
     userName = '';
     userEmail = '';
     userPhone = '';
+    notifyListeners();
   }
 
   void getConfigFromSharedPref() async {
@@ -148,7 +150,7 @@ class MapState extends BaseClass with ChangeNotifier {
       if (!_serviceEnabled) {
         _serviceEnabled = await location.requestService();
         if (!_serviceEnabled) {
-          initialPositions = LatLng(0.000000, 0.000000);
+          initialPositions = LatLng(51.5074, 0.1278);
           notifyListeners();
         } else {
           _getUserLocation();
@@ -157,7 +159,7 @@ class MapState extends BaseClass with ChangeNotifier {
         _getUserLocation();
       }
     } catch (e) {
-      print('Exception caught: $e');
+      print('Exception  for location caught: $e');
     }
   }
 
@@ -285,7 +287,7 @@ class MapState extends BaseClass with ChangeNotifier {
       circleId: CircleId(id1),
       center: latLng1,
       visible: true,
-      strokeColor: Colors.purple,
+      strokeColor: util.primaryColor,
       strokeWidth: 2,
       fillColor: Colors.greenAccent,
       radius: 10.0,
@@ -295,7 +297,7 @@ class MapState extends BaseClass with ChangeNotifier {
       circleId: CircleId(id2),
       center: latLng2,
       visible: true,
-      strokeColor: Colors.purple,
+      strokeColor: util.primaryColor,
       strokeWidth: 3,
       fillColor: Colors.greenAccent,
       radius: 10.0,
@@ -316,7 +318,7 @@ class MapState extends BaseClass with ChangeNotifier {
             visible: true,
             points: MapsCurvedLines.getPointsOnCurve(l1, l2),
             width: 5,
-            color: Colors.purple,
+            color: util.primaryColor,
           ),
         );
       } else {
@@ -332,6 +334,9 @@ class MapState extends BaseClass with ChangeNotifier {
         destinationController.text.toString().isNotEmpty) {
       //calculateDistanceTime.calculateDistanceTime(l1, l2);
       List list = await locationDetails.getTimeDistance();
+
+      // sourceController.clear(); destinationController.clear(); //============== yhn se clear horaha Get QUOTe pe click k baad!
+
       bottomModelSheet.settingModelBottomSheet(
           context, '${list[0]}', '${list[1]}');
       //sourceController.text.toString(),destinationController.text.toString(),outcode1,outcode2,postcode1,postcode2
@@ -344,7 +349,7 @@ class MapState extends BaseClass with ChangeNotifier {
 
 //---->FETCH CORDINATES ON CAMERA MOVE
   onCameraMove(CameraPosition position) async {
-    _centerPoints = position.target;
+    //_centerPoints = position.target;
     visibility();
   }
 
@@ -359,6 +364,7 @@ class MapState extends BaseClass with ChangeNotifier {
         'total stuff: $first \n ${first.postalCode}\n${first.locality}\n${first.subLocality}\n${first.thoroughfare}'
         '\n\n\n\n\n');
     _name = first.addressLine;
+    sourceController.text = name;
     notifyListeners();
   }
 
@@ -441,10 +447,28 @@ class MapState extends BaseClass with ChangeNotifier {
     if (destinationController.text.toString().isNotEmpty &&
         sourceController.text.toString().isNotEmpty) {
       cardVisibility = false;
+      stackElementsVisibility = false;
     } else {
       cardVisibility = true;
     }
     notifyListeners();
+  }
+
+  viasVisiBility_chng() {
+    //if(destinationController.text.toString().isNotEmpty) destinationController.text = '';
+
+    if (destinationController.text.isNotEmpty &&
+        sourceController.text.isNotEmpty) {
+      viasVb = true;
+      // if(stackElementsVisibility==false)
+      // {
+      //   viasVb = false;
+      //   destinationController.text =null;
+      //   sourceController.text = null;
+      // }
+    } else {
+      viasVb = false;
+    }
   }
 
 //CLEAR FIELDS
@@ -488,7 +512,7 @@ class MapState extends BaseClass with ChangeNotifier {
             padding: EdgeInsets.only(left: 10, bottom: 20, top: 10),
             child: Text(' Feedback '),
             decoration: BoxDecoration(
-                color: Colors.purple,
+                color: util.primaryColor,
                 borderRadius: BorderRadius.only(
                   topRight: Radius.circular(15),
                   topLeft: Radius.circular(15),
@@ -503,7 +527,7 @@ class MapState extends BaseClass with ChangeNotifier {
                 ListTile(
                   leading: Icon(
                     Icons.comment_outlined,
-                    color: Colors.purple,
+                    color: util.primaryColor,
                   ),
                   title: TextFormField(
                     controller: feedBackController,
@@ -523,7 +547,7 @@ class MapState extends BaseClass with ChangeNotifier {
           ),
           actions: [
             FlatButton(
-                color: Colors.purple,
+                color: util.primaryColor,
                 onPressed: () {
                   if (feedBackController.text.isNotEmpty) {
                     Navigator.pop(context);
@@ -533,7 +557,7 @@ class MapState extends BaseClass with ChangeNotifier {
                 },
                 child: Text('DONE')),
             FlatButton(
-                color: Colors.purple,
+                color: util.primaryColor,
                 onPressed: () {
                   //_initialLabel = 1;
                   Navigator.pop(context);

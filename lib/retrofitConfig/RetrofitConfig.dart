@@ -20,14 +20,18 @@ abstract class RetrofitConfig {
   @GET("/api/API/CfgCustApp")
   Future<List<CfgCustAppModel>> getCfgCustApp(@Query('office') String office);
 
+  @GET("/api/API/CancelBooking")
+  Future<String> CancelBooking(
+      @Query("jobid") String jobid, @Query("reason") String reason);
+
   @POST("/api/API/InsertBooking")
   Future<String> insertBooking(@Body() BookingModel bookingModel);
 
   @POST("/api/API/CustomerSignUp")
-  Future<ResponseModel> signupCustomerRegistration(@Body() CustomerModel customerModel);
+  Future<ResponseModel> signupCustomerRegistration(
+      @Body() CustomerModel customerModel);
 
   @GET("/api/API/CustomerLogin")
   Future<String> loginCustomer(@Query('id') String email_or_number,
-  @Query('pass') String pass, @Query('check') String check);
-
+      @Query('pass') String pass, @Query('check') String check);
 }

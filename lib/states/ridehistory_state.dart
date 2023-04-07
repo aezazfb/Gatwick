@@ -45,6 +45,7 @@ class RideHistoryState extends ChangeNotifier {
 
   Future<List<BookingModel>> getbookedHistory() async {
     bookingList = await BookingHistoryRequest.getBookingHistory();
+
     //print("this is bookingList: $bookingList");
 
     if (bookingList.length == 0) {
@@ -85,12 +86,11 @@ class RideHistoryState extends ChangeNotifier {
           completedBookingHistoryList.add(bookingmodel);
         }
       });
-      if(completedBookingHistoryList.length == 0){
+      if (completedBookingHistoryList.length == 0) {
         return null;
       }
       return completedBookingHistoryList;
     }
-
   }
 
   Future<List<BookingModel>> getcancelledHistory() async {

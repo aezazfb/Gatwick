@@ -12,6 +12,7 @@ import 'package:toast/toast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:zippy_rider/requests/login_screen/customer_login_request.dart';
 import 'package:zippy_rider/utils/util.dart' as util;
+import 'package:zippy_rider/states/map_state.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -27,12 +28,13 @@ class LoginState extends State<Login> {
   TextEditingController _phoneNumberController = new TextEditingController();
   TextEditingController _passwordNumberController = new TextEditingController();
   TextEditingController _confirmController = new TextEditingController();
+  MapState mapState = MapState();
 
   Future<bool> future;
 
   // Generates Random Number
   int randomPIN = Random().nextInt(10009);
-  String countrycode = '', phoneNumber='';
+  String countrycode = '', phoneNumber = '';
   bool emailfieldEnabled = true, numberfieldEnabled = true;
 
   @override
@@ -82,7 +84,7 @@ class LoginState extends State<Login> {
                         WidgetsBinding.instance.addPostFrameCallback((_) {
                           countrycode = '';
                           phoneNumber = '';
-                          Navigator.pushNamed(context, '/mapscreen');
+                          Navigator.pushReplacementNamed(context, '/mapscreen');
                         });
                         //return Text('data present ${snapshot.data}');
                         return Center(
@@ -367,8 +369,12 @@ class LoginState extends State<Login> {
   gotoMapScreen(Map<String, dynamic> response) {
     print('This is Response: $response');
     if (response['success'] == true) {
-      saveConfigToSharedPref(response);
-      Navigator.pushNamed(context, '/mapscreen');
+      setState(() {
+        saveConfigToSharedPref(response);
+        mapState
+            .getConfigFromSharedPref(); // iske add karne se login k baad name show horaha hai...
+        Navigator.pushReplacementNamed(context, '/mapscreen');
+      });
     } else {
       Toast.show("Invalid Email/Phone or Password", context,
           duration: Toast.LENGTH_LONG);

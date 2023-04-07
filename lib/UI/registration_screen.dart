@@ -252,7 +252,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> with BaseClass{
                           CustomerModel customerModel = CustomerModel(
                             custEmail: email,
                             custName: name,
-                            appname: "Divor",
+                            appname: util.appTitle,
                             custPhone: phoneNumber,
                             password: password,
                             commStartTime: 0,
@@ -267,15 +267,17 @@ class _RegistrationScreenState extends State<RegistrationScreen> with BaseClass{
                             fcmToken: BaseClass.generatedToken,
                             custUid: deviceId,
                           );
+                          print(customerModel.toJson());
 
-                          bool response =
-                              await CustomerRegistrationRequest.registerCustomer(
-                                  customerModel);
+                          bool response = await CustomerRegistrationRequest
+                              .registerCustomer(customerModel);
                           if (response) {
                             Toast.show(
                                 'Registration Successful, Now Login', context,
                                 duration: Toast.LENGTH_LONG);
-                            Navigator.pushNamed(context, '/login');
+                            sendMail(); // - -  ----- - ------- -  -  - ----- --Mailing Function!
+                            Toast.show('Check Email', context);
+                            Navigator.pushReplacementNamed(context, '/login');
                           } else if (response == false) {
                             Toast.show('Registration Failed', context,
                                 duration: Toast.LENGTH_LONG);

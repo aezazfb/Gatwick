@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:zippy_rider/states/flight_state.dart';
@@ -26,6 +27,7 @@ class _FlightsScreenState extends State<FlightsScreen> {
           GoogleMap(
               onMapCreated: flightState.onMapCreated,
               markers: flightState.marker,
+              myLocationButtonEnabled: false,
               initialCameraPosition: CameraPosition(
                 target: LatLng(51.1537, 0.1821),
                 zoom: 7,
@@ -84,7 +86,7 @@ class _FlightsScreenState extends State<FlightsScreen> {
                         left: 10,
                         child: Text("${flightState.postCode[index]}",
                             style: TextStyle(
-                                color: Colors.purple,
+                                color: util.primaryColor,
                                 fontWeight: FontWeight.w400))),
                   ],
                 ));
@@ -110,17 +112,29 @@ class _FlightsScreenState extends State<FlightsScreen> {
                     child: FlatButton(
                         materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                         onPressed: () {
-                          mapState.sourceController.text =
-                              '${flightState.airPortNamelist[indu]} ';
-                          mapState.l1 = LatLng(
-                              flightState.latLangList[indu].latitude,
-                              flightState.latLangList[indu].longitude);
-                          MapState.initialPositions = LatLng(
-                              flightState.latLangList[indu].latitude,
-                              flightState.latLangList[indu].longitude);
-                          Navigator.pushNamed(context, '/');
+                          if (mapState.sourceController.text !=
+                                  '${flightState.airPortNamelist[indu]} ' &&
+                              mapState.destinationController.text !=
+                                  '${flightState.airPortNamelist[indu]} ') {
+                            mapState.sourceController.text =
+                                '${flightState.airPortNamelist[indu]} ';
+                            mapState.l1 = LatLng(
+                                flightState.latLangList[indu].latitude,
+                                flightState.latLangList[indu].longitude);
+                            MapState.initialPositions = LatLng(
+                                flightState.latLangList[indu].latitude,
+                                flightState.latLangList[indu].longitude);
+                            Navigator.pushReplacementNamed(
+                                context, '/mapscreen');
+                          } else if (mapState.destinationController.text ==
+                              '${flightState.airPortNamelist[indu]} ') {
+                            Fluttertoast.showToast(
+                                msg: 'Already in Destination!');
+                          } else {
+                            Fluttertoast.showToast(msg: 'Already in PickUp!');
+                          }
                         },
-                        child: Text('Origin',
+                        child: Text('PickUp',
                             style: TextStyle(color: util.primaryColor)))),
                 Positioned(
                   top: 25,
@@ -128,43 +142,65 @@ class _FlightsScreenState extends State<FlightsScreen> {
                   child: FlatButton(
                       materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                       onPressed: () {
-                        mapState.destinationController.text =
-                            '${flightState.airPortNamelist[indu]} ';
-                        mapState.l2 = LatLng(
-                            flightState.latLangList[indu].latitude,
-                            flightState.latLangList[indu].longitude);
-                        MapState.initialPositions = LatLng(
-                            flightState.latLangList[indu].latitude,
-                            flightState.latLangList[indu].longitude);
-                        Navigator.pushNamed(context, '/');
+                        if (mapState.destinationController.text !=
+                                '${flightState.airPortNamelist[indu]} ' &&
+                            mapState.sourceController.text !=
+                                '${flightState.airPortNamelist[indu]} ') {
+                          mapState.destinationController.text =
+                              '${flightState.airPortNamelist[indu]} ';
+                          mapState.l2 = LatLng(
+                              flightState.latLangList[indu].latitude,
+                              flightState.latLangList[indu].longitude);
+                          MapState.initialPositions = LatLng(
+                              flightState.latLangList[indu].latitude,
+                              flightState.latLangList[indu].longitude);
+                          Navigator.pushReplacementNamed(context, '/mapscreen');
+                        } else if (mapState.sourceController.text ==
+                            '${flightState.airPortNamelist[indu]} ') {
+                          Fluttertoast.showToast(msg: 'Already in PickUp!');
+                        } else {
+                          Fluttertoast.showToast(
+                              msg: 'Already in Destination!');
+                        }
                       },
                       child: Text("Destination",
+                          style: TextStyle(color: util.primaryColor))),
+                ),
+                Positioned(
+                  top: 25,
+                  left: 0.0,
+                  child: FlatButton(
+                      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                      onPressed: () {
+                        Navigator.pushReplacementNamed(context, '/mapscreen');
+                      },
+                      child: Text("Back",
                           style: TextStyle(color: util.primaryColor))),
                 ),
                 // alignment: Alignment.bottomLeft,
               ]),
             ),
-            ),
-          Positioned(
-              top: 40,
-              right: 17,
-              child: Visibility(
-                  visible: mapState.stackElementsVisibility,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.grey.shade300.withOpacity(0.7),
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    child: IconButton(
-                      icon: Icon(Icons.location_searching,
-                          color: Colors.deepPurpleAccent),
-                      onPressed: () {
-                        return flightState.mapcontroller.animateCamera(
-                            CameraUpdate.newCameraPosition(
-                                flightState.cameraPosition));
-                      },
-                    ),
-                  ))),
+          ),
+          // Positioned(
+          //     top: 40,
+          //     right: 17,
+          //     child: Visibility(
+          //         visible: mapState.stackElementsVisibility,
+          //         child: Container(
+          //           decoration: BoxDecoration(
+          //             color: Colors.grey.shade300.withOpacity(0.7),
+          //             borderRadius: BorderRadius.circular(10.0),
+          //           ),
+          //           child: IconButton(
+          //             icon: Icon(Icons.location_searching,
+          //                 color: Colors.deepPurpleAccent),
+          //             onPressed: () {
+          //               return flightState.mapcontroller.animateCamera(
+          //                   CameraUpdate.newCameraPosition(
+          //                       flightState.cameraPosition));
+          //             },
+          //           ),
+          //         ))),
         ],
       ),
     );

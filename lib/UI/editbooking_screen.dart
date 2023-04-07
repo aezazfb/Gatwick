@@ -9,6 +9,7 @@ import 'package:zippy_rider/models/BookingModel.dart';
 import 'package:zippy_rider/models/cars_type_model.dart';
 import 'package:zippy_rider/states/edit_booking_state.dart';
 import 'package:zippy_rider/states/ridehistory_state.dart';
+import 'package:zippy_rider/utils/util.dart' as util;
 
 class EditBooking extends StatefulWidget {
   @override
@@ -735,7 +736,7 @@ class _EditBookingState extends State<EditBooking> {
             padding: EdgeInsets.only(left: 10, bottom: 20, top: 10),
             child: Text(' Additional Information '),
             decoration: BoxDecoration(
-              color: Colors.purple,
+              color: util.primaryColor,
               borderRadius: BorderRadius.only(
                   topRight: Radius.circular(15),
                   topLeft: Radius.circular(15.0)),
@@ -753,7 +754,7 @@ class _EditBookingState extends State<EditBooking> {
                     ToggleSwitch(
                       minWidth: 50.0,
                       cornerRadius: 10.0,
-                      activeBgColor: Colors.purple,
+                      activeBgColor: util.primaryColor,
                       activeFgColor: Colors.white,
                       inactiveBgColor: Colors.grey,
                       labels: ['YES', 'NO'],
@@ -779,7 +780,7 @@ class _EditBookingState extends State<EditBooking> {
                 ListTile(
                   leading: Icon(
                     Icons.flight,
-                    color: Colors.purple,
+                    color: util.primaryColor,
                   ),
                   title: TextFormField(
                     controller: _flightController,
@@ -799,7 +800,7 @@ class _EditBookingState extends State<EditBooking> {
                 ListTile(
                   leading: Icon(
                     Icons.comment,
-                    color: Colors.purple,
+                    color: util.primaryColor,
                   ),
                   title: TextFormField(
                     controller: _commenttController,
@@ -819,7 +820,7 @@ class _EditBookingState extends State<EditBooking> {
           ),
           actions: [
             FlatButton(
-                color: Colors.purple,
+                color: util.primaryColor,
                 onPressed: () {
                   _flightController = new TextEditingController(
                       text: _flightController.text.toString());
@@ -829,7 +830,7 @@ class _EditBookingState extends State<EditBooking> {
                 },
                 child: Text('DONE')),
             FlatButton(
-                color: Colors.purple,
+                color: util.primaryColor,
                 onPressed: () {
                   _initialLabel = 1;
                   Navigator.pop(context);

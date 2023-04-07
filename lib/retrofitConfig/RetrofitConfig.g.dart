@@ -118,4 +118,28 @@ class _RetrofitConfig implements RetrofitConfig {
     final value = _result.data;
     return value;
   }
+
+  @override
+  Future<String> CancelBooking(jobid, reason) async {
+    //ArgumentError.checkNotNull(email_or_number, 'email_or_number');
+    ArgumentError.checkNotNull(jobid, 'jobid');
+    ArgumentError.checkNotNull(reason, 'reason');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      // r'id': email_or_number,
+      r'jobid': jobid,
+      r'reason': reason
+    };
+    final _data = <String, dynamic>{};
+    final _result = await _dio.request<String>('/api/API/CancelBooking',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'GET',
+            headers: <String, dynamic>{},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = _result.data;
+    return value;
+  }
 }

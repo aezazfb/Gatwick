@@ -66,7 +66,7 @@ class Profile extends StatelessWidget {
             FlatButton(
               color: util.primaryColor,
               onPressed: () {
-                Navigator.pushNamed(context, '/mapscreen');
+                Navigator.pushReplacementNamed(context, '/mapscreen');
               },
               child: Text('Book Ride Now'),
             )

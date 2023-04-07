@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
+import 'package:retrofit/dio.dart';
 import 'package:zippy_rider/models/BookingModel.dart';
 import 'package:zippy_rider/requests/bookinghistory_request.dart';
 import 'package:zippy_rider/states/map_state.dart';
 import 'package:zippy_rider/states/ridehistory_state.dart';
+import 'package:zippy_rider/requests/login_screen/customer_cancel_req.dart';
+import 'package:zippy_rider/utils/util.dart' as util;
 
 import 'package:zippy_rider/utils/util.dart' as util;
 
@@ -16,6 +20,12 @@ class _RideHistoryState extends State<RideHistory> {
   String _track = "Track";
   List<String> tempList = List<String>.generate(100, (index) => "Item $index");
 
+  TextEditingController cancel_cntrlt = TextEditingController();
+
+  // MapState mapState = MapState();
+
+  get selectedBookingList => null;
+
   @override
   Widget build(BuildContext context) {
     final rideHistoryState = Provider.of<RideHistoryState>(context);
@@ -27,7 +37,15 @@ class _RideHistoryState extends State<RideHistory> {
       length: 3,
       child: Scaffold(
           appBar: AppBar(
-            title: Text('ZippyRider'),
+            title: Text(util.appTitle),
+            leading: IconButton(
+              icon: Icon(Icons.arrow_back_ios_rounded),
+              onPressed: () {
+                setState(() async {
+                  Navigator.pushReplacementNamed(context, '/mapscreen');
+                });
+              },
+            ),
             bottom: TabBar(
                 labelPadding: EdgeInsets.zero,
                 indicatorColor: util.primaryColor,
@@ -74,17 +92,23 @@ class _RideHistoryState extends State<RideHistory> {
                       });
                       return Text('Got Error');
                     }
-                    if(snapshot.hasData && snapshot.data != null){
+                    if (snapshot.hasData && snapshot.data != null) {
+                      var mybok = rideHistoryState.bookedBookingHistoryList
+                          .sort((a, b) {
+                        return a.datentime.compareTo(b.datentime);
+                      });
                       return getListView(
                           rideHistoryState.bookedBookingHistoryList, 'booked',
-                          editDetails: true,
+                          editDetails: false,
+                          ////////////// Edit details option in boooking
                           viewDetails: false,
-                          review: false);
-                    }else if(snapshot.data == null){
+                          review: false,
+                          cancelRowVb: true);
+                    } else if (snapshot.data == null) {
                       print('GotNull::');
                       return getDefaultColumn('booked');
-                    }else{
-                     return displayProgressBar();
+                    } else {
+                      return displayProgressBar();
                     }
                   }),
               FutureBuilder(
@@ -107,7 +131,8 @@ class _RideHistoryState extends State<RideHistory> {
                           'completed',
                           editDetails: true,
                           viewDetails: true,
-                          review: true);
+                          review: true,
+                          cancelRowVb: false);
                     }else if(snapshot.data == null){
                       return getDefaultColumn('completed');
                     }else{
@@ -134,8 +159,9 @@ class _RideHistoryState extends State<RideHistory> {
                           rideHistoryState.cancelledBookingHistoryList,
                           'cancelled',
                           editDetails: false,
-                          viewDetails: true,
-                          review: true);
+                          viewDetails: false,
+                          review: true,
+                          cancelRowVb: false);
                     }else if(snapshot.data == null){
                       return getDefaultColumn('cancelled');
                     }else{
@@ -170,9 +196,10 @@ class _RideHistoryState extends State<RideHistory> {
   }
 
   Widget getListView(List<BookingModel> selectedBookingList, String status,
-      {bool editDetails, bool viewDetails, bool review}) {
+      {bool editDetails, bool viewDetails, bool review, bool cancelRowVb}) {
     return ListView.builder(
         itemCount: selectedBookingList.length,
+        reverse: true,
         itemBuilder: (context, index) {
           return Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -213,8 +240,8 @@ class _RideHistoryState extends State<RideHistory> {
                             icon: Icon(Icons.create_outlined,
                                 color: Colors.orange, size: 30.0),
                             onPressed: () {
-                              Navigator.pushNamed(context, '/editbooking',
-                                  arguments: selectedBookingList[index]);
+                              // Navigator.pushNamed(context, '/editbooking',
+                              //     arguments: selectedBookingList[index]);
                             },
                           ),
                         ),
@@ -247,9 +274,10 @@ class _RideHistoryState extends State<RideHistory> {
                       child: Row(
                         children: [
                           Visibility(
-                            visible: review,
+                            visible: true,
+                            // visible: review // review bana wa hai !!!
                             child: Text(
-                              'Review',
+                              '${selectedBookingList[index].jobmileage.toString()} miles',
                               style: TextStyle(
                                 backgroundColor: Colors.red[800],
                                 color: Colors.white,
@@ -283,7 +311,7 @@ class _RideHistoryState extends State<RideHistory> {
                                     Icons.location_pin,
                                     color: Colors.blue,
                                   )),
-                              Text(_track),
+                              //Text(_track),
                             ],
                           ),
                           Text(
@@ -304,14 +332,148 @@ class _RideHistoryState extends State<RideHistory> {
                               ],
                             ),
                           ),
-                          Row(
-                            children: [
-                              Icon(
-                                Icons.delete_outline_outlined,
-                                color: Colors.red,
-                              ),
-                              Text('Cancel Ride'),
-                            ],
+                          Visibility(
+                            visible: cancelRowVb,
+                            child: Row(
+                              //-------------------------delete programming karni hai
+                              children: [
+                                TextButton(
+//Reason popup Window =============================
+                                  onPressed: () {
+                                    showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return AlertDialog(
+                                          scrollable: true,
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(15.0)),
+                                          insetPadding: EdgeInsets.all(10.0),
+                                          titlePadding: EdgeInsets.all(0.0),
+                                          titleTextStyle: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.w600),
+                                          title: Container(
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width -
+                                                40,
+                                            padding: EdgeInsets.only(
+                                                left: 10, bottom: 20, top: 10),
+                                            child: Text('Cancellation Reason'),
+                                            decoration: BoxDecoration(
+                                              color: util.primaryColor,
+                                              borderRadius: BorderRadius.only(
+                                                  topRight: Radius.circular(15),
+                                                  topLeft:
+                                                      Radius.circular(15.0)),
+                                            ),
+                                          ),
+                                          content: Container(
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width -
+                                                40,
+                                            child: Column(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                SizedBox(height: 7),
+                                                ListTile(
+                                                  leading: Icon(
+                                                    Icons.comment,
+                                                    color: util.primaryColor,
+                                                  ),
+                                                  title: TextFormField(
+                                                    controller: cancel_cntrlt,
+                                                    maxLines: 4,
+                                                    keyboardType:
+                                                        TextInputType.multiline,
+                                                    minLines: null,
+                                                    decoration: InputDecoration(
+                                                      border:
+                                                          OutlineInputBorder(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(10.0),
+                                                      ),
+                                                      hintText: 'Type Reason..',
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          actions: [
+                                            FlatButton(
+                                                color: util.primaryColor,
+                                                onPressed: () {
+                                                  setState(() {
+                                                    if (cancel_cntrlt
+                                                            .text.length >=
+                                                        5) {
+                                                      String jd =
+                                                          selectedBookingList
+                                                              .elementAt(index)
+                                                              .id;
+                                                      CustomerCancelReq
+                                                          .CancelRequest(
+                                                              jd,
+                                                              cancel_cntrlt
+                                                                  .text);
+                                                      cancel_cntrlt.clear();
+                                                      Navigator
+                                                          .pushReplacementNamed(
+                                                              context,
+                                                              '/bookinghistory');
+                                                    } else {
+                                                      Fluttertoast.showToast(
+                                                          msg:
+                                                              "Please type a reason of more than 5 letters..",
+                                                          backgroundColor:
+                                                              Colors.red,
+                                                          textColor:
+                                                              Colors.black45,
+                                                          fontSize: 17.35);
+                                                    }
+                                                  });
+
+                                                  // String jd = selectedBookingList.elementAt(index).id;
+                                                  // CustomerCancelReq.CancelRequest(jd, 'merimarzi');
+                                                },
+                                                child: Text('Cancel Ride!')),
+                                            FlatButton(
+                                                color: util.primaryColor,
+                                                onPressed: () {
+                                                  cancel_cntrlt.clear();
+                                                  Navigator.pop(context);
+                                                },
+                                                child: Text('Back'))
+                                          ],
+                                        );
+                                      },
+                                    );
+
+                                    //reasoNdialogShow(context, cancel_cntrlt.text, index);
+
+                                    // String jd = selectedBookingList.elementAt(index).id;
+                                    // CustomerCancelReq.CancelRequest(jd, 'merimarzi');
+                                  },
+                                  child: Row(
+                                    children: [
+                                      Icon(
+                                        Icons.delete_outline_outlined,
+                                        color: Colors.red,
+                                      ),
+                                      Text('Cancel Ride'),
+                                    ],
+                                  ),
+                                  // icon: Icon(Icons.delete_outline_outlined),
+                                  // color: Colors.red,
+                                ),
+                                //Text('Cancel Ride'),
+                              ],
+                            ),
                           ),
                         ],
                       ),

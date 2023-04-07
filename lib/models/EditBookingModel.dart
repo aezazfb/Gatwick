@@ -27,7 +27,7 @@ class EditBookingModel{
     this.orderno,
     this.flightno,
     this.from,
-    this.fromInfo,
+    this.from_info,
     this.fromOutcode,
     this.drvrcallsign,
     this.drvrreqcallsign,
@@ -81,7 +81,7 @@ class EditBookingModel{
   String orderno;
   String flightno;
   String from;
-  String fromInfo;
+  String from_info;
   String fromOutcode;
   String drvrcallsign;
   String drvrreqcallsign;

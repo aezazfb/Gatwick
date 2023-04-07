@@ -13,9 +13,9 @@ class InsertBooking{
     try {
 
       final response = await client.insertBooking(insertBookingObject);
-      print("------------------------------------------------------------------------");
-      print("this is response: $response");
-
+      print(
+          "------------------------------------------------------------------------");
+      print("this is my response: $response");
     } catch (E) {
       print("Exception is caught: $E");
     }

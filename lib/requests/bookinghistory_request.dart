@@ -16,7 +16,8 @@ class BookingHistoryRequest{
       String email = "${MapState.userEmail.trim()}";
       print('PrintingEmail: $email');
       final response = await client.getBookingDetails(email);
-      print("------------------------------------------------------------------------");
+      print(
+          "------------------------------------------------------------------------");
 
       //print("this is response: $response");
       return response;

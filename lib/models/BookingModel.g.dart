@@ -8,7 +8,7 @@ part of 'BookingModel.dart';
 
 BookingModel _$BookingModelFromJson(Map<String, dynamic> json) {
   return BookingModel(
-    id: json['id'] as String,
+    id: json['_id'] as String,
     account: json['account'] as String,
     bookedby: json['bookedby'] as String,
     driverrate: json['driverrate'] as String,
@@ -31,7 +31,8 @@ BookingModel _$BookingModelFromJson(Map<String, dynamic> json) {
     orderno: json['orderno'] as String,
     flightno: json['flightno'] as String,
     from: json['from'] as String,
-    fromInfo: json['fromInfo'] as String,
+    from_info: json['from_info'] as String,
+    //------------------------------fromInfo
     from_outcode: json['from_outcode'] as String,
     drvrcallsign: json['drvrcallsign'] as String,
     drvrreqcallsign: json['drvrreqcallsign'] as String,
@@ -65,7 +66,7 @@ BookingModel _$BookingModelFromJson(Map<String, dynamic> json) {
         ?.toList(),
   );
 }
-
+// ------- neeche waala posting values hai... toInfo -> to_info change kiya tha.....
 Map<String, dynamic> _$BookingModelToJson(BookingModel instance) =>
     <String, dynamic>{
       'id': instance.id,
@@ -79,7 +80,7 @@ Map<String, dynamic> _$BookingModelToJson(BookingModel instance) =>
       'telephone': instance.telephone,
       'time': instance.time,
       'to': instance.to,
-      'toInfo': instance.toInfo,
+      'to_info': instance.toInfo,
       'to_outcode': instance.to_outcode,
       'userid': instance.userid,
       'vehicletype': instance.vehicletype,
@@ -91,7 +92,7 @@ Map<String, dynamic> _$BookingModelToJson(BookingModel instance) =>
       'orderno': instance.orderno,
       'flightno': instance.flightno,
       'from': instance.from,
-      'fromInfo': instance.fromInfo,
+      'from_info': instance.from_info,
       'from_outcode': instance.from_outcode,
       'drvrcallsign': instance.drvrcallsign,
       'drvrreqcallsign': instance.drvrreqcallsign,

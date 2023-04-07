@@ -11,6 +11,8 @@ part 'BookingModel.g.dart';
 @JsonSerializable()
 class BookingModel {
   BookingModel({
+    //@JsonKey(name:'_id')
+
     this.id,
     this.account,
     this.bookedby,
@@ -34,7 +36,7 @@ class BookingModel {
     this.orderno,
     this.flightno,
     this.from,
-    this.fromInfo,
+    this.from_info,
     this.from_outcode,
     this.drvrcallsign,
     this.drvrreqcallsign,
@@ -66,6 +68,7 @@ class BookingModel {
   });
 
   String id;
+
   String account;
   String bookedby;
   String driverrate;
@@ -88,7 +91,7 @@ class BookingModel {
   String orderno;
   String flightno;
   String from;
-  String fromInfo;
+  String from_info;
   String from_outcode;
   String drvrcallsign;
   String drvrreqcallsign;
@@ -124,16 +127,16 @@ class BookingModel {
 
   @override
   String toString() {
-    return '{"id": "$id", "account": "$account", "bookedby": "$bookedby", "driverrate": "$driverrate", "jobref": "$jobref",'
+    return '{"id": "$id", "account": "$account", "bookedby": "$bookedby","callerid": "$callerid","creditcard": "$creditcard", "cstate": "$cstate","comment": "$comment", '
+        '  "custname": "$custname", "date": "$date","driverrate": "$driverrate","datentime": $datentime, "drvrcallsign": "$drvrcallsign", "fare": $fare,'
+        ' "drvreqdname": "$drvreqdname", "drvrname": "$drvrname",\n "dstate": "$dstate", "jobref": "$jobref",'
         ' "jobtype": "$jobtype", "jstate": "$jstate", "office": "$office", "telephone": "$telephone", "time": "$time",'
         ' "to": $to,\n "toInfo": "$toInfo", "to_outcode": "$to_outcode", "userid": "$userid", "vehicletype": "$vehicletype",'
-        ' "callerid": "$callerid", "pin": "$pin", "mstate": "$mstate", "tag": "$tag", "accuser": "$accuser",'
-        ' "orderno": "$orderno", "flightno": "$flightno",\n "from": "$from", "fromInfo": "$fromInfo",'
-        ' "from_outcode": "$from_outcode", "drvrcallsign": "$drvrcallsign", "drvrreqcallsign": "$drvrreqcallsign",'
-        ' "drvreqdname": "$drvreqdname", "drvrname": "$drvrname",\n "dstate": "$dstate", "comment": "$comment",'
-        ' "creditcard": "$creditcard", "cstate": "$cstate", "custname": "$custname", "date": "$date", "fare": $fare,'
+        '  "pin": "$pin", "mstate": "$mstate", "tag": "$tag", "accuser": "$accuser",'
+        ' "orderno": "$orderno", "flightno": "$flightno",\n "from": "$from", "from_info": "$from_info",'
+        ' "from_outcode": "$from_outcode", "drvrreqcallsign": "$drvrreqcallsign",'
         ' "oldfare": $oldfare,\n "drvfare": $drvfare, "olddrvfare": $olddrvfare, "jobmileage": $jobmileage,'
-        ' "leadtime": $leadtime, "timetodespatch": $timetodespatch, "datentime": $datentime,'
+        ' "leadtime": $leadtime, "timetodespatch": $timetodespatch, '
         ' "despatchtime": $despatchtime, "flag": $flag,\n "numofvia": $numofvia, "hold": $hold,'
         ' "isdirty": $isdirty, "changed": $changed, "logc": $logc, "logd": $logd, "fromtovia": ${fromtovia.toString()}';
   }
